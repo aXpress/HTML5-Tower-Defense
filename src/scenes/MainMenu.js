@@ -16,7 +16,7 @@ var MainMenu = new Phaser.Class({
         this.load.image('imgSelectLevelOne', 'src/assets/imgSelectLevelOne.png');
         this.load.image('imgSelectLevelTwo', 'src/assets/imgSelectLevelTwo.png');
         this.load.image('imgSelectLevelThree', 'src/assets/imgSelectLevelThree.png');
-        this.load.image('imgLevelLore', 'src/assets/imglevelLore.png');
+        this.load.image('imgLevelLore', 'src/assets/imgLevelLore.png');
     },
 
     create: function ()
@@ -42,7 +42,7 @@ var MainMenu = new Phaser.Class({
             this.clearTint();
             loreText.setText("");
         });
-        selectLevelOne.setInteractive().on('pointerdown', function() {this.scene.start('LevelOne')}, this);
+        selectLevelOne.setInteractive().on('pointerdown', function() {this.scene.start('MapCreation')}, this);
 
         // Menu functions for Level Two box
         var selectLevelTwo = this.add.sprite(800, 325, 'imgSelectLevelTwo');
