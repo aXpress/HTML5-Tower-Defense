@@ -17,8 +17,10 @@ var MapCreation = new Phaser.Class({
 
     create: function ()
     {
+        //var game = new Phaser.Game(800,600, Phaser.AUTO);
         var size = 50;
         var rockSize = 100;
+        var treeSize = 100;
         var points;
         var handles;
         var parts = 8;
@@ -26,11 +28,11 @@ var MapCreation = new Phaser.Class({
         var width = this.scale.width;
         var butWidth = 75;
         var butHeight = 35;
-        var message = "Drag starting node to desired location, then click to start placing nodes.";
+        var message = "Drag starting node to desired location, then click 'Path' to start placing nodes.";
         var message2 = "If you want to delete a node, hold down the 'X' button and click on a node.";
         var delKey = this.input.keyboard.addKey('X');
-        var paintKey = this.input.keyboard.addKey('C');
-        var eraseKey = this.input.keyboard.addKey('V');
+        var picKey = this.input.keyboard.addKey('P');
+        var curBut = '';
 
         var rt = this.add.renderTexture(0,0,width,height);
 
@@ -52,9 +54,15 @@ var MapCreation = new Phaser.Class({
         var pathButton = this.add.rectangle(0, 0, butWidth, butHeight, 0xffffff);
         var pathText = this.add.text(0, 0, "Path",{font: '18pt Arial', fill: '0xffffff'});
         pathText.setOrigin(0.5,0.5);
+        //pathButton.name
         pathButton.setStrokeStyle(5,0xff0000);
         pathButton.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
         pathButton.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
+        pathButton.setInteractive().on('pointerdown', function(event) {
+            curBut = 'path';
+            changeActive(this.parentContainer.list);
+            this.setStrokeStyle(5,0xffbb00);
+            });
 
         // Rock menu button
         var rockButton = this.add.rectangle(0, 50, butWidth, butHeight, 0xffffff);
@@ -63,6 +71,11 @@ var MapCreation = new Phaser.Class({
         rockButton.setStrokeStyle(5,0xff0000);
         rockButton.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
         rockButton.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
+        rockButton.setInteractive().on('pointerdown', function(event) {
+            curBut = 'rock';
+            changeActive(this.parentContainer.list);
+            this.setStrokeStyle(5,0xffbb00);
+            });
 
         // Tree menu Button
         var treeButton = this.add.rectangle(0, 100, butWidth, butHeight, 0xffffff);
@@ -71,6 +84,11 @@ var MapCreation = new Phaser.Class({
         treeButton.setStrokeStyle(5,0xff0000);
         treeButton.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
         treeButton.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
+        treeButton.setInteractive().on('pointerdown', function(event) {
+            curBut = 'tree';
+            changeActive(this.parentContainer.list);
+            this.setStrokeStyle(5,0xffbb00);
+            });
 
         // Water menu Button
         var waterButton = this.add.rectangle(0, 150, butWidth, butHeight, 0xffffff);
@@ -79,7 +97,11 @@ var MapCreation = new Phaser.Class({
         waterButton.setStrokeStyle(5,0xff0000);
         waterButton.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
         waterButton.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
-        //buildMenu.setInteractive().on('pointerdown', function() {this.scene.start('MainMenu')}, this);
+        waterButton.setInteractive().on('pointerdown', function(event) {
+            curBut = 'water';
+            changeActive(this.parentContainer.list);
+            this.setStrokeStyle(5,0xffbb00);
+            });
 
         butContainer.add(pathButton);
         butContainer.add(pathText);
@@ -91,16 +113,19 @@ var MapCreation = new Phaser.Class({
         butContainer.add(waterText);
 
 
-
-/* 
-        var loreContainer = this.add.container(800, 675);
-        var loreBox = this.add.sprite(0, 0, 'imgLevelLore');
-        var loreText = this.add.text(0, 0, '', {font: '32pt Arial', fill: '0xffffff'});
-        loreText.setOrigin(0.5, 0.5);
-        loreContainer.add(loreBox);
-        loreContainer.add(loreText);
- */
-
+        // helper function for menu buttons. Changes the outline color.
+        var changeActive = function (pointer)
+        {
+            {
+                for(var i = 0; i < pointer.length; i++)
+                {
+                    if(pointer[i].strokeColor == 16759552)
+                    {
+                        pointer[i].setStrokeStyle(5,0xff0000);
+                    }
+                }
+            }
+        }
 
 
 
@@ -111,6 +136,14 @@ var MapCreation = new Phaser.Class({
         //var data = [ 0,20, 120,50, 200,100];
 
         //var r1 = this.add.polygon(200, 200, data, 0xbdbdbd);
+        var makeTree = function (x, y)
+        {
+            var tree = _this.add.circle(x, y, treeSize, 0x175c10).setInteractive();
+            
+            tree.setStrokeStyle(3, 0x10360c);
+            _this.input.setDraggable(tree);
+
+        }
 
         var makeRock = function (x, y)
         {
@@ -124,9 +157,6 @@ var MapCreation = new Phaser.Class({
             var bot = rockSize;//p.y + rSize;
             var left = 0;//p.x - rSize;
             var right = rockSize;//p.x + rSize;
-
-            //console.log("here ",p.x,p.y,top,bot,left,right);
-
             var data = [];
 
             var x;
@@ -172,28 +202,12 @@ var MapCreation = new Phaser.Class({
             data.push(x);
             data.push(y);
 
-            //createPointHandle(data[0]);
-            //createPointHandle(data[2]);
-            //createPointHandle(data[4]);
-            //createPointHandle(data[6]);
-
-            //console.log("cursor: ", p.x, p.y, pointer.x, pointer.y);
             var r1 = _this.add.polygon(p.x, p.y, data, 0xbdbdbd).setInteractive();
             _this.input.setDraggable(r1);
-            
-            
-            //console.log("rock: ", r1.x, r1.y);
 
-            //console.log(r1);
             r1.setStrokeStyle(3, 0x636363);
-
         }
 
-        //makeRock(new Phaser.Math.Vector2(400,400));
-
-
-
-        
 
         var createPointHandle = function (point)
         {
@@ -231,32 +245,9 @@ var MapCreation = new Phaser.Class({
 
         createPointHandle(curve.points[0]);
 
-        var beginPaint = function(pointer)
-        {
-            var paintboy = _this.add.circle(pointer.x, pointer.y, 30, 0x523e2f);
-                
-            _this.input.on('pointermove', function (pointy){
-                if(pointer.isDown && paintKey.isDown)
-                    rt.draw(paintboy, pointy.x, pointy.y);
-                
-            }, this);
-        }
-
-        var erasePaint = function(pointer, gameObjects)
-        {
-            //var paintboy = _this.add.circle(pointer.x, pointer.y, 30, 0x523e2f);
-            console.log(gameObjects);
-            _this.input.on('pointermove', function (pointy){
-                if(pointer.isDown && eraseKey.isDown)
-                    rt.erase(_this.add.circle(pointer.x, pointer.y, 30, 0x523e2f), pointer.x, pointer.y);
-                //paintboy.destroy();
-                
-            }, this);
-        }
 
         this.input.on('pointerdown', function(pointer, gameObjects)
         {
-            //console.log("pointer ", pointer.x, pointer.y);
             if (delKey.isDown)
             {
                 if(gameObjects.length == 0)
@@ -264,15 +255,21 @@ var MapCreation = new Phaser.Class({
                 
                 removePointHandle(gameObjects);
             }
-            else if (paintKey.isDown)
+            else if (curBut == 'rock')
             {
+                if(gameObjects.length > 0)
+                    return;
+
                 makeRock(pointer.x, pointer.y);
             }
-            else if (eraseKey.isDown)
+            else if (curBut == 'tree')
             {
-                erasePaint(pointer, gameObjects);
+                if(gameObjects.length > 0)
+                    return;
+
+                makeTree(pointer.x, pointer.y);
             }
-            else
+            else if (curBut == 'path')
             {
                 if (gameObjects.length > 0)
                 {
@@ -304,6 +301,24 @@ var MapCreation = new Phaser.Class({
             }
         });
         
+        // This creates a screenshot of the map. Right now it is just for testing. At some
+        // point we will automatically save this map screenshot when the user is saving it.
+        window.onkeydown = function (e)
+        {
+            console.log(e.keyCode);
+             if(e.keyCode == 80)
+            {
+                _this.renderer.snapshot(function (image) 
+                {
+                    image.style.width = '400px';
+                    image.style.height = '225px';
+                    image.style.paddingLeft = '2px';
+                    //snapHistory.push(image);
+                    console.log('snap!');
+                    document.body.appendChild(image);
+                })
+            }
+        };
 
 
         this.input.on('dragstart', function (pointer, gameObject) 
@@ -384,7 +399,8 @@ var MapCreation = new Phaser.Class({
 
 
             //console.log(gameObject);
-            gameObject.data.get('vector').set(gameObject.x, gameObject.y);
+            if(gameObject.data != null)
+                gameObject.data.get('vector').set(gameObject.x, gameObject.y);
             
             
         });
