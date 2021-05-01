@@ -12,6 +12,10 @@ var LevelOne = new Phaser.Class({
     preload: function ()
     {
         this.load.image('imgMainMenuButton', 'src/assets/imgMainMenuButton.png');
+        this.load.image('Golem', 'assets/Enemies/Golem.png')
+		this.load.image('Minotaur', 'assets/Enemies/Minotaur.png')
+        this.load.image('Wraith', 'assets/Enemies/Wraith.png')
+        
     },
 
     create: function ()
