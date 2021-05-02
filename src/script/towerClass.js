@@ -1,13 +1,15 @@
-export class Tower extends Phaser.GameObjects.Container {
-    constructor(x, y, scene, element) {
+class Tower extends Phaser.GameObjects.Container {
+    constructor(scene, x, y, element) {
         super(scene);
         this.element = element;
         this.x = x;
         this.y = y;
 
-        const tower = this.scene.add.rectangle(x, y, 20, 20, element);
-        this.add(tower);
+        scene.add.rectangle(x, y, 20, 20, element);
 
-        this.scene.add.existing(this);
+        scene.add.existing(this);
+    }
+    create() {
+        console.log('tower class');
     }
 }

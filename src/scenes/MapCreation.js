@@ -1,3 +1,5 @@
+//import { Tower } from "../script/towerClass";
+
 var MapCreation = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -111,69 +113,79 @@ var MapCreation = new Phaser.Class({
         butContainer.add(waterButton);
         butContainer.add(waterText);
 
-        // Tower selection container
-        var towerContainer = this.add.container(400,800);
+        // // Tower selection container
+        // var towerContainer = this.add.container(400,800);
         
-        var fireTowerBtn = this.add.rectangle(0, 0, 150, butHeight, 0xffffff);
-        var fireBtnTxt = this.add.text(0, 0, "Fire",{font: '18pt Arial', fill: '0xFFFFFF'});
-        fireBtnTxt.setOrigin(0.5,0.5);
-        fireTowerBtn.setStrokeStyle(5,0xff0000);
-        fireTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
-        fireTowerBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
-        fireTowerBtn.setInteractive().on('pointerdown', function(event) {
-            curBut = 'fireTower';
-        });
+        // var fireTowerBtn = this.add.rectangle(0, 0, 150, butHeight, 0xff0000);
+        // var fireBtnTxt = this.add.text(0, 0, "Fire",{font: '18pt Arial', fill: '0xff0000'});
+        // fireBtnTxt.setOrigin(0.5,0.5);
+        // fireTowerBtn.setStrokeStyle(5,0xff0000);
+        // fireTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
+        // fireTowerBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xff0000, 1);});
+        // fireTowerBtn.setInteractive().on('pointerdown', function(event) {
+        //     curBut = 'fireTower';
+        //     changeActive(this.parentContainer.list);
+        //     this.setStrokeStyle(5,0xffbb00);
+        // });
 
-        var waterTowerBtn = this.add.rectangle(200, 0, 150, butHeight, 0xffffff);
-        var waterBtnTxt = this.add.text(200, 0, "Water",{font: '18pt Arial', fill: '0xffffff'});
-        waterBtnTxt.setOrigin(0.5,0.5);
-        waterTowerBtn.setStrokeStyle(5,0x00AAFF);
-        waterTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
-        waterTowerBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
-        waterTowerBtn.setInteractive().on('pointerdown', function(event) {
-            curBut = 'waterTower';
-        });
+        // var waterTowerBtn = this.add.rectangle(200, 0, 150, butHeight, 0x00AAFF);
+        // var waterBtnTxt = this.add.text(200, 0, "Water",{font: '18pt Arial', fill: '0xffffff'});
+        // waterBtnTxt.setOrigin(0.5,0.5);
+        // waterTowerBtn.setStrokeStyle(5,0xff0000);
+        // waterTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
+        // waterTowerBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0x00AAFF, 1);});
+        // waterTowerBtn.setInteractive().on('pointerdown', function(event) {
+        //     curBut = 'waterTower';
+        //     changeActive(this.parentContainer.list);
+        //     this.setStrokeStyle(5,0xffbb00);
+        // });
 
-        var windTowerBtn = this.add.rectangle(400, 0, 150, butHeight, 0xffffff);
-        var windBtnTxt = this.add.text(400, 0, "Wind",{font: '18pt Arial', fill: '0xffffff'});
-        windBtnTxt.setOrigin(0.5,0.5);
-        windTowerBtn.setStrokeStyle(5,0x00C40C);
-        windTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
-        windTowerBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
-        windTowerBtn.setInteractive().on('pointerdown', function(event) {
-            curBut = 'windTower';
-        });
+        // var windTowerBtn = this.add.rectangle(400, 0, 150, butHeight, 0x00C40C);
+        // var windBtnTxt = this.add.text(400, 0, "Wind",{font: '18pt Arial', fill: '0xffffff'});
+        // windBtnTxt.setOrigin(0.5,0.5);
+        // windTowerBtn.setStrokeStyle(5,0xff0000);
+        // windTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
+        // windTowerBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0x00C40C, 1);});
+        // windTowerBtn.setInteractive().on('pointerdown', function(event) {
+        //     curBut = 'windTower';
+        //     changeActive(this.parentContainer.list);
+        //     this.setStrokeStyle(5,0xffbb00);
+        // });
 
-        var elecTowerBtn = this.add.rectangle(600, 0, 150, butHeight, 0xffffff);
-        var elecBtnTxt = this.add.text(600, 0, "Electric",{font: '18pt Arial', fill: '0xffffff'});
-        elecBtnTxt.setOrigin(0.5,0.5);
-        elecTowerBtn.setStrokeStyle(5,0xFFD800);
-        elecTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
-        elecTowerBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
-        elecTowerBtn.setInteractive().on('pointerdown', function(event) {
-            curBut = 'elecTower';
-        });
+        // var elecTowerBtn = this.add.rectangle(600, 0, 150, butHeight, 0xFFD800);
+        // var elecBtnTxt = this.add.text(600, 0, "Electric",{font: '18pt Arial', fill: '0xffffff'});
+        // elecBtnTxt.setOrigin(0.5,0.5);
+        // elecTowerBtn.setStrokeStyle(5,0xff0000);
+        // elecTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
+        // elecTowerBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xFFD800, 1);});
+        // elecTowerBtn.setInteractive().on('pointerdown', function(event) {
+        //     curBut = 'elecTower';
+        //     changeActive(this.parentContainer.list);
+        //     this.setStrokeStyle(5,0xffbb00);
+        // });
 
-        var iceTowerBtn = this.add.rectangle(800, 0, 150, butHeight, 0xffffff);
-        var iceBtnTxt = this.add.text(800, 0, "Ice",{font: '18pt Arial', fill: '0xffffff'});
-        iceBtnTxt.setOrigin(0.5,0.5);
-        iceTowerBtn.setStrokeStyle(5,0x8AFFFD);
-        iceTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
-        iceTowerBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
-        iceTowerBtn.setInteractive().on('pointerdown', function(event) {
-            curBut = 'iceTower';
-        });
+        // var iceTowerBtn = this.add.rectangle(800, 0, 150, butHeight, 0x8AFFFD);
+        // var iceBtnTxt = this.add.text(800, 0, "Ice",{font: '18pt Arial', fill: '0xffffff'});
+        // iceBtnTxt.setOrigin(0.5,0.5);
+        // iceTowerBtn.setStrokeStyle(5,0xff0000);
+        // iceTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
+        // iceTowerBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0x8AFFFD, 1);});
+        // iceTowerBtn.setInteractive().on('pointerdown', function(event) {
+        //     curBut = 'iceTower';
+        //     changeActive(this.parentContainer.list);
+        //     this.setStrokeStyle(5,0xffbb00);
+        // });
 
-        towerContainer.add(fireTowerBtn);
-        towerContainer.add(fireBtnTxt);
-        towerContainer.add(waterTowerBtn);
-        towerContainer.add(waterBtnTxt);
-        towerContainer.add(windTowerBtn);
-        towerContainer.add(windBtnTxt);
-        towerContainer.add(elecTowerBtn);
-        towerContainer.add(elecBtnTxt);
-        towerContainer.add(iceTowerBtn);
-        towerContainer.add(iceBtnTxt);
+        // towerContainer.add(fireTowerBtn);
+        // towerContainer.add(fireBtnTxt);
+        // towerContainer.add(waterTowerBtn);
+        // towerContainer.add(waterBtnTxt);
+        // towerContainer.add(windTowerBtn);
+        // towerContainer.add(windBtnTxt);
+        // towerContainer.add(elecTowerBtn);
+        // towerContainer.add(elecBtnTxt);
+        // towerContainer.add(iceTowerBtn);
+        // towerContainer.add(iceBtnTxt);
 
 
         // helper function for menu buttons. Changes the outline color.
@@ -362,9 +374,9 @@ var MapCreation = new Phaser.Class({
                     repeat: -1
                 }); 
             }
-            else if (curBut == 'fireTower') {
-                placeTower(pointer, this, curBut);
-            }
+            // else if (curBut == 'fireTower') {
+            //     placeTower({scene: this, x: pointer.x, y: pointer.y, element: curBut});
+            // }
         });
         
         // This creates a screenshot of the map. Right now it is just for testing. At some
@@ -529,21 +541,20 @@ var MapCreation = new Phaser.Class({
     }
 });
 
-function placeTower(pointer, scene, selected) {
-    if(selected = "fireTower"){
-        var tower = new Tower(pointer.x, pointer.y, scene, "0xFF0000");
-    }
-    else if(selected = "waterTower") {
-        var tower = new Tower(pointer.x, pointer.y, scene, "0x00AAFF");
-    }
-    else if(selected = "windTower") {
-        var tower = new Tower(pointer.x, pointer.y, scene, "0x00C40C");
-    }
-    else if(selected = "elecTower") {
-        var tower = new Tower(pointer.x, pointer.y, scene, "0xFFD800");
-    }
-    else if(selected = "iceTower") {
-        var tower = new Tower(pointer.x, pointer.y, scene, "0x8AFFFD");
-    }
-    return;
-}
+// function placeTower(scene, x, y, selected) {
+//     if(selected = "fireTower"){
+//         var tower = new Tower(scene, x, y, "0xFF0000");
+//     }
+//     else if(selected = "waterTower") {
+//         var tower = new Tower(scene, x, y, "0x00AAFF");
+//     }
+//     else if(selected = "windTower") {
+//         var tower = new Tower(scene, x, y, "0x00C40C");
+//     }
+//     else if(selected = "elecTower") {
+//         var tower = new Tower(scene, x, y, "0xFFD800");
+//     }
+//     else if(selected = "iceTower") {
+//         var tower = new Tower(scene, x, y, "0x8AFFFD");
+//     }
+// }
