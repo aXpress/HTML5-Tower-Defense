@@ -4,7 +4,7 @@
   "description": "An HTML5 Tower Defense game made with Phaser 3",
   "main": "src/index.js",
   "scripts": {
-    "start": "./node_modules/webpack/bin/webpack.js -p --progress && node server.js",
+    "start": "./node_modules/webpack/bin/webpack.js -p --progress && node server.js"
   },
   "repository": {
     "type": "git"
