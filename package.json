@@ -4,8 +4,8 @@
   "description": "An HTML5 Tower Defense game made with Phaser 3",
   "main": "src/index.js",
   "scripts": {
-    "build": "webpack --mode production --config ./webpack.prod.config.js",
-    "start": "npm run build && webpack-dev-server --host=0.0.0.0 --port=$PORT"
+    "build": "webpack --config webpack/prod.js ",
+    "start": "webpack-dev-server --config webpack/base.js --open"
   },
   "repository": {
     "type": "git",
@@ -16,10 +16,6 @@
   "licenseUrl": "",
   "homepage": "",
   "devDependencies": {
-    
-  },
-  "dependencies": {
-    "phaser": "^3.50.0",
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
     "babel-loader": "^8.0.6",
@@ -32,6 +28,9 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {
+    "phaser": "^3.50.0"
   },
   "heroku-run-build-script": true
 }

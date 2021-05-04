@@ -1,54 +1,13 @@
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path');
 
 module.exports = {
   entry: './src/index.js',
-
   output: {
-    path: './dist',
-    filename: 'bundle.js'
+    filename: 'main.js',
+    path: path.resolve(__dirname, 'dist'),
   },
-
   module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-            presets: ['es2015']
-        }
-      },
-      {
-        test: /\.less$/,
-        loader: "style!css!less"
-      },
-      {
-        test: /\.(jpg|png|gif)$/,
-        include: /img/,
-        loader: 'url'
-      },
-    ]
+    rules: [
+    ],
   },
-
-  plugins: [
-    new CopyWebpackPlugin([
-      { from: './index.html' }
-    ]),
-    new CopyWebpackPlugin([
-      { from: './src/phaser.min.js' }
-    ]),
-    new CopyWebpackPlugin([
-      { from: './src/assets', to: 'assets' }
-    ])
-  ],
-
-  resolve: {
-    extensions: ['', '.js', '.jsx']
-  },
-
-  devServer: {
-    inline: true,
-    contentBase: './dist',
-    port: 5000
-  }
 };
