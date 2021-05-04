@@ -1,6 +1,5 @@
-//import { Tower } from "../script/towerClass";
-
 var MapCreation = new Phaser.Class({
+
 
     Extends: Phaser.Scene,
 
@@ -113,7 +112,7 @@ var MapCreation = new Phaser.Class({
         butContainer.add(waterButton);
         butContainer.add(waterText);
 
-    
+
         // helper function for menu buttons. Changes the outline color.
         var changeActive = function (pointer)
         {
@@ -463,3 +462,4 @@ var MapCreation = new Phaser.Class({
         //graphics.moveTo(curve2);
     }
 });
+

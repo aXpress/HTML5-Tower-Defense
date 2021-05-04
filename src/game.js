@@ -8,8 +8,5 @@ window.onload = function() {
         scene: [SplashScreen, MainMenu, LevelOne, LevelTwo, LevelThree, MapCreation],
     }
 
-    // Disable right click
-    document.addEventListener('contextmenu', event => event.preventDefault());
-
     var game = new Phaser.Game(config);
 }
