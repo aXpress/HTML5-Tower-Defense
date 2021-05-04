@@ -8,8 +8,7 @@
     "start": "webpack-dev-server --config webpack/base.js --open"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/aXpress/HTML5-Tower-Defense.git"
+    "type": "git"
   },
   "author": "",
   "license": "",
@@ -31,6 +30,5 @@
   },
   "dependencies": {
     "phaser": "^3.50.0"
-  },
-  "heroku-run-build-script": true
+  }
 }
