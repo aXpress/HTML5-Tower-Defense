@@ -40,9 +40,17 @@ As of right now water has not been implemented.
   - The ability to delete water.
 
 ### Towers
-
+Tower placement placement has been implemented and can be tested on Level 2. The user picks what tower to place on the board via the buttons at the bottom of Level 2's scene. Currently, we do not have interactions working with enemies and will implement attacks very soon.
+- Future Changes:
+  - Interaction with enemies (attacking, aiming, etc)
+  - The ability to upgrade towers
+  - Animations
 
 ### Enemies
 
 
 ### Levels
+The game will have a main campaign of 3 levels. If time permits, a custom map mode will be implemented that allows the user to make their own map to play.
+- Future Changes:
+  - Lock mechanism to disable maps that are not unlocked
+  - Add background and music/sounds
