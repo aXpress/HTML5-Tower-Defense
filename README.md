@@ -43,6 +43,11 @@ As of right now water has not been implemented.
 
 
 ### Enemies
+Right now we have three enemies implemented. 
+- Future Changes
+  - Implement enemy attack and health stats. The enemies will have the same properties as towers. Weaknesses and strengths will be based on their respective elements.
+  - Will implement enemy animations such as walk and attacking
+  - Will also implement basic enemy AI
 
 
 ### Levels
