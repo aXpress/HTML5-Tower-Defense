@@ -23,6 +23,7 @@ var MapCreation = new Phaser.Class({
         var rockSize = 100;
         var treeSize = 100;
         var points;
+        var mapObjects = {};
         var handles;
         var parts = 8;
         var height = this.scale.height;
@@ -34,6 +35,7 @@ var MapCreation = new Phaser.Class({
         var delKey = this.input.keyboard.addKey('X');
         var picKey = this.input.keyboard.addKey('P');
         var curBut = '';
+        var levelName = 'My first level';
 
         var rt = this.add.renderTexture(0,0,width,height);
 
@@ -104,6 +106,50 @@ var MapCreation = new Phaser.Class({
             this.setStrokeStyle(5,0xffbb00);
             });
 
+        // Submit menu Button
+        var submitButton = this.add.rectangle(0, 200, butWidth, butHeight, 0xffffff);
+        var submitText = this.add.text(0, 200, "submit",{font: '18pt Arial', fill: '0xffffff'});
+        submitText.setOrigin(0.5,0.5);
+        submitButton.setStrokeStyle(5,0xff0000);
+        submitButton.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
+        submitButton.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
+        submitButton.setInteractive().on('pointerdown', function(event) {
+            
+            curBut = 'submit';
+            changeActive(this.parentContainer.list);
+            this.setStrokeStyle(5,0xffbb00);
+
+            points = curve.getDistancePoints(32);
+            mapObjects.path = [];
+            mapObjects.path.push(points);
+
+
+            var xhr = new XMLHttpRequest();
+            var url = "http://localhost:8080/test/" + JSON.stringify(mapObjects);
+            //console.log(url);
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader('Content-Type','application/json')
+            xhr.addEventListener('load', function()
+            {
+                if (xhr.status >= 200 && xhr.status <= 400)
+                {
+                    response = xhr.responseText;
+                    response = JSON.parse(response);
+                    console.log(response);
+                    //var stats = response;
+                    //displayData(stats);
+                }
+                else
+                {
+                    console.log('Error in network request: ' + xhr.statusText);
+                }
+            });
+            //console.log(points);
+                
+            xhr.send(mapObjects); 
+
+            });
+
         butContainer.add(pathButton);
         butContainer.add(pathText);
         butContainer.add(rockButton);
@@ -112,6 +158,9 @@ var MapCreation = new Phaser.Class({
         butContainer.add(treeText);
         butContainer.add(waterButton);
         butContainer.add(waterText);
+        butContainer.add(submitButton);
+        butContainer.add(submitText);
+
 
     
         // helper function for menu buttons. Changes the outline color.
@@ -136,10 +185,15 @@ var MapCreation = new Phaser.Class({
         var startingPoint = null;
         //var data = [ 0,20, 120,50, 200,100];
 
-        //var r1 = this.add.polygon(200, 200, data, 0xbdbdbd);
         var makeTree = function (x, y)
         {
             var tree = _this.add.circle(x, y, treeSize, 0x175c10).setInteractive();
+            var p = {};
+            p.x = x;
+            p.y = y;
+            mapObjects.trees = [];
+            mapObjects.trees.push(p);
+
             
             tree.setStrokeStyle(3, 0x10360c);
             _this.input.setDraggable(tree);
@@ -151,6 +205,8 @@ var MapCreation = new Phaser.Class({
             var p = {};
             p.x = x;
             p.y = y;
+            mapObjects.rocks = [];
+            mapObjects.rocks.push(p);
             //var pieces = Phaser.Math.Between(3, 6);
             var rSize = rockSize / 2;
 
@@ -457,7 +513,7 @@ var MapCreation = new Phaser.Class({
         for (var i = 0; i < points.length; i++)
         {
             var p = points[i];
-            graphics.fillCircle(p.x,p.y, 5);
+            graphics.fillCircle(p.x,p.y, 3);
         }
 
         //graphics.moveTo(curve2);
