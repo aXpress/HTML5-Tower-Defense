@@ -29,6 +29,9 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "express": "^4.17.1",
+    "fs": "*",
+    "mysql": "^2.18.1",
     "phaser": "^3.50.0"
   }
 }
