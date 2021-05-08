@@ -3,9 +3,60 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
+const fs = require('fs');
+
+const express = require('express');
+const mysql = require('mysql');
+const app = express();
+
+
+app.get('/levels', async (req, res) => {
+  console.log(req.body);
+  res.status(201).send("it worked");
+  //get_boats(req).then(entity => {
+    //  res.status(200).send(entity);
+  //})
+});
+
+
+
+
+/* var con = mysql.createConnection({
+  host: "localhost",
+  user: "yourusername",
+  password: "yourpassword"
+}); */
+
+
+
 module.exports = {
   mode: "development",
   devtool: "eval-source-map",
+  devServer: {
+    setup(app) 
+    {
+      app.get('/levels', (req, res) => {
+        console.log(req.body);
+        res.status(201).send("it worked");
+      });
+
+      app.post('/test/:test_id', (req, res) => {
+        //console.log(req.params.test_id);
+        let r = Math.random().toString(36).substr(2, 3) + "-" + Math.random().toString(36).substr(2, 3);
+        var place = 'src/levels/user/' + r + '.json';
+        var myMap = req.params.test_id;//JSON.stringify(req.params.test_id);
+        var fs = require('fs');
+        fs.writeFile(place, myMap, function(err, result) 
+        {
+          if(err) {console.log('error', err);}
+          else
+          {
+            res.status(201).json(place);
+          }
+        });
+      });
+    }
+  },
   module: {
     rules: [
       {

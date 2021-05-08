@@ -14,6 +14,8 @@ var MapCreation = new Phaser.Class({
     preload: function ()
     {
         this.load.image('imgMainMenuButton', 'src/assets/imgMainMenuButton.png');
+        this.load.image('pathTextureA', 'src/assets/Map/path_base.png');
+        this.load.image('pathTextureB', 'src/assets/Map/path_top.png');
     },
 
     create: function ()
@@ -23,6 +25,7 @@ var MapCreation = new Phaser.Class({
         var rockSize = 100;
         var treeSize = 100;
         var points;
+        var mapObjects = {};
         var handles;
         var parts = 8;
         var height = this.scale.height;
@@ -34,6 +37,9 @@ var MapCreation = new Phaser.Class({
         var delKey = this.input.keyboard.addKey('X');
         var picKey = this.input.keyboard.addKey('P');
         var curBut = '';
+        var levelName = 'My first level';
+        
+        
 
         var rt = this.add.renderTexture(0,0,width,height);
 
@@ -104,6 +110,50 @@ var MapCreation = new Phaser.Class({
             this.setStrokeStyle(5,0xffbb00);
             });
 
+        // Submit menu Button
+        var submitButton = this.add.rectangle(0, 200, butWidth, butHeight, 0xffffff);
+        var submitText = this.add.text(0, 200, "submit",{font: '18pt Arial', fill: '0xffffff'});
+        submitText.setOrigin(0.5,0.5);
+        submitButton.setStrokeStyle(5,0xff0000);
+        submitButton.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
+        submitButton.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
+        submitButton.setInteractive().on('pointerdown', function(event) {
+            
+            curBut = 'submit';
+            changeActive(this.parentContainer.list);
+            this.setStrokeStyle(5,0xffbb00);
+
+            points = curve.getDistancePoints(32);
+            mapObjects.path = [];
+            mapObjects.path.push(points);
+
+
+            var xhr = new XMLHttpRequest();
+            var url = "http://localhost:8080/test/" + JSON.stringify(mapObjects);
+            //console.log(url);
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader('Content-Type','application/json')
+            xhr.addEventListener('load', function()
+            {
+                if (xhr.status >= 200 && xhr.status <= 400)
+                {
+                    response = xhr.responseText;
+                    response = JSON.parse(response);
+                    console.log(response);
+                    //var stats = response;
+                    //displayData(stats);
+                }
+                else
+                {
+                    console.log('Error in network request: ' + xhr.statusText);
+                }
+            });
+            //console.log(points);
+                
+            xhr.send(mapObjects); 
+
+            });
+
         butContainer.add(pathButton);
         butContainer.add(pathText);
         butContainer.add(rockButton);
@@ -112,8 +162,14 @@ var MapCreation = new Phaser.Class({
         butContainer.add(treeText);
         butContainer.add(waterButton);
         butContainer.add(waterText);
+        butContainer.add(submitButton);
+        butContainer.add(submitText);
 
+        // grass layer.
+        this.add.rectangle(width/2, height/2, width, height, 0x032405).setDepth(-1);
     
+
+
         // helper function for menu buttons. Changes the outline color.
         var changeActive = function (pointer)
         {
@@ -130,16 +186,23 @@ var MapCreation = new Phaser.Class({
 
 
 
+
+
         curve = new Phaser.Curves.Spline([ new Phaser.Math.Vector2(0,450) ]);
 
         var _this = this;
         var startingPoint = null;
         //var data = [ 0,20, 120,50, 200,100];
 
-        //var r1 = this.add.polygon(200, 200, data, 0xbdbdbd);
         var makeTree = function (x, y)
         {
             var tree = _this.add.circle(x, y, treeSize, 0x175c10).setInteractive();
+            var p = {};
+            p.x = x;
+            p.y = y;
+            mapObjects.trees = [];
+            mapObjects.trees.push(p);
+
             
             tree.setStrokeStyle(3, 0x10360c);
             _this.input.setDraggable(tree);
@@ -151,6 +214,8 @@ var MapCreation = new Phaser.Class({
             var p = {};
             p.x = x;
             p.y = y;
+            mapObjects.rocks = [];
+            mapObjects.rocks.push(p);
             //var pieces = Phaser.Math.Between(3, 6);
             var rSize = rockSize / 2;
 
@@ -212,20 +277,54 @@ var MapCreation = new Phaser.Class({
 
         var createPointHandle = function (point)
         {
-            var handle = _this.add.circle(point.x, point.y, 15, 0xbf47ff).setInteractive();
+            var handle = _this.add.circle(point.x, point.y, 5, 0x8adaff).setInteractive();
 
             handle.setData('vector', point);
+            handle.setDepth(1);
 
             _this.input.setDraggable(handle);
 
-            //points = curve.getDistancePoints(32);
-            //curve = new Phaser.Curves.Spline(points);
-            
             if(startingPoint == null)
             {
                 handle.name = 'startingPoint';
                 startingPoint = handle;
             }
+            else
+            {
+                handle.name = 'handleBob'
+            }
+
+
+            _this.input.on('pointerover', function (pointer, gameObject)
+            {
+                if((gameObject[0].name == 'handleBob') || (gameObject[0].name == 'startingPoint'))
+                {
+                    //console.log(gameObject);
+                    this.tweens.add({
+                        targets: gameObject[0],
+                        scale: 4,
+                        alpha: .5,
+                        duration: 150,
+                        ease: 'Linear',
+                    });
+                }
+
+            }, _this);
+
+            _this.input.on('pointerout', function (pointer, gameObject)
+            {
+                if((gameObject[0].name == 'handleBob') || (gameObject[0].name == 'startingPoint'))
+                {
+                    //console.log(gameObject[0].scale);
+                    this.tweens.add({
+                        targets: gameObject[0],
+                        scale: 1,
+                        alpha: 1,
+                        duration: 150,
+                        ease: 'Linear',
+                    });
+                }
+            }, _this);
         };
 
         var removePointHandle = function (gameObjects)
@@ -238,6 +337,7 @@ var MapCreation = new Phaser.Class({
                 {
                     gameObjects[0].destroy();
                     curve.points.splice(i, 1);
+                    makePath(curve);
 
                 }
             }
@@ -245,7 +345,43 @@ var MapCreation = new Phaser.Class({
         }
 
         createPointHandle(curve.points[0]);
+        
+        this.groupA = this.add.group();
+        var groupA = this.groupA;
+        
+        
+        var makePath = function (p)
+        {
+            //console.log(groupA);         
+            var points =  p.getDistancePoints(40);
+            var pointsb = p.getDistancePoints(20);
+            groupA.clear(true, true);
 
+            for (var i = 0; i < points.length; i++)
+            {
+                var p = points[i];
+    
+                var myImage = _this.add.image(p.x,p.y, 'pathTextureA');
+                myImage.setRotation(Phaser.Math.Between(0, 6));
+                groupA.add(myImage);
+                //thing = thing + thing;
+            }
+
+            
+
+            for (var i = 0; i < pointsb.length; i++)
+            {
+                var p = pointsb[i];
+    
+                var myImage = _this.add.image(p.x,p.y, 'pathTextureB');
+                myImage.setRotation(Phaser.Math.Between(0, 6));
+                groupA.add(myImage);
+                //thing = thing + thing;
+            }
+            
+
+            //points = 
+        }
 
         this.input.on('pointerdown', function(pointer, gameObjects)
         {
@@ -279,8 +415,9 @@ var MapCreation = new Phaser.Class({
                 }
     
                 var vec = curve.addPoint(pointer.x, pointer.y);
-
+                makePath(curve);
                 createPointHandle(vec);
+
 
                 
 
@@ -306,7 +443,7 @@ var MapCreation = new Phaser.Class({
         // point we will automatically save this map screenshot when the user is saving it.
         window.onkeydown = function (e)
         {
-            console.log(e.keyCode);
+            //console.log(e.keyCode);
              if(e.keyCode == 80)
             {
                 _this.renderer.snapshot(function (image) 
@@ -400,6 +537,11 @@ var MapCreation = new Phaser.Class({
 
 
             //console.log(gameObject);
+            if((gameObject.name == 'handleBob') || (gameObject.name == 'startingPoint'))
+            {
+                makePath(curve);
+            }
+
             if(gameObject.data != null)
                 gameObject.data.get('vector').set(gameObject.x, gameObject.y);
             
@@ -413,10 +555,15 @@ var MapCreation = new Phaser.Class({
                 //gameObject.setFrame(0);
 
         });
-        
 
+
+        
+        //groupA
         points = curve.getDistancePoints(100);
         graphics = this.add.graphics();
+
+
+
         //console.log(curve);
         //console.log(path);
 
@@ -427,24 +574,28 @@ var MapCreation = new Phaser.Class({
             duration: 5000,
             yoyo: false,
             repeat: -1
-        }); 
+        });
+
     },
 
     update: function()
     {
-        points = curve.getDistancePoints(32);
+        //console.log(curve);
+        //points = curve.getDistancePoints(40);
         graphics.clear();
         //graphics.getPoints(100);
 
         //  Draw the curve through the points
-        graphics.lineStyle(50, 0xFFE599, 1);
+        
+        //graphics.lineStyle(50, 0xFFE599, 1);
+        
         //console.log(graphics);
         //graphics.fillCircleShape(point0);
 
         curve.draw(graphics, 100);
         //curve2.draw(graphics);
 
-        //  Draw t
+        // Draw t
         //curve.getPoints(100);
         curve.getPoint(path.t, path.vec);
         //console.log(curve.getPoint(path.t, path.vec));
@@ -454,11 +605,7 @@ var MapCreation = new Phaser.Class({
         graphics.fillCircle(path.vec.x, path.vec.y, 10);
 
         graphics.fillStyle(0xbf47ff, 1);
-        for (var i = 0; i < points.length; i++)
-        {
-            var p = points[i];
-            graphics.fillCircle(p.x,p.y, 5);
-        }
+
 
         //graphics.moveTo(curve2);
     }
