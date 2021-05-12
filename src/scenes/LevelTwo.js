@@ -1,20 +1,34 @@
 //import { MainMenuButton } from '../script/MainMenuButton';
+var fireTowers;
+var waterTowers;
+var windTowers;
+var iceTowers;
+var elecTowers;
+var curBut ='None';
 
-class LevelTwo extends Phaser.Scene{
-    constructor(){
-        super('LevelTwo');
-    }
-    preload() {
+var LevelTwo = new Phaser.Class({
+    Extends: Phaser.Scene,
+    initialize:
+
+    function LevelTwo ()
+    {
+        Phaser.Scene.call(this, { key: 'LevelTwo' });
+    },
+    
+    preload: function() {
         this.load.image('imgMainMenuButton', 'src/assets/imgMainMenuButton.png');
-    }
-    create() {
+        this.load.image('imgFireTower', 'src/assets/towers/fireTower.png');
+        this.load.image('imgWaterTower', 'src/assets/towers/waterTower.png');
+        this.load.image('imgWindTower', 'src/assets/towers/windTower.png');
+        this.load.image('imgIceTower', 'src/assets/towers/iceTower.png');
+        this.load.image('imgElecTower', 'src/assets/towers/elecTower.png');
+    },
+
+    create: function() {
         this.add.text(20, 20, "Level Two");
         this.add.text(20, 35, "curBut: ");
         var currentBtn = this.add.text(100, 35, "None");
-        var curBut ='';
 
-        //let imgMainMenuButton = new MainMenuButton({scene: this, x: 100, y: 100})
-        //var mainMenuButton = new MainMenuButton({scene: this});
         var mainMenuButton = this.add.sprite(1500, 50, 'imgMainMenuButton').setInteractive()
         .on('pointerover', () => mainMenuButton.setTint(0xC0C0C0))
         .on('pointerout', () => mainMenuButton.clearTint())
@@ -78,6 +92,17 @@ class LevelTwo extends Phaser.Scene{
             currentBtn.setText('iceTower');
         });
 
+        var noneBtn = this.add.rectangle(1000, 0, 150, 35, 0x8AFFFD);
+        var noneBtnTxt = this.add.text(1000, 0, "None",{font: '18pt Arial', fill: '0xffffff'});
+        noneBtnTxt.setOrigin(0.5,0.5);
+        noneBtn.setStrokeStyle(5,0xff0000);
+        noneBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
+        noneBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0x8AFFFD, 1);});
+        noneBtn.setInteractive().on('pointerdown', function(event) {
+            curBut = 'None';
+            currentBtn.setText('None');
+        });
+
         towerContainer.add(fireTowerBtn);
         towerContainer.add(fireBtnTxt);
         towerContainer.add(waterTowerBtn);
@@ -88,42 +113,192 @@ class LevelTwo extends Phaser.Scene{
         towerContainer.add(elecBtnTxt);
         towerContainer.add(iceTowerBtn);
         towerContainer.add(iceBtnTxt);
+        towerContainer.add(noneBtn);
+        towerContainer.add(noneBtnTxt);
+
+        fireTowers = this.add.group({classType: FireTower, runChildUpdate: true});
+        waterTowers = this.add.group({classType: WaterTower, runChildUpdate: true});
+        windTowers = this.add.group({classType: WindTower, runChildUpdate: true});
+        iceTowers = this.add.group({classType: IceTower, runChildUpdate: true});
+        elecTowers = this.add.group({classType: ElecTower, runChildUpdate: true});
+        var fireCursor = this.add.image(0, 0, 'imgFireTower').setVisible(false);
+        var waterCursor = this.add.image(0, 0, 'imgWaterTower').setVisible(false);
+        var windCursor = this.add.image(0, 0, 'imgWindTower').setVisible(false);
+        var iceCursor = this.add.image(0, 0, 'imgIceTower').setVisible(false);
+        var elecCursor = this.add.image(0, 0, 'imgElecTower').setVisible(false);
+
 
         this.input.on('pointerdown', function (pointer, gameObjects) {
-            if(curBut == 'fireTower') {
-                if(gameObjects.length > 0) {
-                    return;
-                }
-                this.scene.add.rectangle(pointer.x, pointer.y, 50, 50, 0xFF0000).setInteractive();
+            if(curBut == 'None' || gameObjects.length > 0) {
+                return;
             }
-            if(curBut == 'waterTower') {
-                if(gameObjects.length > 0) {
-                    return;
-                }
-                this.scene.add.rectangle(pointer.x, pointer.y, 50, 50, 0x00AAFF).setInteractive();
+            else if (curBut == 'fireTower') {
+                var fireTower = fireTowers.get();
+                fireTower.place(pointer.y, pointer.x);
             }
-            if(curBut == 'windTower') {
-                if(gameObjects.length > 0) {
-                    return;
-                }
-                this.scene.add.rectangle(pointer.x, pointer.y, 50, 50, 0x00C40C).setInteractive();
+            else if (curBut == 'waterTower') {
+                var waterTower = waterTowers.get();
+                waterTower.place(pointer.y, pointer.x);
             }
-            if(curBut == 'elecTower') {
-                if(gameObjects.length > 0) {
-                    return;
-                }
-                this.scene.add.rectangle(pointer.x, pointer.y, 50, 50, 0xFFD800).setInteractive();
+            else if (curBut == 'windTower') {
+                var windTower = windTowers.get();
+                windTower.place(pointer.y, pointer.x);
             }
-            if(curBut == 'iceTower') {
-                if(gameObjects.length > 0) {
-                    return;
-                }
-                this.scene.add.rectangle(pointer.x, pointer.y, 50, 50, 0x8AFFFD).setInteractive();
+            else if (curBut == 'iceTower') {
+                var iceTower = iceTowers.get();
+                iceTower.place(pointer.y, pointer.x);
+            }
+            else if (curBut == 'elecTower') {
+                var elecTower = elecTowers.get();
+                elecTower.place(pointer.y, pointer.x);
             }
         });
-    
-        
+
+        this.input.on('pointermove', function (pointer) {
+            if (curBut == 'fireTower') {
+                fireCursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y);
+                waterCursor.setVisible(false);
+                windCursor.setVisible(false);
+                iceCursor.setVisible(false);
+                elecCursor.setVisible(false);
+            }
+            else if (curBut == 'waterTower') {
+                waterCursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y);
+                fireCursor.setVisible(false);
+                windCursor.setVisible(false);
+                iceCursor.setVisible(false);
+                elecCursor.setVisible(false);
+            }
+            else if (curBut == 'windTower') {
+                windCursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y);
+                fireCursor.setVisible(false);
+                waterCursor.setVisible(false);
+                iceCursor.setVisible(false);
+                elecCursor.setVisible(false);
+            }
+            else if (curBut == 'iceTower') {
+                iceCursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y);
+                fireCursor.setVisible(false);
+                waterCursor.setVisible(false);
+                windCursor.setVisible(false);
+                elecCursor.setVisible(false);
+            }
+            else if (curBut == 'elecTower') {
+                elecCursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y);
+                fireCursor.setVisible(false);
+                waterCursor.setVisible(false);
+                windCursor.setVisible(false);
+            }
+            else {
+                fireCursor.setVisible(false);
+                waterCursor.setVisible(false);
+                windCursor.setVisible(false);
+                iceCursor.setVisible(false);
+                elecCursor.setVisible(false);
+            }
+        })
+    },
+
+    update: function() {
+
+    },
+
+    // placeTower: function(pointer, gameObjects) {
+    //     var fireTower = fireTowers.get();
+    //     if (curBut == 'None') {
+    //         return;
+    //     }
+    //     else if(curBut == 'fireTower') {
+    //         if(gameObjects.length > 0) {
+    //             return;
+    //         }
+    //         this.scene.add.rectangle(pointer.x, pointer.y, 50, 50, 0xFF0000).setInteractive();
+    //         fireTower.place(pointer.y, pointer.x);
+    //     }
+    // }
+})
+
+var FireTower = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function FireTower (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setTexture('imgFireTower');
+        this.setPosition(x, y);
+    },
+
+    place: function(i, j) {
+        this.y = i;
+        this.x = j;
     }
-    update(){
+});
+
+var WaterTower = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function FireTower (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setTexture('imgWaterTower');
+        this.setPosition(x, y);
+    },
+
+    place: function(i, j) {
+        this.y = i;
+        this.x = j;
     }
-}
+});
+
+var WindTower = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function FireTower (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setTexture('imgWindTower');
+        this.setPosition(x, y);
+    },
+
+    place: function(i, j) {
+        this.y = i;
+        this.x = j;
+    }
+});
+
+var IceTower = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function FireTower (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setTexture('imgIceTower');
+        this.setPosition(x, y);
+    },
+
+    place: function(i, j) {
+        this.y = i;
+        this.x = j;
+    }
+});
+
+var ElecTower = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function FireTower (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setTexture('imgElecTower');
+        this.setPosition(x, y);
+    },
+
+    place: function(i, j) {
+        this.y = i;
+        this.x = j;
+    }
+});
