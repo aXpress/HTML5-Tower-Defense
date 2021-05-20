@@ -51,7 +51,7 @@ module.exports = {
           if(err) {console.log('error', err);}
           else
           {
-            res.status(201).json(place);
+            res.status(201).json(r);
           }
         });
       });

@@ -16,14 +16,23 @@ var MapCreation = new Phaser.Class({
         this.load.image('imgMainMenuButton', 'src/assets/imgMainMenuButton.png');
         this.load.image('pathTextureA', 'src/assets/Map/path_base.png');
         this.load.image('pathTextureB', 'src/assets/Map/path_top.png');
+        this.load.image('rock1', 'src/assets/Map/rock_1.png');
+        this.load.image('rock2', 'src/assets/Map/rock_2.png');
+        this.load.image('rock3', 'src/assets/Map/rock_3.png');
+        this.load.image('rock4', 'src/assets/Map/rock_4.png');
+        this.load.image('rock5', 'src/assets/Map/rock_5.png');
+        this.load.image('tree1', 'src/assets/Map/tree_1.png');
+        this.load.image('tree2', 'src/assets/Map/tree_2.png');
+        this.load.image('tree3', 'src/assets/Map/tree_3.png');
+
     },
 
     create: function ()
     {
         //var game = new Phaser.Game(800,600, Phaser.AUTO);
         var size = 50;
-        var rockSize = 100;
-        var treeSize = 100;
+        var rockSize = 3;
+        var treeSize = 1;
         var points;
         var mapObjects = {};
         var handles;
@@ -32,12 +41,17 @@ var MapCreation = new Phaser.Class({
         var width = this.scale.width;
         var butWidth = 75;
         var butHeight = 35;
-        var message = "Drag starting node to desired location, then click 'Path' to start placing nodes.";
-        var message2 = "If you want to delete a node, hold down the 'X' button and click on a node.";
+        //var message = "Drag starting node to desired location, then click 'Path' to start placing nodes.";
+        //var message2 = "If you want to delete a node, hold down the 'X' button and click on a node.";
         var delKey = this.input.keyboard.addKey('X');
         var picKey = this.input.keyboard.addKey('P');
         var curBut = '';
+        var curRock = 1;
+        var curTree = 1;
+        var curCursor;
         var levelName = 'My first level';
+        var trees = [];
+        var rocks = [];
         
         
 
@@ -45,9 +59,29 @@ var MapCreation = new Phaser.Class({
 
         path = { t: 0, vec: new Phaser.Math.Vector2() };
 
-        this.add.text(20, 20, message);
-        this.add.text(20, 50, message2);
+        this.groupUI = this.add.group();
+        var groupUI = this.groupUI;
 
+        var message = this.add.text(20, 20, "");
+        var message2 = this.add.text(20, 50, "");
+        var message3 = this.add.text(20, 80, "");
+
+        var messageTop = function (mesTop){
+            message.text = mesTop;
+        }
+
+        var messageBot = function (mesBot){
+            message2.text = mesBot;
+        }
+
+        var messageExt = function (mesExt){
+            message3.text = mesExt;
+        }
+
+        messageTop("Welcome to the Map creator. Build paths, rocks, and trees to your hearts content.");
+        messageBot("A starting node has been placed for you. Drag it to where you want bad guys to spawn.");
+        messageExt("Notice that it is locked to the edges. Bad guys must come and leave from the edges of the map.");
+        
         // main menu button.
         var mainMenuButton = this.add.sprite(1500, 50, 'imgMainMenuButton');
         mainMenuButton.setInteractive().on('pointerover', function(event) {this.setTint(0xC0C0C0);});
@@ -69,6 +103,9 @@ var MapCreation = new Phaser.Class({
             curBut = 'path';
             changeActive(this.parentContainer.list);
             this.setStrokeStyle(5,0xffbb00);
+            messageTop("Drag starting node to desired location, then click 'Path' to start placing nodes.");
+            messageBot("If you want to delete a node, hold down the 'X' button and click on a node.");
+            messageExt("");
             });
 
         // Rock menu button
@@ -76,12 +113,16 @@ var MapCreation = new Phaser.Class({
         var rockText = this.add.text(0, 50, "Rock",{font: '18pt Arial', fill: '0xffffff'});
         rockText.setOrigin(0.5,0.5);
         rockButton.setStrokeStyle(5,0xff0000);
+        rockButton.name = 'button';
         rockButton.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
         rockButton.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
         rockButton.setInteractive().on('pointerdown', function(event) {
             curBut = 'rock';
             changeActive(this.parentContainer.list);
             this.setStrokeStyle(5,0xffbb00);
+            messageTop("This is the rock creation button. Holding x while clicking a rock will delete it.");
+            messageBot("Q and E keys will change the rock. A and D keys will change the size.");
+            messageExt("");
             });
 
         // Tree menu Button
@@ -89,15 +130,19 @@ var MapCreation = new Phaser.Class({
         var treeText = this.add.text(0, 100, "Tree",{font: '18pt Arial', fill: '0xffffff'});
         treeText.setOrigin(0.5,0.5);
         treeButton.setStrokeStyle(5,0xff0000);
+        treeButton.name = 'button';
         treeButton.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
         treeButton.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
         treeButton.setInteractive().on('pointerdown', function(event) {
             curBut = 'tree';
             changeActive(this.parentContainer.list);
             this.setStrokeStyle(5,0xffbb00);
+            messageTop("This is the tree creation button. Holding x while clicking a tree will delete it.");
+            messageBot("Q and E keys will change the tree. A and D keys will change the size.");
+            messageExt("");
             });
 
-        // Water menu Button
+/*         // Water menu Button
         var waterButton = this.add.rectangle(0, 150, butWidth, butHeight, 0xffffff);
         var waterText = this.add.text(0, 150, "Water",{font: '18pt Arial', fill: '0xffffff'});
         waterText.setOrigin(0.5,0.5);
@@ -108,11 +153,11 @@ var MapCreation = new Phaser.Class({
             curBut = 'water';
             changeActive(this.parentContainer.list);
             this.setStrokeStyle(5,0xffbb00);
-            });
+            }); */
 
         // Submit menu Button
-        var submitButton = this.add.rectangle(0, 200, butWidth, butHeight, 0xffffff);
-        var submitText = this.add.text(0, 200, "submit",{font: '18pt Arial', fill: '0xffffff'});
+        var submitButton = this.add.rectangle(0, 150, butWidth, butHeight, 0xffffff);
+        var submitText = this.add.text(0, 150, "submit",{font: '18pt Arial', fill: '0xffffff'});
         submitText.setOrigin(0.5,0.5);
         submitButton.setStrokeStyle(5,0xff0000);
         submitButton.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
@@ -124,9 +169,49 @@ var MapCreation = new Phaser.Class({
             this.setStrokeStyle(5,0xffbb00);
 
             points = curve.getDistancePoints(32);
+            var checker = curve.points[curve.points.length - 1];
+
+            if(points.length < 3)
+            {
+                messageTop("You must build a path before you can submit the map!");
+                messageBot("");
+                messageExt("");
+                return;
+            }
+            if((checker.x != 0) && (checker.x != 1600) && (checker.y != 0) && (checker.y != 900))
+            {
+                messageTop("Your path must end on an edge!");
+                messageBot("");
+                messageExt("");
+                return;
+            }
+
+            messageTop("");
+            messageBot("");
+            messageExt("");
+
+            /* groupUI.setVisible(false);
+            mainMenuButton.setVisible(false);
+            butContainer.setVisible(false);
+            
+            var myImage = _this.renderer.snapshot(function (image) 
+                {
+                    image.style.width = '400px';
+                    image.style.height = '225px';
+                    
+                    console.log(this);
+                    console.log(_this);
+                    window.open(this.canvas.toDataURL());
+                });
+
+            console.log(myImage); */
+
             mapObjects.path = [];
             mapObjects.path.push(points);
-
+            mapObjects.trees = trees;
+            mapObjects.rocks = rocks;
+            //mapObjects.image = myImage;
+            //console.log(mapObjects);
 
             var xhr = new XMLHttpRequest();
             var url = "http://localhost:8080/test/" + JSON.stringify(mapObjects);
@@ -139,7 +224,10 @@ var MapCreation = new Phaser.Class({
                 {
                     response = xhr.responseText;
                     response = JSON.parse(response);
-                    console.log(response);
+                    //console.log(response);
+                    messageTop("You have successfully created a map!");
+                    messageBot("You're map key is: ");
+                    messageExt(response);
                     //var stats = response;
                     //displayData(stats);
                 }
@@ -147,6 +235,8 @@ var MapCreation = new Phaser.Class({
                 {
                     console.log('Error in network request: ' + xhr.statusText);
                 }
+
+                mainMenuButton.setVisible(true);
             });
             //console.log(points);
                 
@@ -160,13 +250,13 @@ var MapCreation = new Phaser.Class({
         butContainer.add(rockText);
         butContainer.add(treeButton);
         butContainer.add(treeText);
-        butContainer.add(waterButton);
-        butContainer.add(waterText);
+        //butContainer.add(waterButton);
+        //butContainer.add(waterText);
         butContainer.add(submitButton);
         butContainer.add(submitText);
 
         // grass layer.
-        this.add.rectangle(width/2, height/2, width, height, 0x032405).setDepth(-1);
+        this.add.rectangle(width/2, height/2, width, height, 0x032405).setDepth(-4);
     
 
 
@@ -192,87 +282,52 @@ var MapCreation = new Phaser.Class({
 
         var _this = this;
         var startingPoint = null;
-        //var data = [ 0,20, 120,50, 200,100];
 
         var makeTree = function (x, y)
         {
-            var tree = _this.add.circle(x, y, treeSize, 0x175c10).setInteractive();
-            var p = {};
-            p.x = x;
-            p.y = y;
-            mapObjects.trees = [];
-            mapObjects.trees.push(p);
-
-            
-            tree.setStrokeStyle(3, 0x10360c);
-            _this.input.setDraggable(tree);
-
+            if(curTree == 1)
+            {
+                var myImage = _this.add.image(x,y, 'tree1').setScale(treeSize).setInteractive().setDepth(-1);
+            }
+            else if(curTree == 2)
+            {
+                var myImage = _this.add.image(x,y, 'tree2').setScale(treeSize).setInteractive().setDepth(-1);
+            }
+            else if(curTree == 3)
+            {
+                var myImage = _this.add.image(x,y, 'tree3').setScale(treeSize).setInteractive().setDepth(-1);
+            }
+            myImage.name = 'tree';
+            trees.push(myImage);
         }
 
+
+        
         var makeRock = function (x, y)
-        {
-            var p = {};
-            p.x = x;
-            p.y = y;
-            mapObjects.rocks = [];
-            mapObjects.rocks.push(p);
-            //var pieces = Phaser.Math.Between(3, 6);
-            var rSize = rockSize / 2;
-
-            var top = 0;//p.y - rSize;
-            var bot = rockSize;//p.y + rSize;
-            var left = 0;//p.x - rSize;
-            var right = rockSize;//p.x + rSize;
-            var data = [];
-
-            var x;
-            var y;
-
-            // top edge
-            x = rSize - Phaser.Math.Between(0, rSize);
-            y = top + Phaser.Math.Between(-5, 5);
-            data.push(x);
-            data.push(y);
-            x = rSize + Phaser.Math.Between(0, rSize);
-            y = top + Phaser.Math.Between(-5, 5);
-            data.push(x);
-            data.push(y);
-
-            // right edge
-            x = right + Phaser.Math.Between(-5, 5);
-            y = rSize - Phaser.Math.Between(0, rSize);
-            data.push(x);
-            data.push(y);
-            y = rSize + Phaser.Math.Between(0, rSize);
-            x = right + Phaser.Math.Between(-5, 5);
-            data.push(x);
-            data.push(y);
-
-            // bottom edge
-            x = rSize + Phaser.Math.Between(0, rSize);
-            y = bot + Phaser.Math.Between(-5, 5);
-            data.push(x);
-            data.push(y);
-            x = rSize - Phaser.Math.Between(0, rSize);
-            y = bot + Phaser.Math.Between(-5, 5);
-            data.push(x);
-            data.push(y);
-
-            // left edge
-            x = left + Phaser.Math.Between(-5, 5);
-            y = rSize + Phaser.Math.Between(0, rSize);
-            data.push(x);
-            data.push(y);
-            x = left + Phaser.Math.Between(-5, 5);
-            y = rSize - Phaser.Math.Between(0, rSize);
-            data.push(x);
-            data.push(y);
-
-            var r1 = _this.add.polygon(p.x, p.y, data, 0xbdbdbd).setInteractive();
-            _this.input.setDraggable(r1);
-
-            r1.setStrokeStyle(3, 0x636363);
-        }
+        { 
+            if(curRock == 1)
+            {
+                var myImage = _this.add.image(x,y, 'rock1').setScale(rockSize).setInteractive().setDepth(-2);
+            }
+            else if(curRock == 2)
+            {
+                var myImage = _this.add.image(x,y, 'rock2').setScale(rockSize).setInteractive().setDepth(-2);
+            }
+            else if(curRock == 3)
+            {
+                var myImage = _this.add.image(x,y, 'rock3').setScale(rockSize).setInteractive().setDepth(-2);
+            }
+            else if(curRock == 4)
+            {
+                var myImage = _this.add.image(x,y, 'rock4').setScale(rockSize).setInteractive().setDepth(-2);
+            }
+            else if(curRock == 5)
+            {
+                var myImage = _this.add.image(x,y, 'rock5').setScale(rockSize).setInteractive().setDepth(-2);
+            }
+            myImage.name = 'rock';
+            rocks.push(myImage);
+        } 
 
 
         var createPointHandle = function (point)
@@ -325,6 +380,8 @@ var MapCreation = new Phaser.Class({
                     });
                 }
             }, _this);
+
+            groupUI.add(handle);
         };
 
         var removePointHandle = function (gameObjects)
@@ -361,50 +418,117 @@ var MapCreation = new Phaser.Class({
             {
                 var p = points[i];
     
-                var myImage = _this.add.image(p.x,p.y, 'pathTextureA');
+                var myImage = _this.add.image(p.x,p.y, 'pathTextureA').setDepth(-3);
                 myImage.setRotation(Phaser.Math.Between(0, 6));
                 groupA.add(myImage);
                 //thing = thing + thing;
             }
 
             
-
             for (var i = 0; i < pointsb.length; i++)
             {
                 var p = pointsb[i];
     
-                var myImage = _this.add.image(p.x,p.y, 'pathTextureB');
+                var myImage = _this.add.image(p.x,p.y, 'pathTextureB').setDepth(-3);
                 myImage.setRotation(Phaser.Math.Between(0, 6));
                 groupA.add(myImage);
                 //thing = thing + thing;
             }
-            
-
-            //points = 
         }
+
+        this.groupRock = this.add.group();
+        var groupRock = this.groupRock;
+
+        this.groupTree = this.add.group();
+        var groupTree = this.groupTree;
+
+        var tree1Cursor = this.add.image(0,0, 'tree1').setVisible(false).setScale(treeSize);
+        var tree2Cursor = this.add.image(0,0, 'tree2').setVisible(false).setScale(treeSize);
+        var tree3Cursor = this.add.image(0,0, 'tree3').setVisible(false).setScale(treeSize);
+
+        groupTree.addMultiple([tree1Cursor, tree2Cursor, tree3Cursor]);
+
+        var rock1Cursor = this.add.image(0,0, 'rock1').setVisible(false).setScale(rockSize);
+        var rock2Cursor = this.add.image(0,0, 'rock2').setVisible(false).setScale(rockSize);
+        var rock3Cursor = this.add.image(0,0, 'rock3').setVisible(false).setScale(rockSize);
+        var rock4Cursor = this.add.image(0,0, 'rock4').setVisible(false).setScale(rockSize);
+        var rock5Cursor = this.add.image(0,0, 'rock5').setVisible(false).setScale(rockSize);
+
+        groupRock.addMultiple([rock1Cursor, rock2Cursor, rock3Cursor, rock4Cursor, rock5Cursor]);
+
+        this.input.on('pointermove', function (pointer) {
+            groupRock.setVisible(false);
+            groupTree.setVisible(false);
+
+            if (curBut == 'rock')
+            {
+                if(curRock == 1){
+                    rock1Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                }
+                else if(curRock == 2){
+                    rock2Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                }
+                else if(curRock == 3){
+                    rock3Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                }
+                else if(curRock == 4){
+                    rock4Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                }
+                else if(curRock == 5){
+                    rock5Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                }
+            }
+            else if (curBut == 'tree')
+            {
+                if(curTree == 1){
+                    tree1Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                }
+                else if(curTree == 2){
+                    tree2Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                }
+                else if(curTree == 3){
+                    tree3Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                }
+            } 
+        })
 
         this.input.on('pointerdown', function(pointer, gameObjects)
         {
             if (delKey.isDown)
             {
                 if(gameObjects.length == 0)
+                {
                     return;
-                
-                removePointHandle(gameObjects);
-            }
+                }
+                else if((curBut == 'rock') && (gameObjects[0].name == 'rock'))
+                {
+                    gameObjects[0].destroy();
+                    return;
+                }
+                else if((curBut == 'tree') && (gameObjects[0].name == 'tree'))
+                {
+                    gameObjects[0].destroy();
+                    return;
+                }
+                else if(curBut == 'path')
+                {
+                    removePointHandle(gameObjects);
+                    return
+                }
+            } 
             else if (curBut == 'rock')
             {
-                if(gameObjects.length > 0)
+                if(gameObjects.length > 0 && gameObjects[0].name == 'button')
                     return;
-
-                makeRock(pointer.x, pointer.y);
+                else
+                    makeRock(pointer.x, pointer.y);
             }
             else if (curBut == 'tree')
             {
-                if(gameObjects.length > 0)
+                if(gameObjects.length > 0 && gameObjects[0].name == 'button')
                     return;
-
-                makeTree(pointer.x, pointer.y);
+                else
+                    makeTree(pointer.x, pointer.y);
             }
             else if (curBut == 'path')
             {
@@ -443,8 +567,10 @@ var MapCreation = new Phaser.Class({
         // point we will automatically save this map screenshot when the user is saving it.
         window.onkeydown = function (e)
         {
+            var pointer = _this.input.mousePointer;
+            //console.log(pointer);
             //console.log(e.keyCode);
-             if(e.keyCode == 80)
+            if(e.keyCode == 80)
             {
                 _this.renderer.snapshot(function (image) 
                 {
@@ -455,6 +581,247 @@ var MapCreation = new Phaser.Class({
                     console.log('snap!');
                     document.body.appendChild(image);
                 })
+            }
+            if(e.keyCode == 81) // Q key
+            {
+                groupRock.setVisible(false);
+                groupTree.setVisible(false);
+
+                if (curBut == 'rock')
+                {
+                    if (curRock == 1)
+                        curRock = 5;
+                    else
+                        curRock--;
+                    
+                    if (curBut == 'rock')
+                    {    
+                        if(curRock == 1){
+                            rock1Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                            curCursor = rock1Cursor;
+                        }
+                        else if(curRock == 2){
+                            rock2Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                            curCursor = rock2Cursor;
+                        }
+                        else if(curRock == 3){
+                            rock3Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                            curCursor = rock3Cursor;
+                        }
+                        else if(curRock == 4){
+                            rock4Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                            curCursor = rock4Cursor;
+                        }
+                        else if(curRock == 5){
+                            rock5Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                            curCursor = rock5Cursor;
+                        }
+                    }
+                }
+                else if(curBut == 'tree')
+                {
+                    if(curTree == 1)
+                        curTree = 3;
+                    else
+                        curTree--;
+                    if(curBut == 'tree')
+                    {
+                        if(curTree == 1){
+                            tree1Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                            curCursor = tree1Cursor;
+                        }
+                        else if(curTree == 2){
+                            tree2Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                            curCursor = tree2Cursor;
+                        }
+                        else if(curTree == 3){
+                            tree3Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                            curCursor = tree3Cursor;
+                        }
+                    }
+                }
+            }
+            if(e.keyCode == 69) // E key
+            {
+                groupRock.setVisible(false);
+                groupTree.setVisible(false);
+
+                if (curBut == 'rock')
+                {
+                    if (curRock == 5)
+                        curRock = 1;
+                    else
+                        curRock++;
+                    if(curRock == 1)
+                    {
+                        rock1Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock1Cursor;
+                    }
+                    else if(curRock == 2){
+                        rock2Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock2Cursor;
+                    }
+                    else if(curRock == 3){
+                        rock3Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock3Cursor;
+                    }
+                    else if(curRock == 4){
+                        rock4Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock4Cursor;
+                    }
+                    else if(curRock == 5){
+                        rock5Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock5Cursor;
+                    }
+                }
+                else if (curBut == 'tree')
+                {
+                    if (curTree == 3)
+                        curTree = 1;
+                    else
+                        curTree++;
+                    if(curTree == 1)
+                    {
+                        tree1Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                        curCursor = tree1Cursor;
+                    }
+                    else if(curTree == 2){
+                        tree2Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                        curCursor = tree2Cursor;
+                    }
+                    else if(curTree == 3){
+                        tree3Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                        curCursor = tree3Cursor;
+                    }
+                }
+            }
+            if(e.keyCode == 65) // A key 
+            {
+                groupRock.setVisible(false);
+                groupTree.setVisible(false);
+
+                if(curBut == 'rock')
+                {
+                    if (rockSize == 0.5)
+                    {
+                        // do nothing or send a message to user.
+                    }
+                    else
+                    {
+                        rockSize = rockSize - 0.5;
+                    }
+
+                    if(curRock == 1)
+                    {
+                        rock1Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock1Cursor;
+                    }
+                    else if(curRock == 2){
+                        rock2Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock2Cursor;
+                    }
+                    else if(curRock == 3){
+                        rock3Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock3Cursor;
+                    }
+                    else if(curRock == 4){
+                        rock4Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock4Cursor;
+                    }
+                    else if(curRock == 5){
+                        rock5Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock5Cursor;
+                    }
+                }
+                else if (curBut == 'tree')
+                {
+                    if (treeSize == 0.25)
+                    {
+                        // do nothing yet.
+                    }
+                    else
+                    {
+                        treeSize = treeSize - 0.25;
+                    }
+
+                    if(curTree == 1)
+                    {
+                        tree1Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                        curCursor = tree1Cursor;
+                    }
+                    else if(curTree == 2){
+                        tree2Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                        curCursor = tree2Cursor;
+                    }
+                    else if(curTree == 3){
+                        tree3Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                        curCursor = tree3Cursor;
+                    }
+                }
+            }
+            if(e.keyCode == 68) // D key
+            {
+                groupRock.setVisible(false);
+                groupTree.setVisible(false);
+
+                if(curBut == 'rock')
+                {
+                    if (rockSize == 3.5)
+                    {
+                        // do nothing or send a message to user.
+                    }
+                    else
+                    {
+                        rockSize = rockSize + 0.5;
+                    }
+                    
+                    if(curRock == 1)
+                    {
+                        rock1Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock1Cursor;
+                    }
+                    else if(curRock == 2){
+                        rock2Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock2Cursor;
+                    }
+                    else if(curRock == 3){
+                        rock3Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock3Cursor;
+                    }
+                    else if(curRock == 4){
+                        rock4Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock4Cursor;
+                    }
+                    else if(curRock == 5){
+                        rock5Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(rockSize);
+                        curCursor = rock5Cursor;
+                    }
+                }
+                else if (curBut == 'tree')
+                {
+                    if (treeSize == 1)
+                    {
+                        // do nothing yet.
+                    }
+                    else
+                    {
+                        treeSize = treeSize + 0.25;
+                    }
+
+                    if(curTree == 1)
+                    {
+                        tree1Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                        curCursor = tree1Cursor;
+                    }
+                    else if(curTree == 2){
+                        tree2Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                        curCursor = tree2Cursor;
+                    }
+                    else if(curTree == 3){
+                        tree3Cursor.setVisible(true).setAlpha(0.5).setPosition(pointer.x, pointer.y).setScale(treeSize);
+                        curCursor = tree3Cursor;
+                    }
+                }
             }
         };
 
@@ -558,14 +925,8 @@ var MapCreation = new Phaser.Class({
 
 
         
-        //groupA
         points = curve.getDistancePoints(100);
         graphics = this.add.graphics();
-
-
-
-        //console.log(curve);
-        //console.log(path);
 
         var tween = this.tweens.add({
             targets: path,
@@ -580,33 +941,14 @@ var MapCreation = new Phaser.Class({
 
     update: function()
     {
-        //console.log(curve);
-        //points = curve.getDistancePoints(40);
+
         graphics.clear();
-        //graphics.getPoints(100);
 
-        //  Draw the curve through the points
-        
-        //graphics.lineStyle(50, 0xFFE599, 1);
-        
-        //console.log(graphics);
-        //graphics.fillCircleShape(point0);
-
-        curve.draw(graphics, 100);
-        //curve2.draw(graphics);
-
-        // Draw t
-        //curve.getPoints(100);
+        //curve.draw(graphics, 100);
         curve.getPoint(path.t, path.vec);
-        //console.log(curve.getPoint(path.t, path.vec));
 
         graphics.fillStyle(0x000000, 1);
-        //graphics.fillCircle(path.vec.x, path.vec.y, 10);
         graphics.fillCircle(path.vec.x, path.vec.y, 10);
-
         graphics.fillStyle(0xbf47ff, 1);
-
-
-        //graphics.moveTo(curve2);
     }
 });
