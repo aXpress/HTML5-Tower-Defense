@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 //import { MainMenuButton } from '../script/MainMenuButton';
 var fireTowers;
 var waterTowers;
@@ -12,7 +10,6 @@ var enemies;
 
 var ENEMY_SPEED = 100;
 
->>>>>>> Stashed changes
 var LevelTwo = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -22,16 +19,6 @@ var LevelTwo = new Phaser.Class({
         function LevelTwo() {
         Phaser.Scene.call(this, { key: 'LevelTwo' });
     },
-<<<<<<< Updated upstream
-
-    preload: function ()
-    {
-    },
-
-    create: function ()
-    {
-        this.add.text(20, 20, "Level Two");
-=======
 
     preload: function() {
         this.load.image('imgMainMenuButton', 'src/assets/imgMainMenuButton.png');
@@ -299,17 +286,13 @@ var IceTower = new Phaser.Class({
         this.setTexture('imgIceTower');
         this.setPosition(x, y);
     },
->>>>>>> Stashed changes
 
-        var mainMenuButton = this.add.sprite(1500, 50, 'imgMainMenuButton');
-        mainMenuButton.setInteractive().on('pointerover', function(event) {this.setTint(0xC0C0C0);});
-        mainMenuButton.setInteractive().on('pointerout', function(event) {this.clearTint();});
-        mainMenuButton.setInteractive().on('pointerdown', function() {this.scene.start('MainMenu')}, this);
+    place: function(i, j) {
+        this.y = i;
+        this.x = j;
     }
-
-<<<<<<< Updated upstream
 });
-=======
+
 var ElecTower = new Phaser.Class({
     Extends: Phaser.GameObjects.Image,
 
@@ -371,4 +354,3 @@ function getEnemy(x, y, distance) {
     }
     return false;
 }
->>>>>>> Stashed changes
