@@ -40,6 +40,22 @@ var LevelTwo = new Phaser.Class({
             .on('pointerout', () => mainMenuButton.clearTint())
             .on('pointerdown', () => this.scene.start('MainMenu'), this);
 
+        // this graphics element is only for visualization, 
+        // its not related to our path
+        var graphics = this.add.graphics();    
+    
+        // the path for our enemies
+        // parameters are the start x and y of our path
+        path = this.add.path(96, -32);
+        path.lineTo(96, 164);
+        path.lineTo(480, 164);
+        path.lineTo(480, 544);
+    
+        graphics.lineStyle(3, 0xffffff, 1);
+        // visualize the path
+        path.draw(graphics);
+        
+        
         // Tower selection container
         var towerContainer = this.add.container(400, 800);
 
@@ -132,7 +148,6 @@ var LevelTwo = new Phaser.Class({
         var windCursor = this.add.image(0, 0, 'imgWindTower').setVisible(false);
         var iceCursor = this.add.image(0, 0, 'imgIceTower').setVisible(false);
         var elecCursor = this.add.image(0, 0, 'imgElecTower').setVisible(false);
-
 
         this.input.on('pointerdown', function(pointer, gameObjects) {
             if (curBut == 'None' || gameObjects.length > 0) {
@@ -317,8 +332,8 @@ var Enemy = new Phaser.Class({
     initialize:
 
         function Enemy(scene) {
-        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'wraithEnemy', 'enemy');
-
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setTexture('wraithEnemy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.hp = 0;
     },
