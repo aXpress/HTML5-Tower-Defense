@@ -151,6 +151,8 @@ var LevelTwo = new Phaser.Class({
         var elecCursor = this.add.image(0, 0, 'imgElecTower').setVisible(false);
         enemies = this.physics.add.group({ classType: Enemy, runChildUpdate: true });
 
+        this.nextEnemy = 0;
+
         this.input.on('pointerdown', function(pointer, gameObjects) {
             if (curBut == 'None' || gameObjects.length > 0) {
                 return;
