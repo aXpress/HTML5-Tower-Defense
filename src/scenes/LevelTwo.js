@@ -46,10 +46,10 @@ var LevelTwo = new Phaser.Class({
     
         // the path for our enemies
         // parameters are the start x and y of our path
-        path = this.add.path(96, -32);
-        path.lineTo(96, 164);
-        path.lineTo(480, 164);
-        path.lineTo(480, 544);
+        path = this.add.path(0, 450);
+        path.lineTo(450, 450);
+        path.lineTo(900, 450);
+        path.lineTo(1600, 450);
     
         graphics.lineStyle(3, 0xffffff, 1);
         // visualize the path
