@@ -8,7 +8,8 @@ var curBut = 'None';
 
 var enemies;
 
-var ENEMY_SPEED = 100;
+var ENEMY_SPEED = 1/10000;
+var path;
 
 var LevelTwo = new Phaser.Class({
 
@@ -39,21 +40,6 @@ var LevelTwo = new Phaser.Class({
             .on('pointerover', () => mainMenuButton.setTint(0xC0C0C0))
             .on('pointerout', () => mainMenuButton.clearTint())
             .on('pointerdown', () => this.scene.start('MainMenu'), this);
-
-        // this graphics element is only for visualization, 
-        // its not related to our path
-        var graphics = this.add.graphics();    
-    
-        // the path for our enemies
-        // parameters are the start x and y of our path
-        path = this.add.path(0, 450);
-        path.lineTo(450, 450);
-        path.lineTo(900, 450);
-        path.lineTo(1600, 450);
-    
-        graphics.lineStyle(3, 0xffffff, 1);
-        // visualize the path
-        path.draw(graphics);
         
         
         // Tower selection container
@@ -148,6 +134,7 @@ var LevelTwo = new Phaser.Class({
         var windCursor = this.add.image(0, 0, 'imgWindTower').setVisible(false);
         var iceCursor = this.add.image(0, 0, 'imgIceTower').setVisible(false);
         var elecCursor = this.add.image(0, 0, 'imgElecTower').setVisible(false);
+        enemies = this.physics.add.group({ classType: Enemy, runChildUpdate: true });
 
         this.input.on('pointerdown', function(pointer, gameObjects) {
             if (curBut == 'None' || gameObjects.length > 0) {
@@ -208,8 +195,6 @@ var LevelTwo = new Phaser.Class({
                 elecCursor.setVisible(false);
             }
         })
-
-        enemies = this.physics.add.group({ classType: Enemy, runChildUpdate: true });
     },
 
     update: function() {
@@ -332,7 +317,7 @@ var Enemy = new Phaser.Class({
     initialize:
 
         function Enemy(scene) {
-        Phaser.GameObjects.Image.call(this, scene);
+        Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('wraithEnemy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.hp = 0;
