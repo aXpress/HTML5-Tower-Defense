@@ -42,6 +42,21 @@ var LevelTwo = new Phaser.Class({
             .on('pointerdown', () => this.scene.start('MainMenu'), this);
         
         
+        // this graphics element is only for visualization, 
+        // its not related to our path
+        var graphics = this.add.graphics();    
+        
+        // the path for our enemies
+        // parameters are the start x and y of our path
+        path = this.add.path(0, 450);
+        path.lineTo(450, 450);
+        path.lineTo(900, 450);
+        path.lineTo(1600, 450);
+        
+        graphics.lineStyle(3, 0xffffff, 1);
+        // visualize the path
+        path.draw(graphics);
+
         // Tower selection container
         var towerContainer = this.add.container(400, 800);
 
@@ -195,6 +210,7 @@ var LevelTwo = new Phaser.Class({
                 elecCursor.setVisible(false);
             }
         })
+        
     },
 
     update: function() {
