@@ -1,5 +1,4 @@
 var enemies;
-var ENEMY_SPEED = 1/100000;
 var path;
 
 var LevelThree = new Phaser.Class({
@@ -57,8 +56,8 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 2000;
-            }       
+                this.nextEnemy = time + 5000;
+            }
         }
     }
 
@@ -76,6 +75,7 @@ var Enemy = new Phaser.Class({
         this.setTexture('wraithEnemy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.hp = 0;
+        this.speed = 1/100000
 
     },
     startOnPath: function ()
@@ -91,9 +91,25 @@ var Enemy = new Phaser.Class({
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
         
     },
+    restoreSpeed: function() {
+        this.speed = 1/100000;
+    },
+    push: function() {
+        this.speed = 1/10000;
+        game.time.events.add(1000, restoreSpeed(), this);
+    },
+    pull: function() {
+        this.speed = -1/100000;
+        game.time.events.add(1000, restoreSpeed(), this);
+    },
+    stun: function() {
+        this.speed = 0;
+        game.time.events.add(1000, restoreSpeed(), this);
+    },
+    
     update: function (time, delta)
     {
-        this.follower.t += ENEMY_SPEED * delta;
+        this.follower.t += this.speed * delta;
         path.getPoint(this.follower.t, this.follower.vec);
         
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
