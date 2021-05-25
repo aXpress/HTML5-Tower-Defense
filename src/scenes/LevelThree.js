@@ -67,7 +67,7 @@ var LevelThree = new Phaser.Class({
             var enemy = enemies.get();
             if (enemy)
             {
-                enemy.setActive(true);
+                enemy.setActive(false);
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
@@ -94,7 +94,7 @@ var LevelThree = new Phaser.Class({
             var enemy = enemies.get();
             if (enemy)
             {
-                enemy.setActive(true);
+                enemy.setActive(false);
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
