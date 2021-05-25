@@ -38,8 +38,8 @@ var LevelThree = new Phaser.Class({
         // parameters are the start x and y of our path
         path = this.add.path(0, 450);
         path.lineTo(450, 450);
-        path.lineTo(900, 450);
-        path.lineTo(1600, 450);
+        path.lineTo(450, 600);
+        path.lineTo(1600, 600);
         
         graphics.lineStyle(3, 0xffffff, 1);
         // visualize the path
