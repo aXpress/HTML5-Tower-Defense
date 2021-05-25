@@ -17,23 +17,29 @@ var MainMenu = new Phaser.Class({
         this.load.image('imgSelectLevelTwo', 'src/assets/imgSelectLevelTwo.png');
         this.load.image('imgSelectLevelThree', 'src/assets/imgSelectLevelThree.png');
         this.load.image('imgLevelLore', 'src/assets/imgLevelLore.png');
+        this.load.image('imgMenuBG', 'src/assets/backgrounds/menuBG.jpg');
     },
 
     create: function ()
     {
-        this.add.text(20, 20, "Main Menu");
-        this.add.text(620, 75, "LEVEL SELECT", {font: '32pt Arial', fill: '#fff'});
+        //this.add.text(20, 20, "Main Menu");
+        this.add.text(490, 50, "LEVEL SELECT", {font: '64pt pixel', fill: '#fff'});
+
+        this.background = this.add.tileSprite(0, 0, 1600, 900, "imgMenuBG");
+        this.background.setOrigin(0, 0);
+        this.background.depth = -1;
 
         // Container that can change text dynamically via below level menu functions
-        var loreContainer = this.add.container(800, 675);
+        var loreContainer = this.add.container(800, 690);
         var loreBox = this.add.sprite(0, 0, 'imgLevelLore');
-        var loreText = this.add.text(0, 0, '', {font: '32pt Arial', fill: '0xffffff'});
+        var loreText = this.add.text(0, 0, '', {font: '32pt pixel', fill: '#fff'});
         loreText.setOrigin(0.5, 0.5);
         loreContainer.add(loreBox);
         loreContainer.add(loreText);
         
         // Menu functions for Level One box
-        var selectLevelOne = this.add.sprite(300, 325, 'imgSelectLevelOne');
+        var selectLevelOne = this.add.sprite(350, 325, 'imgSelectLevelOne');
+        var lvl1Text = this.add.text(265, 440, 'LEVEL 1', {font: '32pt pixel', fill: '#fff'});
         selectLevelOne.setInteractive().on('pointerover', function(event) {
             this.setTint(0xC0C0C0);
             loreText.setText("This is where level one's text will be");
@@ -46,6 +52,7 @@ var MainMenu = new Phaser.Class({
 
         // Menu functions for Level Two box
         var selectLevelTwo = this.add.sprite(800, 325, 'imgSelectLevelTwo');
+        var lvl2Text = this.add.text(715, 440, 'LEVEL 2', {font: '32pt pixel', fill: '#fff'});
         selectLevelTwo.setInteractive().on('pointerover', function(event) {
             this.setTint(0xC0C0C0);
             loreText.setText("This is where level two's text will be");
@@ -57,7 +64,8 @@ var MainMenu = new Phaser.Class({
         selectLevelTwo.setInteractive().on('pointerdown', function() {this.scene.start('LevelTwo')}, this);
 
         // Menu functions for Level Three box
-        var selectLevelThree = this.add.sprite(1300, 325, 'imgSelectLevelThree');
+        var selectLevelThree = this.add.sprite(1250, 325, 'imgSelectLevelThree');
+        var lvl3Text = this.add.text(1165, 440, 'LEVEL 3', {font: '32pt pixel', fill: '#fff'});
         selectLevelThree.setInteractive().on('pointerover', function(event) {
             this.setTint(0xC0C0C0);
             loreText.setText("This is where level three's text will be");
@@ -67,6 +75,9 @@ var MainMenu = new Phaser.Class({
             loreText.setText("");
         });
         selectLevelThree.setInteractive().on('pointerdown', function() {this.scene.start('LevelThree')}, this);
-    }
+    },
 
+    update: function() {
+        this.background.tilePositionX += 0.75;
+    }
 });

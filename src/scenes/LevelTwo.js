@@ -26,6 +26,8 @@ var LevelTwo = new Phaser.Class({
         this.load.image('imgElecTower', 'src/assets/towers/elecTower.png');
         this.load.image('imgEnemy', 'src/assets/towers/enemy.png');
         this.load.image('imgBullet', 'src/assets/towers/bullet.png');
+        this.load.image('imgBottomUI', 'src/assets/imgBottomUI.png');
+        this.load.image('imgBottomLeftUI', 'src/assets/imgBottomLeftUI.png');
     },
 
     create: function() {
@@ -38,10 +40,18 @@ var LevelTwo = new Phaser.Class({
         .on('pointerout', () => mainMenuButton.clearTint())
         .on('pointerdown', () => this.scene.start('MainMenu'), this);
 
+        var bottomUI = this.add.sprite(950, 825, 'imgBottomUI').setInteractive()
+        bottomUI.depth = -1;
+        var bottomLeftUI = this.add.sprite(150, 825, 'imgBottomLeftUI').setInteractive()
+        bottomUI.depth = -1;
+
+        var goldText = this.add.text(45, 785, "GOLD :",{font: '18pt pixel', fill: '0xffffff'});
+        var waveText = this.add.text(45, 835, "WAVE :",{font: '18pt pixel', fill: '0xffffff'});
+
         // Tower selection container
-        var towerContainer = this.add.container(400, 800);
+        var towerContainer = this.add.container(450, 850);
         var fireTowerBtn = this.add.rectangle(0, 0, 150, 35, 0xff0000);
-        var fireBtnTxt = this.add.text(0, 0, "Fire",{font: '18pt Arial', fill: '0xff0000'});
+        var fireBtnTxt = this.add.text(0, 0, "Fire",{font: '18pt pixel', fill: '0xff0000'});
         fireBtnTxt.setOrigin(0.5,0.5);
         fireTowerBtn.setStrokeStyle(5,0xff0000);
         fireTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
@@ -52,7 +62,7 @@ var LevelTwo = new Phaser.Class({
         });
 
         var waterTowerBtn = this.add.rectangle(200, 0, 150, 35, 0x00AAFF);
-        var waterBtnTxt = this.add.text(200, 0, "Water",{font: '18pt Arial', fill: '0xffffff'});
+        var waterBtnTxt = this.add.text(200, 0, "Water",{font: '18pt pixel', fill: '0xffffff'});
         waterBtnTxt.setOrigin(0.5,0.5);
         waterTowerBtn.setStrokeStyle(5,0xff0000);
         waterTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
@@ -63,7 +73,7 @@ var LevelTwo = new Phaser.Class({
         });
 
         var windTowerBtn = this.add.rectangle(400, 0, 150, 35, 0x00C40C);
-        var windBtnTxt = this.add.text(400, 0, "Wind",{font: '18pt Arial', fill: '0xffffff'});
+        var windBtnTxt = this.add.text(400, 0, "Wind",{font: '18pt pixel', fill: '0xffffff'});
         windBtnTxt.setOrigin(0.5,0.5);
         windTowerBtn.setStrokeStyle(5,0xff0000);
         windTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
@@ -74,7 +84,7 @@ var LevelTwo = new Phaser.Class({
         });
 
         var elecTowerBtn = this.add.rectangle(600, 0, 150, 35, 0xFFD800);
-        var elecBtnTxt = this.add.text(600, 0, "Electric",{font: '18pt Arial', fill: '0xffffff'});
+        var elecBtnTxt = this.add.text(600, 0, "Electric",{font: '18pt pixel', fill: '0xffffff'});
         elecBtnTxt.setOrigin(0.5,0.5);
         elecTowerBtn.setStrokeStyle(5,0xff0000);
         elecTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
@@ -85,7 +95,7 @@ var LevelTwo = new Phaser.Class({
         });
 
         var iceTowerBtn = this.add.rectangle(800, 0, 150, 35, 0x8AFFFD);
-        var iceBtnTxt = this.add.text(800, 0, "Ice",{font: '18pt Arial', fill: '0xffffff'});
+        var iceBtnTxt = this.add.text(800, 0, "Ice",{font: '18pt pixel', fill: '0xffffff'});
         iceBtnTxt.setOrigin(0.5,0.5);
         iceTowerBtn.setStrokeStyle(5,0xff0000);
         iceTowerBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
@@ -96,7 +106,7 @@ var LevelTwo = new Phaser.Class({
         });
 
         var noneBtn = this.add.rectangle(1000, 0, 150, 35, 0x8AFFFD);
-        var noneBtnTxt = this.add.text(1000, 0, "None",{font: '18pt Arial', fill: '0xffffff'});
+        var noneBtnTxt = this.add.text(1000, 0, "None",{font: '18pt pixel', fill: '0xffffff'});
         noneBtnTxt.setOrigin(0.5,0.5);
         noneBtn.setStrokeStyle(5,0xff0000);
         noneBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
@@ -107,7 +117,7 @@ var LevelTwo = new Phaser.Class({
         });
 
         var enemyBtn = this.add.rectangle(1000, -50, 150, 35, 0x8AFFFD);
-        var enemyBtnTxt = this.add.text(1000, -50, "Enemy",{font: '18pt Arial', fill: '0xffffff'});
+        var enemyBtnTxt = this.add.text(1000, -50, "Enemy",{font: '18pt pixel', fill: '0xffffff'});
         enemyBtnTxt.setOrigin(0.5,0.5);
         enemyBtn.setStrokeStyle(5,0xff0000);
         enemyBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
@@ -248,8 +258,9 @@ function damageEnemy(enemy, bullet) {
     // only if both enemy and bullet are alive
     if (enemy.active === true && bullet.active === true) {
         // we remove the bullet right away
-        bullet.setActive(false);
-        bullet.setVisible(false);    
+        // bullet.setActive(false);
+        // bullet.setVisible(false);
+        bullet.consume();
         
         // decrease the enemy hp with BULLET_DAMAGE
         enemy.receiveDamage(50);
@@ -420,6 +431,10 @@ var Bullet = new Phaser.Class ({
         this.dy = Math.sin(angle);
 
         this.lifespan = 1000;
+    },
+
+    consume: function(){
+        this.destroy();
     },
 
     update: function (time, delta)
