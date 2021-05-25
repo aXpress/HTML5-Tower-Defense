@@ -75,7 +75,7 @@ var Enemy = new Phaser.Class({
         this.setTexture('wraithEnemy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.hp = 0;
-        this.speed = 1/100000
+        this.speed = 1/100000;
 
     },
     startOnPath: function ()
@@ -96,15 +96,15 @@ var Enemy = new Phaser.Class({
     },
     push: function() {
         this.speed = 1/10000;
-        game.time.events.add(1000, restoreSpeed(), this);
+        this.time.delayedCall(2000, restoreSpeed, null, this);
     },
     pull: function() {
         this.speed = -1/100000;
-        game.time.events.add(1000, restoreSpeed(), this);
+        this.time.delayedCall(2000, restoreSpeed, null, this);
     },
     stun: function() {
         this.speed = 0;
-        game.time.events.add(1000, restoreSpeed(), this);
+        this.time.delayedCall(2000, restoreSpeed, null, this);
     },
     
     update: function (time, delta)
@@ -119,6 +119,7 @@ var Enemy = new Phaser.Class({
             this.setActive(false);
             this.setVisible(false);
         }
+
     }
 
 });
