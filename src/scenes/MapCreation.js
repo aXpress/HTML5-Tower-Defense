@@ -1,4 +1,17 @@
-//import { Tower } from "../script/towerClass";
+/*---------------------------------------------------------------------------**
+** Description: Map creation js file. This file contains all the code for 
+**              creating levels. The user can place rocks, trees, and paths.
+**              There is a message system that acts as a sort of First Time
+**              user experience. It walks the user through the steps of
+**              creating and submitting their map creation.
+**              The user can then submit their map creation and it is saved
+**              in a folder in the server.
+**-----------------------------------------------------------------------------
+** Authors: Troy Holt, Abraham Cheng, Eric Johnson
+** OSU CS 467 Capstone Project
+** Spring 2021
+**---------------------------------------------------------------------------*/
+
 
 var MapCreation = new Phaser.Class({
 
@@ -29,7 +42,6 @@ var MapCreation = new Phaser.Class({
 
     create: function ()
     {
-        //var game = new Phaser.Game(800,600, Phaser.AUTO);
         var size = 50;
         var rockSize = 3;
         var treeSize = 1;
@@ -41,8 +53,6 @@ var MapCreation = new Phaser.Class({
         var width = this.scale.width;
         var butWidth = 75;
         var butHeight = 35;
-        //var message = "Drag starting node to desired location, then click 'Path' to start placing nodes.";
-        //var message2 = "If you want to delete a node, hold down the 'X' button and click on a node.";
         var delKey = this.input.keyboard.addKey('X');
         var picKey = this.input.keyboard.addKey('P');
         var curBut = '';
@@ -52,8 +62,6 @@ var MapCreation = new Phaser.Class({
         var levelName = 'My first level';
         var trees = [];
         var rocks = [];
-        
-        
 
         var rt = this.add.renderTexture(0,0,width,height);
 
@@ -66,6 +74,10 @@ var MapCreation = new Phaser.Class({
         var message2 = this.add.text(20, 50, "");
         var message3 = this.add.text(20, 80, "");
 
+        /*---------------------------------------------------------------------
+        ** Message function. This takes a string arg and changes the message
+        ** that is dispalyed at the top of the screen.
+        ---------------------------------------------------------------------*/
         var messageTop = function (mesTop){
             message.text = mesTop;
         }
@@ -82,6 +94,12 @@ var MapCreation = new Phaser.Class({
         messageBot("A starting node has been placed for you. Drag it to where you want bad guys to spawn.");
         messageExt("Notice that it is locked to the edges. Bad guys must come and leave from the edges of the map.");
         
+        /*---------------------------------------------------------------------
+        ** These are the setup for the buttons. This allows the user to
+        ** navigate back to the main menu and also pick which elements they
+        ** want to place on the map.
+        ---------------------------------------------------------------------*/
+
         // main menu button.
         var mainMenuButton = this.add.sprite(1500, 50, 'imgMainMenuButton');
         mainMenuButton.setInteractive().on('pointerover', function(event) {this.setTint(0xC0C0C0);});
@@ -142,20 +160,7 @@ var MapCreation = new Phaser.Class({
             messageExt("");
             });
 
-/*         // Water menu Button
-        var waterButton = this.add.rectangle(0, 150, butWidth, butHeight, 0xffffff);
-        var waterText = this.add.text(0, 150, "Water",{font: '18pt Arial', fill: '0xffffff'});
-        waterText.setOrigin(0.5,0.5);
-        waterButton.setStrokeStyle(5,0xff0000);
-        waterButton.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
-        waterButton.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
-        waterButton.setInteractive().on('pointerdown', function(event) {
-            curBut = 'water';
-            changeActive(this.parentContainer.list);
-            this.setStrokeStyle(5,0xffbb00);
-            }); */
-
-        // Submit menu Button
+        // Submit menu Button. This sends a Post request to the server to save the map.
         var submitButton = this.add.rectangle(0, 150, butWidth, butHeight, 0xffffff);
         var submitText = this.add.text(0, 150, "submit",{font: '18pt Arial', fill: '0xffffff'});
         submitText.setOrigin(0.5,0.5);
@@ -190,75 +195,51 @@ var MapCreation = new Phaser.Class({
             messageBot("");
             messageExt("");
 
-            /* groupUI.setVisible(false);
-            mainMenuButton.setVisible(false);
-            butContainer.setVisible(false);
-            
-            var myImage = _this.renderer.snapshot(function (image) 
-                {
-                    image.style.width = '400px';
-                    image.style.height = '225px';
-                    
-                    console.log(this);
-                    console.log(_this);
-                    window.open(this.canvas.toDataURL());
-                });
-
-            console.log(myImage); */
-
             mapObjects.path = [];
             mapObjects.path.push(points);
             mapObjects.trees = trees;
             mapObjects.rocks = rocks;
-            //mapObjects.image = myImage;
-            //console.log(mapObjects);
 
-            var xhr = new XMLHttpRequest();
-            var url = "http://localhost:8080/test/" + JSON.stringify(mapObjects);
+            var req = new XMLHttpRequest();
+            var url = "http://localhost:8080/test";// + JSON.stringify(mapObjects);
             //console.log(url);
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader('Content-Type','application/json')
-            xhr.addEventListener('load', function()
+            req.open("POST", url, true);
+            req.setRequestHeader('Content-Type','application/json');
+            req.addEventListener('load', function()
             {
-                if (xhr.status >= 200 && xhr.status <= 400)
+                if (req.status >= 200 && req.status <= 400)
                 {
-                    response = xhr.responseText;
+                    response = req.responseText;
                     response = JSON.parse(response);
-                    //console.log(response);
                     messageTop("You have successfully created a map!");
                     messageBot("You're map key is: ");
                     messageExt(response);
-                    //var stats = response;
-                    //displayData(stats);
                 }
                 else
                 {
-                    console.log('Error in network request: ' + xhr.statusText);
+                    console.log('Error in network request: ' + req.statusText);
                 }
 
                 mainMenuButton.setVisible(true);
             });
-            //console.log(points);
-                
-            xhr.send(mapObjects); 
+
+            req.send(JSON.stringify(mapObjects)); 
 
             });
 
+        // All the buttons are wrapped in a container. This allows an easy
+        // way to check their states and change their visibility.
         butContainer.add(pathButton);
         butContainer.add(pathText);
         butContainer.add(rockButton);
         butContainer.add(rockText);
         butContainer.add(treeButton);
         butContainer.add(treeText);
-        //butContainer.add(waterButton);
-        //butContainer.add(waterText);
         butContainer.add(submitButton);
         butContainer.add(submitText);
 
         // grass layer.
         this.add.rectangle(width/2, height/2, width, height, 0x032405).setDepth(-4);
-    
-
 
         // helper function for menu buttons. Changes the outline color.
         var changeActive = function (pointer)
@@ -274,15 +255,15 @@ var MapCreation = new Phaser.Class({
             }
         }
 
-
-
-
-
         curve = new Phaser.Curves.Spline([ new Phaser.Math.Vector2(0,450) ]);
 
         var _this = this;
         var startingPoint = null;
 
+        /*---------------------------------------------------------------------
+        ** Function for placing a tree. It uses the X and Y coordinate of the
+        ** mouse pointer.
+        ---------------------------------------------------------------------*/
         var makeTree = function (x, y)
         {
             if(curTree == 1)
@@ -302,7 +283,10 @@ var MapCreation = new Phaser.Class({
         }
 
 
-        
+        /*---------------------------------------------------------------------
+        ** Function for placing a rock. It uses the X and Y coordinate of the
+        ** mouse pointer.
+        ---------------------------------------------------------------------*/
         var makeRock = function (x, y)
         { 
             if(curRock == 1)
@@ -329,7 +313,11 @@ var MapCreation = new Phaser.Class({
             rocks.push(myImage);
         } 
 
-
+        /*---------------------------------------------------------------------
+        ** This creates a point handle. This is used for the path. The path
+        ** utilizes a spline system built into phaser that utilizes the points
+        ** created to make a spline path. It also makes the points moveable.
+        ---------------------------------------------------------------------*/
         var createPointHandle = function (point)
         {
             var handle = _this.add.circle(point.x, point.y, 5, 0x8adaff).setInteractive();
@@ -354,7 +342,6 @@ var MapCreation = new Phaser.Class({
             {
                 if((gameObject[0].name == 'handleBob') || (gameObject[0].name == 'startingPoint'))
                 {
-                    //console.log(gameObject);
                     this.tweens.add({
                         targets: gameObject[0],
                         scale: 4,
@@ -384,10 +371,12 @@ var MapCreation = new Phaser.Class({
             groupUI.add(handle);
         };
 
+        /*---------------------------------------------------------------------
+        ** This function is for removing a node. This allows you to remove
+        ** points along a path.
+        ---------------------------------------------------------------------*/
         var removePointHandle = function (gameObjects)
         {
-            //console.log(gameObjects[0].data.list.vector);
-            //console.log(curve.points);
             for(var i = 0; i < curve.points.length; i++)
             {
                 if(curve.points[i] == gameObjects[0].data.list.vector)
@@ -398,18 +387,22 @@ var MapCreation = new Phaser.Class({
 
                 }
             }
-            //gameObjects[0].destroy();
         }
 
         createPointHandle(curve.points[0]);
         
+        // this group stores the path information.
         this.groupA = this.add.group();
         var groupA = this.groupA;
         
-        
+        /*---------------------------------------------------------------------
+        ** This is the path creation function. It takes the points that the
+        ** user created with the point handler, and it creates multiple points
+        ** along the spline. It then places a light color of dirt, and then a
+        ** darker color of dirt on top. This is what creates the dirt path look.
+        ---------------------------------------------------------------------*/
         var makePath = function (p)
-        {
-            //console.log(groupA);         
+        {     
             var points =  p.getDistancePoints(40);
             var pointsb = p.getDistancePoints(20);
             groupA.clear(true, true);
@@ -421,9 +414,7 @@ var MapCreation = new Phaser.Class({
                 var myImage = _this.add.image(p.x,p.y, 'pathTextureA').setDepth(-3);
                 myImage.setRotation(Phaser.Math.Between(0, 6));
                 groupA.add(myImage);
-                //thing = thing + thing;
             }
-
             
             for (var i = 0; i < pointsb.length; i++)
             {
@@ -432,7 +423,6 @@ var MapCreation = new Phaser.Class({
                 var myImage = _this.add.image(p.x,p.y, 'pathTextureB').setDepth(-3);
                 myImage.setRotation(Phaser.Math.Between(0, 6));
                 groupA.add(myImage);
-                //thing = thing + thing;
             }
         }
 
@@ -456,6 +446,11 @@ var MapCreation = new Phaser.Class({
 
         groupRock.addMultiple([rock1Cursor, rock2Cursor, rock3Cursor, rock4Cursor, rock5Cursor]);
 
+        /*---------------------------------------------------------------------
+        ** This handles the input for rocks and trees. It checks the curBut
+        ** which is the current button. This function is for switching the
+        ** type of rock or tree you are placing.
+        ---------------------------------------------------------------------*/
         this.input.on('pointermove', function (pointer) {
             groupRock.setVisible(false);
             groupTree.setVisible(false);
@@ -492,6 +487,11 @@ var MapCreation = new Phaser.Class({
             } 
         })
 
+        /*---------------------------------------------------------------------
+        ** This is the pointer down check. This checks if the user clicked
+        ** their mouse button and does an action based on where they clicked
+        ** and why. 
+        ---------------------------------------------------------------------*/
         this.input.on('pointerdown', function(pointer, gameObjects)
         {
             if (delKey.isDown)
@@ -534,16 +534,12 @@ var MapCreation = new Phaser.Class({
             {
                 if (gameObjects.length > 0)
                 {
-                    //console.log("checking");
                     return;
                 }
     
                 var vec = curve.addPoint(pointer.x, pointer.y);
                 makePath(curve);
                 createPointHandle(vec);
-
-
-                
 
                 parts +=8;
 
@@ -555,22 +551,22 @@ var MapCreation = new Phaser.Class({
                     targets: path,
                     t: 1,
                     ease: 'Linear',
-                    //duration: 500 * (curve.points.length + 1),
                     duration: 500 * (curve.points.length + 1),
-                    //yoyo: false,
                     repeat: -1
                 }); 
             }
         });
         
-        // This creates a screenshot of the map. Right now it is just for testing. At some
-        // point we will automatically save this map screenshot when the user is saving it.
+        /*---------------------------------------------------------------------
+        ** This handles keyboard input. This will change which tree/rock is
+        ** being placed and the size of each. It also checks if the delete
+        ** key is being held down.
+        ---------------------------------------------------------------------*/
         window.onkeydown = function (e)
         {
             var pointer = _this.input.mousePointer;
-            //console.log(pointer);
-            //console.log(e.keyCode);
-            if(e.keyCode == 80)
+            // this was for testing the picture taking mechanics.
+            /*if(e.keyCode == 80)
             {
                 _this.renderer.snapshot(function (image) 
                 {
@@ -581,7 +577,7 @@ var MapCreation = new Phaser.Class({
                     console.log('snap!');
                     document.body.appendChild(image);
                 })
-            }
+            } */
             if(e.keyCode == 81) // Q key
             {
                 groupRock.setVisible(false);
@@ -825,14 +821,10 @@ var MapCreation = new Phaser.Class({
             }
         };
 
-
-        this.input.on('dragstart', function (pointer, gameObject) 
-        {
-            
-        });
-
-
-
+        /*---------------------------------------------------------------------
+        ** This handles the dragging mechanic. This allows the user to drag
+        ** or move the path around.
+        ---------------------------------------------------------------------*/
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) 
         {
             var left = 0 + dragX; 
@@ -840,9 +832,6 @@ var MapCreation = new Phaser.Class({
             var top = 0 + dragY;
             var bottom = height - dragY;
 
-            //gameObject.x = dragX;
-            //gameObject.y = dragY;
-            
             if(gameObject.name == 'startingPoint')
             {
                 var left = 0 + dragX; 
@@ -902,8 +891,6 @@ var MapCreation = new Phaser.Class({
                 }
             }
 
-
-            //console.log(gameObject);
             if((gameObject.name == 'handleBob') || (gameObject.name == 'startingPoint'))
             {
                 makePath(curve);
@@ -915,16 +902,18 @@ var MapCreation = new Phaser.Class({
             
         });
     
+        // this can be used if we want to add animation to the end of a dragging
+        // movement.
         this.input.on('dragend', function (pointer, gameObject) 
         {
-                //gameObject.setFrame(2);
-
-                //gameObject.setFrame(0);
 
         });
 
-
-        
+        /*---------------------------------------------------------------------
+        ** This little bit is for an animated circle the runs along the path
+        ** that the user created. This gives the user an idea of which way the
+        ** bad guys are going to go.
+        ---------------------------------------------------------------------*/
         points = curve.getDistancePoints(100);
         graphics = this.add.graphics();
 
@@ -939,6 +928,8 @@ var MapCreation = new Phaser.Class({
 
     },
 
+    // Just an update function built into Phaser. This redraws graphics and
+    // does the calculations every frame.
     update: function()
     {
 
