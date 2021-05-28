@@ -6,6 +6,7 @@ var iceTowers;
 var elecTowers;
 var enemies;
 var enemies2;
+var enemies3;
 var bullets;
 var curBut ='None';
 
@@ -174,6 +175,7 @@ var LevelTwo = new Phaser.Class({
         elecTowers = this.add.group({classType: ElecTower, runChildUpdate: true});
         enemies = this.physics.add.group({classType: Enemy, runChildUpdate: true});
         enemies2 = this.physics.add.group({classType: Enemy2, runChildUpdate: true});
+        enemies3 = this.physics.add.group({classType: Enemy3, runChildUpdate: true});
         var fireCursor = this.add.image(0, 0, 'imgFireTower').setVisible(false);
         var waterCursor = this.add.image(0, 0, 'imgWaterTower').setVisible(false);
         var windCursor = this.add.image(0, 0, 'imgWindTower').setVisible(false);
@@ -264,6 +266,8 @@ var LevelTwo = new Phaser.Class({
 
         bullets = this.physics.add.group({classType: Bullet, runChildUpdate: true});
         this.physics.add.overlap(enemies, bullets, damageEnemy);
+        this.physics.add.overlap(enemies2, bullets, damageEnemy);
+        this.physics.add.overlap(enemies3, bullets, damageEnemy);
 
     },
 
@@ -277,19 +281,19 @@ var LevelTwo = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 3000;
+                this.nextEnemy = time + 5000;
                 wave1--;
             }
         }
         if (wave1 == 0) {
-            var enemy = enemies2.get();
+            var enemy = enemies.get();
             if (enemy)
             {
                 enemy.setActive(false);
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 10000;
+                this.nextEnemy = time + 30000;
                 wave1--;
             }
         }
@@ -303,20 +307,20 @@ var LevelTwo = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 2000;
+                this.nextEnemy = time + 4000;
                 wave2--;
             }
         }
 
         if (wave2 == 0) {
-            var enemy = enemies.get();
+            var enemy = enemies2.get();
             if (enemy)
             {
                 enemy.setActive(false);
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 10000;
+                this.nextEnemy = time + 30000;
                 wave2--;
             }
 
@@ -325,14 +329,14 @@ var LevelTwo = new Phaser.Class({
 
         if (time > this.nextEnemy && wave3 > 0 && wave2 == -1)
         {
-            var enemy = enemies.get();
+            var enemy = enemies3.get();
             if (enemy)
             {
                 enemy.setActive(true);
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 1000;
+                this.nextEnemy = time + 3000;
                 wave3--;
             }
         }
@@ -341,6 +345,24 @@ var LevelTwo = new Phaser.Class({
 
 function getEnemy(x, y, distance) {
     var enemyUnits = enemies.getChildren();
+    for(var i = 0; i < enemyUnits.length; i++) {       
+        if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
+            return enemyUnits[i];
+    }
+    return false;
+} 
+
+function getEnemy2(x, y, distance) {
+    var enemyUnits = enemies2.getChildren();
+    for(var i = 0; i < enemyUnits.length; i++) {       
+        if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
+            return enemyUnits[i];
+    }
+    return false;
+} 
+
+function getEnemy3(x, y, distance) {
+    var enemyUnits = enemies3.getChildren();
     for(var i = 0; i < enemyUnits.length; i++) {       
         if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
             return enemyUnits[i];
@@ -402,15 +424,12 @@ var Enemy = new Phaser.Class({
     },
     push: function() {
         this.speed = 1/10000;
-        this.time.delayedCall(2000, restoreSpeed, null, this);
     },
     pull: function() {
         this.speed = -1/100000;
-        this.time.delayedCall(2000, restoreSpeed, null, this);
     },
     stun: function() {
         this.speed = 0;
-        this.time.delayedCall(2000, restoreSpeed, null, this);
     },
 
     place: function(i, j) {
@@ -463,7 +482,7 @@ var Enemy2 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 100;
+        this.hp = 500;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -477,15 +496,84 @@ var Enemy2 = new Phaser.Class({
     },
     push: function() {
         this.speed = 1/10000;
-        this.time.delayedCall(2000, restoreSpeed, null, this);
     },
     pull: function() {
         this.speed = -1/100000;
-        this.time.delayedCall(2000, restoreSpeed, null, this);
     },
     stun: function() {
         this.speed = 0;
-        this.time.delayedCall(2000, restoreSpeed, null, this);
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+
+    receiveDamage: function(damage) {
+        this.hp -= damage;
+        if(this.hp <= 0) {
+            // this.setActive(false);
+            // this.setVisible(false);
+            this.destroy();
+        }
+    },
+    
+    update: function (time, delta)
+    {
+        this.follower.t += this.speed * delta;
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+        if (this.follower.t >= 1)
+        {
+            this.setActive(false);
+            this.setVisible(false);
+        }
+
+    }
+
+});
+
+var Enemy3 = new Phaser.Class({
+ 
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function Enemy (scene)
+    {
+        Phaser.GameObjects.Image.call(this, scene, 0, 0);
+        this.setTexture('minotaurEnemy');
+        this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        this.hp = 0;
+        this.speed = 1/100000;
+
+    },
+    startOnPath: function ()
+    {
+        // set the t parameter at the start of the path
+        this.follower.t = 0;
+        this.hp = 1000;
+        
+        // get x and y of the given t point            
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        // set the x and y of our enemy to the received from the previous step
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        
+    },
+    restoreSpeed: function() {
+        this.speed = 1/100000;
+    },
+    push: function() {
+        this.speed = 1/10000;
+    },
+    pull: function() {
+        this.speed = -1/100000;
+    },
+    stun: function() {
+        this.speed = 0;
     },
 
     place: function(i, j) {
@@ -539,8 +627,20 @@ var FireTower = new Phaser.Class ({
 
     fire: function() {
         var enemy = getEnemy(this.x, this.y, 200);
+        var enemy2 = getEnemy2(this.x, this.y, 200);
+        var enemy3 = getEnemy3(this.x, this.y, 200);
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+            addBullet(this.x, this.y, angle);
+        }
+
+        if(enemy2) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy2.x, enemy2.y);
+            addBullet(this.x, this.y, angle);
+        }
+
+        if(enemy3) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
             addBullet(this.x, this.y, angle);
         }
     },
