@@ -8,6 +8,12 @@ var enemies;
 var bullets;
 var curBut ='None';
 
+var path;
+
+var wave1 = 5;
+var wave2 = 10;
+var wave3 = 15;
+
 var LevelTwo = new Phaser.Class({
     Extends: Phaser.Scene,
     initialize:
@@ -28,6 +34,7 @@ var LevelTwo = new Phaser.Class({
         this.load.image('imgBullet', 'src/assets/towers/bullet.png');
         this.load.image('imgBottomUI', 'src/assets/imgBottomUI.png');
         this.load.image('imgBottomLeftUI', 'src/assets/imgBottomLeftUI.png');
+        this.load.image('wraithEnemy', 'src/assets/enemies/wraith.png');
     },
 
     create: function() {
@@ -47,6 +54,21 @@ var LevelTwo = new Phaser.Class({
 
         var goldText = this.add.text(45, 785, "GOLD :",{font: '18pt pixel', fill: '0xffffff'});
         var waveText = this.add.text(45, 835, "WAVE :",{font: '18pt pixel', fill: '0xffffff'});
+
+        // this graphics element is only for visualization, 
+        // its not related to our path
+        var graphics = this.add.graphics();    
+        
+        // the path for our enemies
+        // parameters are the start x and y of our path
+        path = this.add.path(0, 450);
+        path.lineTo(450, 450);
+        path.lineTo(450, 600);
+        path.lineTo(1600, 600);
+        
+        graphics.lineStyle(3, 0xffffff, 1);
+        // visualize the path
+        path.draw(graphics);
 
         // Tower selection container
         var towerContainer = this.add.container(450, 850);
@@ -154,6 +176,7 @@ var LevelTwo = new Phaser.Class({
         var iceCursor = this.add.image(0, 0, 'imgIceTower').setVisible(false);
         var elecCursor = this.add.image(0, 0, 'imgElecTower').setVisible(false);
 
+        this.nextEnemy = 0;
 
         this.input.on('pointerdown', function (pointer, gameObjects) {
             if(curBut == 'None' || gameObjects.length > 0) {
@@ -276,15 +299,47 @@ function addBullet(x, y, angle) {
 }
 
 var Enemy = new Phaser.Class({
+ 
     Extends: Phaser.GameObjects.Image,
 
     initialize:
 
     function Enemy (scene)
     {
-        Phaser.GameObjects.Image.call(this, scene);
-        this.setTexture('imgEnemy');
+        Phaser.GameObjects.Image.call(this, scene, 0, 0);
+        this.setTexture('wraithEnemy');
+        this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        this.hp = 0;
+        this.speed = 1/100000;
+
+    },
+    startOnPath: function ()
+    {
+        // set the t parameter at the start of the path
+        this.follower.t = 0;
         this.hp = 100;
+        
+        // get x and y of the given t point            
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        // set the x and y of our enemy to the received from the previous step
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        
+    },
+    restoreSpeed: function() {
+        this.speed = 1/100000;
+    },
+    push: function() {
+        this.speed = 1/10000;
+        this.time.delayedCall(2000, restoreSpeed, null, this);
+    },
+    pull: function() {
+        this.speed = -1/100000;
+        this.time.delayedCall(2000, restoreSpeed, null, this);
+    },
+    stun: function() {
+        this.speed = 0;
+        this.time.delayedCall(2000, restoreSpeed, null, this);
     },
 
     place: function(i, j) {
@@ -299,7 +354,23 @@ var Enemy = new Phaser.Class({
             // this.setVisible(false);
             this.destroy();
         }
+    },
+    
+    update: function (time, delta)
+    {
+        this.follower.t += this.speed * delta;
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+        if (this.follower.t >= 1)
+        {
+            this.setActive(false);
+            this.setVisible(false);
+        }
+
     }
+
 });
 
 var FireTower = new Phaser.Class ({
