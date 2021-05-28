@@ -263,8 +263,75 @@ var LevelTwo = new Phaser.Class({
 
     },
 
-    update: function() {
+    update: function(time, delta) {
+        if (time > this.nextEnemy && wave1 > 0)
+        {
+            var enemy = enemies.get();
+            if (enemy)
+            {
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
 
+                this.nextEnemy = time + 3000;
+                wave1--;
+            }
+        }
+        if (wave1 == 0) {
+            var enemy = enemies.get();
+            if (enemy)
+            {
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 10000;
+                wave1--;
+            }
+        }
+
+        if (time > this.nextEnemy && wave2 > 0 && wave1 == -1)
+        {
+            var enemy = enemies.get();
+            if (enemy)
+            {
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 2000;
+                wave2--;
+            }
+        }
+
+        if (wave2 == 0) {
+            var enemy = enemies.get();
+            if (enemy)
+            {
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 10000;
+                wave2--;
+            }
+
+
+        }
+
+        if (time > this.nextEnemy && wave3 > 0 && wave2 == -1)
+        {
+            var enemy = enemies.get();
+            if (enemy)
+            {
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 1000;
+                wave3--;
+            }
+        }
     },
 })
 
