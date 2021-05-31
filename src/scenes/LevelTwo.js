@@ -12,6 +12,7 @@ var curBut ='None';
 var goldText;
 var gameGold = 10;
 var livesText;
+var lives = 10;
 var waveText;
 
 var FIRECOST = 3;
@@ -531,6 +532,7 @@ var LevelTwo = new Phaser.Class({
                 wave3--;
             }
         }
+        livesText.setText("LIVES: " + lives);
     },
 })
 
@@ -647,6 +649,7 @@ var Enemy = new Phaser.Class({
         {
             this.setActive(false);
             this.setVisible(false);
+            lives--;
         }
 
     }
@@ -722,6 +725,7 @@ var Enemy2 = new Phaser.Class({
         {
             this.setActive(false);
             this.setVisible(false);
+            lives--;
         }
 
     }
@@ -797,6 +801,7 @@ var Enemy3 = new Phaser.Class({
         {
             this.setActive(false);
             this.setVisible(false);
+            lives--;
         }
 
     }
