@@ -1,4 +1,3 @@
-//import { MainMenuButton } from '../script/MainMenuButton';
 var fireTowers;
 var waterTowers;
 var windTowers;
@@ -9,6 +8,17 @@ var enemies2;
 var enemies3;
 var bullets;
 var curBut ='None';
+
+var goldText;
+var gameGold = 10;
+var livesText;
+var waveText;
+
+var FIRECOST = 3;
+var WATERCOST = 4;
+var WINDCOST = 15;
+var ICECOST = 9;
+var ELECCOST = 6;
 
 var path;
 
@@ -39,14 +49,18 @@ var LevelTwo = new Phaser.Class({
         this.load.image('imgIceBullet', 'src/assets/bullets/iceBullet.png');
         this.load.image('imgElecBullet', 'src/assets/bullets/elecBullet.png');
         this.load.image('imgBottomUI', 'src/assets/imgBottomUI.png');
-        this.load.image('imgBottomLeftUI', 'src/assets/imgBottomLeftUI.png');
+        this.load.image('imgGameStatsBG', 'src/assets/imgGameStatsBG.png');
+        this.load.image('imgTowerStatsBG', 'src/assets/imgTowerStatsBG.png');
+        this.load.image('imgUpgrade', 'src/assets/imgUpgrade.png');
+        this.load.image('imgSell', 'src/assets/imgSell.png');
         this.load.image('wraithEnemy', 'src/assets/enemies/wraith.png');
         this.load.image('golemEnemy', 'src/assets/enemies/golem.png');
         this.load.image('minotaurEnemy', 'src/assets/enemies/minotaur.png');
     },
 
     create: function() {
-        this.add.text(20, 20, "Level Two");
+        //this.add.text(20, 20, "Level Two");
+        gameGold = 10;
         this.add.text(20, 35, "curBut: ");
         var currentBtn = this.add.text(100, 35, "None");
 
@@ -55,14 +69,44 @@ var LevelTwo = new Phaser.Class({
         .on('pointerout', () => mainMenuButton.clearTint())
         .on('pointerdown', () => this.scene.start('MainMenu'), this);
 
-        var bottomUI = this.add.sprite(950, 825, 'imgBottomUI').setInteractive()
+        var bottomUI = this.add.sprite(950, 825, 'imgBottomUI').setInteractive();
         bottomUI.depth = -1;
-        var bottomLeftUI = this.add.sprite(150, 825, 'imgBottomLeftUI').setInteractive()
-        bottomUI.depth = -1;
+        
+        // Game stats container
+        var gameStatsBG = this.add.sprite(150, 75, 'imgGameStatsBG').setInteractive();
+        gameStatsBG.depth = -1;
+        goldText = this.add.text(45, 25, "GOLD : " + gameGold, {font: '14pt pixel', fill: '0xffffff'});
+        livesText = this.add.text(45, 60, "LIVES : 10",{font: '14pt pixel', fill: '0xffffff'});
+        waveText = this.add.text(45, 95, "WAVE : 1",{font: '14pt pixel', fill: '0xffffff'});
+        var gameStatsCtn = this.add.container(0, 0);
+        gameStatsCtn.add(gameStatsBG);
+        gameStatsCtn.add(goldText);
+        gameStatsCtn.add(livesText);
+        gameStatsCtn.add(waveText);
 
-        var goldText = this.add.text(45, 775, "GOLD : ",{font: '18pt pixel', fill: '0xffffff'});
-        var livesText = this.add.text(45, 810, "LIVES : ",{font: '18pt pixel', fill: '0xffffff'});
-        var waveText = this.add.text(45, 845, "WAVE : ",{font: '18pt pixel', fill: '0xffffff'});
+        var towerStatsCtn = this.add.container(150,825);
+        var towerStatsBG = this.add.sprite(0, 0, 'imgTowerStatsBG').setInteractive();
+        var upgradeButton = this.add.sprite(-115, 45, 'imgUpgrade').setInteractive()
+        .on('pointerover', () => upgradeButton.setTint(0xC0C0C0))
+        .on('pointerout', () => upgradeButton.clearTint());
+        var upgradeText = this.add.text(-100, 32, "UPGRADE", {font: '14pt pixel', fill: '0xffffff'});
+        var sellButton = this.add.sprite(40, 45, 'imgSell').setInteractive()
+        .on('pointerover', () => sellButton.setTint(0xC0C0C0))
+        .on('pointerout', () => sellButton.clearTint());
+        var sellText = this.add.text(60, 32, "SELL", {font: '14pt pixel', fill: '0xffffff'});
+        var statsTitle = this.add.text(-115, -60, "SELECTED TOWER", {font: '15pt pixel', fill: '0xffffff'});
+        var towerName = this.add.text(-115, -38, "TYPE: ", {font: '15pt pixel', fill: '0xffffff'});
+        var towerLevel = this.add.text(-115, -18, "LEVEL: ", {font: '15pt pixel', fill: '0xffffff'});
+        var towerDamage = this.add.text(-115, 2, "DAMAGE: ", {font: '15pt pixel', fill: '0xffffff'});
+        towerStatsCtn.add(towerStatsBG);
+        towerStatsCtn.add(statsTitle);
+        towerStatsCtn.add(towerName);
+        towerStatsCtn.add(towerLevel);
+        towerStatsCtn.add(towerDamage);
+        towerStatsCtn.add(upgradeButton);
+        towerStatsCtn.add(sellButton);
+        towerStatsCtn.add(upgradeText);
+        towerStatsCtn.add(sellText);
 
         // this graphics element is only for visualization, 
         // its not related to our path
@@ -136,26 +180,15 @@ var LevelTwo = new Phaser.Class({
             currentBtn.setText('iceTower');
         });
 
-        var noneBtn = this.add.rectangle(1000, 0, 150, 35, 0x8AFFFD);
+        var noneBtn = this.add.rectangle(1000, 0, 150, 35, 0xFFFFFF);
         var noneBtnTxt = this.add.text(1000, 0, "None",{font: '18pt pixel', fill: '0xffffff'});
         noneBtnTxt.setOrigin(0.5,0.5);
         noneBtn.setStrokeStyle(5,0xff0000);
-        noneBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
-        noneBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0x8AFFFD, 1);});
+        noneBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0x000000, .75);});
+        noneBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0xffffff, 1);});
         noneBtn.setInteractive().on('pointerdown', function(event) {
             curBut = 'None';
             currentBtn.setText('None');
-        });
-
-        var enemyBtn = this.add.rectangle(1000, -50, 150, 35, 0x8AFFFD);
-        var enemyBtnTxt = this.add.text(1000, -50, "Enemy",{font: '18pt pixel', fill: '0xffffff'});
-        enemyBtnTxt.setOrigin(0.5,0.5);
-        enemyBtn.setStrokeStyle(5,0xff0000);
-        enemyBtn.setInteractive().on('pointerover', function(event) {this.setFillStyle(0xffffff, .75);});
-        enemyBtn.setInteractive().on('pointerout', function(event) {this.setFillStyle(0x8AFFFD, 1);});
-        enemyBtn.setInteractive().on('pointerdown', function(event) {
-            curBut = 'Enemy';
-            currentBtn.setText('Enemy');
         });
 
         towerContainer.add(fireTowerBtn);
@@ -170,8 +203,6 @@ var LevelTwo = new Phaser.Class({
         towerContainer.add(iceBtnTxt);
         towerContainer.add(noneBtn);
         towerContainer.add(noneBtnTxt);
-        towerContainer.add(enemyBtn);
-        towerContainer.add(enemyBtnTxt);
 
         fireTowers = this.add.group({classType: FireTower, runChildUpdate: true});
         waterTowers = this.add.group({classType: WaterTower, runChildUpdate: true});
@@ -193,35 +224,185 @@ var LevelTwo = new Phaser.Class({
             if(curBut == 'None' || gameObjects.length > 0) {
                 return;
             }
-            else if (curBut == 'fireTower') {
+            else if (curBut == 'fireTower' && (gameGold - FIRECOST >= 0)) {
                 var fireTower = fireTowers.get();
                 fireTower.place(pointer.x, pointer.y);
-                fireTower.setInteractive();
+                fireTower.setInteractive().on('pointerdown', function () {
+                    upgradeButton.off('pointerdown');
+                    sellButton.off('pointerdown');
+                    
+                    towerName.setText("TYPE: " + fireTower.element);
+                    towerLevel.setText("LEVEL: " + fireTower.level);
+                    towerDamage.setText("DAMAGE: " + fireTower.dmg);
+                    upgradeText.setText("UPGRADE(" + fireTower.upgradeCost + ")");
+                    sellText.setText("SELL(" + fireTower.sellVal + ")");
+
+                    upgradeButton.on('pointerdown', function() {
+                        if(gameGold - fireTower.upgradeCost >= 0) {
+                            fireTower.upgrade()
+                            towerName.setText("TYPE: " + fireTower.element);
+                            towerLevel.setText("LEVEL: " + fireTower.level);
+                            towerDamage.setText("DAMAGE: " + fireTower.dmg);
+                            upgradeText.setText("UPGRADE(" + fireTower.upgradeCost + ")");
+                            sellText.setText("SELL(" + fireTower.sellVal + ")");
+                        }
+                    });
+                    sellButton.on('pointerdown', function () {
+                        gameGold += fireTower.sellVal;
+                        fireTower.destroy();
+                        towerName.setText("TYPE:");
+                        towerLevel.setText("LEVEL: ");
+                        towerDamage.setText("DAMAGE: ");
+                        upgradeText.setText("UPGRADE");
+                        sellText.setText("SELL");
+                    });
+                });
+                curBut = 'None';
+                gameGold -= FIRECOST;
             }
-            else if (curBut == 'waterTower') {
+            else if (curBut == 'waterTower' && (gameGold - WATERCOST >= 0)) {
                 var waterTower = waterTowers.get();
                 waterTower.place(pointer.x, pointer.y);
-                waterTower.setInteractive();
+                waterTower.setInteractive().on('pointerdown', function () {
+                    upgradeButton.off('pointerdown');
+                    sellButton.off('pointerdown');
+
+                    towerName.setText("TYPE: " + waterTower.element);
+                    towerLevel.setText("LEVEL: " + waterTower.level);
+                    towerDamage.setText("DAMAGE: " + waterTower.dmg);
+                    upgradeText.setText("UPGRADE(" + waterTower.upgradeCost + ")");
+                    sellText.setText("SELL(" + waterTower.sellVal + ")");
+
+                    upgradeButton.on('pointerdown', function() {
+                        if(gameGold - waterTower.upgradeCost >= 0) {
+                            waterTower.upgrade()
+                            towerName.setText("TYPE: " + waterTower.element);
+                            towerLevel.setText("LEVEL: " + waterTower.level);
+                            towerDamage.setText("DAMAGE: " + waterTower.dmg);
+                            upgradeText.setText("UPGRADE(" + waterTower.upgradeCost + ")");
+                            sellText.setText("SELL(" + waterTower.sellVal + ")");
+                        }
+                    });
+                    sellButton.on('pointerdown', function () {
+                        gameGold += waterTower.sellVal;
+                        waterTower.destroy();
+                        towerName.setText("TYPE:");
+                        towerLevel.setText("LEVEL: ");
+                        towerDamage.setText("DAMAGE: ");
+                        upgradeText.setText("UPGRADE");
+                        sellText.setText("SELL");
+                    });
+                });
+                curBut = 'None';
+                gameGold -= WATERCOST;
             }
-            else if (curBut == 'windTower') {
+            else if (curBut == 'windTower' && (gameGold - WINDCOST >= 0)) {
                 var windTower = windTowers.get();
                 windTower.place(pointer.x, pointer.y);
-                windTower.setInteractive();
+                windTower.setInteractive().on('pointerdown', function () {
+                    upgradeButton.off('pointerdown');
+                    sellButton.off('pointerdown');
+
+                    towerName.setText("TYPE: " + windTower.element);
+                    towerLevel.setText("LEVEL: " + windTower.level);
+                    towerDamage.setText("DAMAGE: " + windTower.dmg);
+                    upgradeText.setText("UPGRADE(" + windTower.upgradeCost + ")");
+                    sellText.setText("SELL(" + windTower.sellVal + ")");
+
+                    upgradeButton.on('pointerdown', function() {
+                        if(gameGold - windTower.upgradeCost >= 0) {
+                            windTower.upgrade()
+                            towerName.setText("TYPE: " + windTower.element);
+                            towerLevel.setText("LEVEL: " + windTower.level);
+                            towerDamage.setText("DAMAGE: " + windTower.dmg);
+                            upgradeText.setText("UPGRADE(" + windTower.upgradeCost + ")");
+                            sellText.setText("SELL(" + windTower.sellVal + ")");
+                        }
+                    });
+                    sellButton.on('pointerdown', function () {
+                        gameGold += windTower.sellVal;
+                        windTower.destroy();
+                        towerName.setText("TYPE:");
+                        towerLevel.setText("LEVEL: ");
+                        towerDamage.setText("DAMAGE: ");
+                        upgradeText.setText("UPGRADE");
+                        sellText.setText("SELL");
+                    });
+                });
+                gameGold -= windTower.cost;
+                curBut = 'None';
             }
-            else if (curBut == 'iceTower') {
+            else if (curBut == 'iceTower' && (gameGold - ICECOST >= 0)) {
                 var iceTower = iceTowers.get();
                 iceTower.place(pointer.x, pointer.y);
-                iceTower.setInteractive();
+                iceTower.setInteractive().on('pointerdown', function () {
+                    upgradeButton.off('pointerdown');
+                    sellButton.off('pointerdown');
+
+                    towerName.setText("TYPE: " + iceTower.element);
+                    towerLevel.setText("LEVEL: " + iceTower.level);
+                    towerDamage.setText("DAMAGE: " + iceTower.dmg);
+                    upgradeText.setText("UPGRADE(" + iceTower.upgradeCost + ")");
+                    sellText.setText("SELL(" + iceTower.sellVal + ")");
+
+                    upgradeButton.on('pointerdown', function() {
+                        if(gameGold - iceTower.upgradeCost >= 0) {
+                            iceTower.upgrade()
+                            towerName.setText("TYPE: " + iceTower.element);
+                            towerLevel.setText("LEVEL: " + iceTower.level);
+                            towerDamage.setText("DAMAGE: " + iceTower.dmg);
+                            upgradeText.setText("UPGRADE(" + iceTower.upgradeCost + ")");
+                            sellText.setText("SELL(" + iceTower.sellVal + ")");
+                        }
+                    });
+                    sellButton.on('pointerdown', function () {
+                        gameGold += iceTower.sellVal;
+                        iceTower.destroy();
+                        towerName.setText("TYPE:");
+                        towerLevel.setText("LEVEL: ");
+                        towerDamage.setText("DAMAGE: ");
+                        upgradeText.setText("UPGRADE");
+                        sellText.setText("SELL");
+                    });
+                });
+                gameGold -= ICECOST;
+                curBut = 'None';
             }
-            else if (curBut == 'elecTower') {
+            else if (curBut == 'elecTower' && (gameGold - ELECCOST >= 0)) {
                 var elecTower = elecTowers.get();
                 elecTower.place(pointer.x, pointer.y);
-                elecTower.setInteractive();
-            }
-            else if (curBut == 'Enemy') {
-                var enemy = enemies.get();
-                enemy.place(pointer.x, pointer.y);
-                enemy.setInteractive();
+                elecTower.setInteractive().on('pointerdown', function () {
+                    upgradeButton.off('pointerdown');
+                    sellButton.off('pointerdown');
+
+                    towerName.setText("TYPE: " + elecTower.element);
+                    towerLevel.setText("LEVEL: " + elecTower.level);
+                    towerDamage.setText("DAMAGE: " + elecTower.dmg);
+                    upgradeText.setText("UPGRADE(" + elecTower.upgradeCost + ")");
+                    sellText.setText("SELL(" + elecTower.sellVal + ")");
+
+                    upgradeButton.on('pointerdown', function() {
+                        if(gameGold - elecTower.upgradeCost >= 0) {
+                            elecTower.upgrade()
+                            towerName.setText("TYPE: " + elecTower.element);
+                            towerLevel.setText("LEVEL: " + elecTower.level);
+                            towerDamage.setText("DAMAGE: " + elecTower.dmg);
+                            upgradeText.setText("UPGRADE(" + elecTower.upgradeCost + ")");
+                            sellText.setText("SELL(" + elecTower.sellVal + ")");
+                        }
+                    });
+                    sellButton.on('pointerdown', function () {
+                        gameGold += elecTower.sellVal;
+                        elecTower.destroy();
+                        towerName.setText("TYPE:");
+                        towerLevel.setText("LEVEL: ");
+                        towerDamage.setText("DAMAGE: ");
+                        upgradeText.setText("UPGRADE");
+                        sellText.setText("SELL");
+                    });
+                });
+                gameGold -= ELECCOST;
+                curBut = 'None';
             }
         });
 
@@ -277,6 +458,11 @@ var LevelTwo = new Phaser.Class({
     },
 
     update: function(time, delta) {
+        goldText.setText("GOLD: " + gameGold);
+        if(isNaN(gameGold)) {
+            gameGold = 0;
+        }
+        
         if (time > this.nextEnemy && wave1 > 0)
         {
             var enemy = enemies.get();
@@ -376,16 +562,10 @@ function getEnemy3(x, y, distance) {
 } 
 
 function damageEnemy(enemy, bullet) {  
-    // only if both enemy and bullet are alive
     if (enemy.active === true && bullet.active === true) {
-        // we remove the bullet right away
-        // bullet.setActive(false);
-        // bullet.setVisible(false);
         if(bullet.element != 'Fire' && bullet.element != 'Wind') {
             bullet.consume();
         }
-        
-        // decrease the enemy hp with BULLET_DAMAGE
         enemy.receiveDamage(bullet.dmg);
     }
 }
@@ -409,7 +589,9 @@ var Enemy = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('wraithEnemy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        this.bounty = 3;
         this.hp = 0;
+        this.status = 'None';
         this.speed = 1/100000;
 
     },
@@ -450,6 +632,7 @@ var Enemy = new Phaser.Class({
             // this.setActive(false);
             // this.setVisible(false);
             this.destroy();
+            gameGold += this.bounty;
         }
     },
     
@@ -481,7 +664,9 @@ var Enemy2 = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('golemEnemy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        this.bounty = 10;
         this.hp = 0;
+        this.status = 'None';
         this.speed = 1/100000;
 
     },
@@ -522,6 +707,7 @@ var Enemy2 = new Phaser.Class({
             // this.setActive(false);
             // this.setVisible(false);
             this.destroy();
+            gameGold += this.bounty;
         }
     },
     
@@ -553,7 +739,9 @@ var Enemy3 = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('minotaurEnemy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        this.bounty = 15;
         this.hp = 0;
+        this.status = 'None';
         this.speed = 1/100000;
 
     },
@@ -594,6 +782,7 @@ var Enemy3 = new Phaser.Class({
             // this.setActive(false);
             // this.setVisible(false);
             this.destroy();
+            gameGold += this.bounty;
         }
     },
     
@@ -624,13 +813,27 @@ var FireTower = new Phaser.Class ({
         Phaser.GameObjects.Image.call(this, scene);
         this.setTexture('imgFireTower');
         this.setPosition(x, y);
+        this.element = 'Fire';
+        this.level = 1;
         this.range = 200;
         this.dmg = 1;
+        this.upgradeCost = (this.level * 2 * FIRECOST);
+        this.sellVal = Math.round((FIRECOST / 2));
     },
 
     place: function(i, j) {
         this.x = i;
         this.y = j;
+    },
+
+    upgrade: function() {
+        if(this.level < 3) {
+            this.level++;
+            this.range += 50;
+            this.dmg *= 2;
+            this.upgradeCost = (this.level * 2 * FIRECOST);
+            this.sellVal = Math.round((this.level * FIRECOST) / 2);
+        }
     },
 
     fire: function() {
@@ -671,13 +874,27 @@ var WaterTower = new Phaser.Class ({
         Phaser.GameObjects.Image.call(this, scene);
         this.setTexture('imgWaterTower');
         this.setPosition(x, y);
-        this.range = 300;
-        this.dmg = 3;
+        this.element = 'Water';
+        this.level = 1;
+        this.range = 200;
+        this.dmg = 1;
+        this.upgradeCost = (this.level * 2 * WATERCOST);
+        this.sellVal = Math.round((WATERCOST / 2));
     },
 
     place: function(i, j) {
         this.x = i;
         this.y = j;
+    },
+
+    upgrade: function() {
+        if(this.level < 3) {
+            this.level++;
+            this.range += 50;
+            this.dmg *= 2;
+            this.upgradeCost = (this.level * 2 * WATERCOST);
+            this.sellVal = Math.round((this.level * WATERCOST) / 2);
+        }
     },
 
     fire: function() {
@@ -718,13 +935,27 @@ var WindTower = new Phaser.Class ({
         Phaser.GameObjects.Image.call(this, scene);
         this.setTexture('imgWindTower');
         this.setPosition(x, y);
-        this.range = 300;
+        this.element = 'Wind';
+        this.level = 1;
+        this.range = 200;
         this.dmg = 0;
+        this.upgradeCost = (this.level * 2 * WATERCOST);
+        this.sellVal = Math.round((WATERCOST / 2));
     },
 
     place: function(i, j) {
         this.x = i;
         this.y = j;
+    },
+
+    upgrade: function() {
+        if(this.level < 3) {
+            this.level++;
+            this.range += 50;
+            this.dmg *= 2;
+            this.upgradeCost = (this.level * 2 * WATERCOST);
+            this.sellVal = Math.round((this.level * WATERCOST) / 2);
+        }
     },
 
     fire: function() {
@@ -733,17 +964,17 @@ var WindTower = new Phaser.Class ({
         var enemy3 = getEnemy3(this.x, this.y, this.range);
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-            addBullet(this.x, this.y, angle, 'Wind');
+            addBullet(this.x, this.y, angle, 'Wind', this.dmg);
         }
 
         if(enemy2) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy2.x, enemy2.y);
-            addBullet(this.x, this.y, angle, 'Wind');
+            addBullet(this.x, this.y, angle, 'Wind', this.dmg);
         }
 
         if(enemy3) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
-            addBullet(this.x, this.y, angle, 'Wind');
+            addBullet(this.x, this.y, angle, 'Wind', this.dmg);
         }
     },
 
@@ -765,13 +996,27 @@ var IceTower = new Phaser.Class ({
         Phaser.GameObjects.Image.call(this, scene);
         this.setTexture('imgIceTower');
         this.setPosition(x, y);
-        this.range = 300;
+        this.element = 'Ice';
+        this.level = 1;
+        this.range = 200;
         this.dmg = 5;
+        this.upgradeCost = (this.level * 2 * WATERCOST);
+        this.sellVal = Math.round((WATERCOST / 2));
     },
 
     place: function(i, j) {
         this.x = i;
         this.y = j;
+    },
+
+    upgrade: function() {
+        if(this.level < 3) {
+            this.level++;
+            this.range += 50;
+            this.dmg *= 2;
+            this.upgradeCost = (this.level * 2 * WATERCOST);
+            this.sellVal = Math.round((this.level * WATERCOST) / 2);
+        }
     },
 
     fire: function() {
@@ -780,17 +1025,17 @@ var IceTower = new Phaser.Class ({
         var enemy3 = getEnemy3(this.x, this.y, this.range);
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-            addBullet(this.x, this.y, angle, 'Ice');
+            addBullet(this.x, this.y, angle, 'Ice', this.dmg);
         }
 
         if(enemy2) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy2.x, enemy2.y);
-            addBullet(this.x, this.y, angle, 'Ice');
+            addBullet(this.x, this.y, angle, 'Ice', this.dmg);
         }
 
         if(enemy3) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
-            addBullet(this.x, this.y, angle, 'Ice');
+            addBullet(this.x, this.y, angle, 'Ice', this.dmg);
         }
     },
 
@@ -812,13 +1057,27 @@ var ElecTower = new Phaser.Class ({
         Phaser.GameObjects.Image.call(this, scene);
         this.setTexture('imgElecTower');
         this.setPosition(x, y);
-        this.range = 300;
-        this.dmg = 0;
+        this.element = 'Electric';
+        this.level = 1;
+        this.range = 200;
+        this.dmg = 5;
+        this.upgradeCost = (this.level * 2 * WATERCOST);
+        this.sellVal = Math.round((WATERCOST / 2));
     },
 
     place: function(i, j) {
         this.x = i;
         this.y = j;
+    },
+
+    upgrade: function() {
+        if(this.level < 3) {
+            this.level++;
+            this.range += 50;
+            this.dmg *= 2;
+            this.upgradeCost = (this.level * 2 * WATERCOST);
+            this.sellVal = Math.round((this.level * WATERCOST) / 2);
+        }
     },
 
     fire: function() {
@@ -827,17 +1086,17 @@ var ElecTower = new Phaser.Class ({
         var enemy3 = getEnemy3(this.x, this.y, this.range);
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-            addBullet(this.x, this.y, angle, 'Electric');
+            addBullet(this.x, this.y, angle, 'Electric', this.dmg);
         }
 
         if(enemy2) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy2.x, enemy2.y);
-            addBullet(this.x, this.y, angle, 'Electric');
+            addBullet(this.x, this.y, angle, 'Electric', this.dmg);
         }
 
         if(enemy3) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
-            addBullet(this.x, this.y, angle, 'Electric');
+            addBullet(this.x, this.y, angle, 'Electric', this.dmg);
         }
     },
 
@@ -856,7 +1115,7 @@ var Bullet = new Phaser.Class ({
     function Bullet (scene)
     {
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
-        //this.setTexture('imgFireBullet');
+        this.setDepth(1);
         this.lifespan = 0;
         this.speed = Phaser.Math.GetSpeed(600, 1);
     },
@@ -910,5 +1169,19 @@ var Bullet = new Phaser.Class ({
             this.setActive(false);
             this.setVisible(false);
         }
+    }
+});
+
+var StatsMenu = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Container,
+    initialize:
+
+    function StatsMenu (scene, x, y) {
+        Phaser.GameObjects.Container.call(this, scene, 0, 0);
+        scene.add.rectangle(0, 0, 0, 35, 0x00AAFF);
+
+    },
+
+    update: function(time, delta) {
     }
 });
