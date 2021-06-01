@@ -943,3 +943,30 @@ var MapCreation = new Phaser.Class({
         graphics.fillStyle(0xbf47ff, 1);
     }
 });
+
+function loadMap() {
+    var loadTrees = [];
+    var loadRocks = [];
+    var loadPath;
+
+    var req = new XMLHttpRequest();
+    var url = "http://localhost:8080/levels/official";// + JSON.stringify(mapObjects);
+    //console.log(url);
+    req.open("GET", url, true);
+    req.setRequestHeader('Content-Type','application/json');
+    req.addEventListener('load', function()
+    {
+        if (req.status >= 200 && req.status <= 400)
+        {
+            response = req.responseText;
+            response = JSON.parse(response);
+            
+        }
+        else
+        {
+            console.log('Error in network request: ' + req.statusText);
+        }
+
+        mainMenuButton.setVisible(true);
+    });
+}

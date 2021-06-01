@@ -60,8 +60,25 @@ module.exports = {
           }
         });
       });
+
+      app.get('/levels/official', jsonParser, async function(req, res)  {
+        var levelNum = 1;
+        var level = "level_" + levelNum;
+        var place = 'src/levels/user/' + level + '.json';
+        var myMap = JSON.stringify(req.body);
+        var fs = require('fs');
+        fs.readFile(place, myMap, function(err, result) 
+        {
+          if(err) {console.log('error', err);}
+          else
+          {
+            res.status(201).json(r);
+          }
+        });
+      });
     }
   },
+  
   module: {
     rules: [
       {
