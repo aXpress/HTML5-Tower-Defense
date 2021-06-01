@@ -27,6 +27,9 @@ var wave1 = 5;
 var wave2 = 10;
 var wave3 = 15;
 
+var pointsX = [200, 300, 456, 640, 1600];
+var pointsY = [300, 350, 456, 480, 450];
+
 var LevelTwo = new Phaser.Class({
     Extends: Phaser.Scene,
     initialize:
@@ -111,14 +114,16 @@ var LevelTwo = new Phaser.Class({
 
         // this graphics element is only for visualization, 
         // its not related to our path
-        var graphics = this.add.graphics();    
-        
+        var graphics = this.add.graphics();
+
         // the path for our enemies
         // parameters are the start x and y of our path
         path = this.add.path(0, 450);
-        path.lineTo(450, 450);
-        path.lineTo(450, 600);
-        path.lineTo(1600, 600);
+
+        for (var i = 0; i < pointsX.length; i++) {
+            path.lineTo(pointsX[i], pointsY[i]);
+        }
+        
         
         graphics.lineStyle(10, 0xffffff, 1);
         // visualize the path
