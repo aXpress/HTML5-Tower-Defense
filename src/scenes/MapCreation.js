@@ -43,10 +43,11 @@ var MapCreation = new Phaser.Class({
         this.add.text(20, 50, message2);
 
         // main menu button.
-        var mainMenuButton = this.add.sprite(1500, 50, 'imgMainMenuButton');
-        mainMenuButton.setInteractive().on('pointerover', function(event) {this.setTint(0xC0C0C0);});
-        mainMenuButton.setInteractive().on('pointerout', function(event) {this.clearTint();});
-        mainMenuButton.setInteractive().on('pointerdown', function() {this.scene.start('MainMenu')}, this);
+        var mainMenuButton = this.add.sprite(1510, 35, 'imgMainMenuButton').setInteractive()
+        .on('pointerover', () => mainMenuButton.setTint(0xC0C0C0))
+        .on('pointerout', () => mainMenuButton.clearTint())
+        .on('pointerdown', () => this.scene.start('MainMenu'), this);
+        var mainMenuTxt = this.add.text(1465, 20, "MAIN MENU", {font: '14pt pixel', fill: '0xffffff'});
 
         // Menu container for the build buttons.
         var butContainer = this.add.container(1500,105);

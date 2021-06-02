@@ -1,5 +1,3 @@
-//const { container } = require("webpack");
-
 var MainMenu = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -18,6 +16,8 @@ var MainMenu = new Phaser.Class({
         this.load.image('imgSelectLevelThree', 'src/assets/imgSelectLevelThree.png');
         this.load.image('imgLevelLore', 'src/assets/imgLevelLore.png');
         this.load.image('imgMenuBG', 'src/assets/backgrounds/menuBG.jpg');
+        this.load.image('imgMainMenuButton', 'src/assets/imgMainMenuButton.png');
+        
     },
 
     create: function ()
@@ -32,7 +32,7 @@ var MainMenu = new Phaser.Class({
         // Container that can change text dynamically via below level menu functions
         var loreContainer = this.add.container(800, 690);
         var loreBox = this.add.sprite(0, 0, 'imgLevelLore');
-        var loreText = this.add.text(0, 0, '', {font: '32pt pixel', fill: '#fff'});
+        var loreText = this.add.text(0, -10, '', {font: '32pt pixel', fill: '#fff'});
         loreText.setOrigin(0.5, 0.5);
         loreContainer.add(loreBox);
         loreContainer.add(loreText);
@@ -42,20 +42,20 @@ var MainMenu = new Phaser.Class({
         var lvl1Text = this.add.text(265, 440, 'LEVEL 1', {font: '32pt pixel', fill: '#fff'});
         selectLevelOne.setInteractive().on('pointerover', function(event) {
             this.setTint(0xC0C0C0);
-            loreText.setText("This is where level one's text will be");
+            loreText.setText("Monsters have come to attack our village.\nIt's time to power up the towers!");
         });
         selectLevelOne.setInteractive().on('pointerout', function(event) {
             this.clearTint();
             loreText.setText("");
         });
-        selectLevelOne.setInteractive().on('pointerdown', function() {this.scene.start('MapCreation')}, this);
+        selectLevelOne.setInteractive().on('pointerdown', function() {this.scene.start('LevelOne')}, this);
 
         // Menu functions for Level Two box
         var selectLevelTwo = this.add.sprite(800, 325, 'imgSelectLevelTwo');
         var lvl2Text = this.add.text(715, 440, 'LEVEL 2', {font: '32pt pixel', fill: '#fff'});
         selectLevelTwo.setInteractive().on('pointerover', function(event) {
             this.setTint(0xC0C0C0);
-            loreText.setText("This is where level two's text will be");
+            loreText.setText("The monsters are angry and have come for\nrevenge. Be mindful of your elemental combos!");
         });
         selectLevelTwo.setInteractive().on('pointerout', function(event) {
             this.clearTint();
@@ -68,13 +68,25 @@ var MainMenu = new Phaser.Class({
         var lvl3Text = this.add.text(1165, 440, 'LEVEL 3', {font: '32pt pixel', fill: '#fff'});
         selectLevelThree.setInteractive().on('pointerover', function(event) {
             this.setTint(0xC0C0C0);
-            loreText.setText("This is where level three's text will be");
+            loreText.setText("This is the final battle! All the monsters\nhave come to fight. This won't be easy...");
         });
         selectLevelThree.setInteractive().on('pointerout', function(event) {
             this.clearTint();
             loreText.setText("");
         });
         selectLevelThree.setInteractive().on('pointerdown', function() {this.scene.start('LevelThree')}, this);
+
+        // Menu functions for Custom level box
+        var mapCreationBtn = this.add.sprite(100, 35, 'imgMainMenuButton').setInteractive()
+        .on('pointerover', function(event) {
+            mapCreationBtn.setTint(0xC0C0C0);
+            loreText.setText("Create your own custom map!\n**UNDER DEVELOPMENT**");
+        })
+        .on('pointerout', () => mapCreationBtn.clearTint())
+        .on('pointerdown', () => this.scene.start('MapCreation'), this);
+        var mapCreationTxt = this.add.text(60, 20, "CUSTOM", {font: '14pt pixel', fill: '0xffffff'});
+
+
     },
 
     update: function() {

@@ -15,11 +15,16 @@ var livesText;
 var lives = 10;
 var waveText;
 
-var FIRECOST = 3;
-var WATERCOST = 4;
-var WINDCOST = 15;
-var ICECOST = 9;
-var ELECCOST = 6;
+var FIRECOST = 3; //3
+var WATERCOST = 4; // 4
+var WINDCOST = 12; // 15
+var ICECOST = 10; // 9
+var ELECCOST = 6; // 6
+
+var FIRETINT = '0xFF5050';
+var WATERTINT = '0x508DFF';
+var ICETINT = '0x00FFE8';
+var ELECTINT = '0xFFF450';
 
 var path;
 
@@ -80,13 +85,15 @@ var LevelTwo = new Phaser.Class({
     create: function() {
         //this.add.text(20, 20, "Level Two");
         gameGold = 10;
+        lives = 10;
         this.add.text(20, 35, "curBut: ");
         var currentBtn = this.add.text(100, 35, "None");
 
-        var mainMenuButton = this.add.sprite(1500, 50, 'imgMainMenuButton').setInteractive()
+        var mainMenuButton = this.add.sprite(1510, 35, 'imgMainMenuButton').setInteractive()
         .on('pointerover', () => mainMenuButton.setTint(0xC0C0C0))
         .on('pointerout', () => mainMenuButton.clearTint())
         .on('pointerdown', () => this.scene.start('MainMenu'), this);
+        var mainMenuTxt = this.add.text(1465, 20, "MAIN MENU", {font: '14pt pixel', fill: '0xffffff'});
 
         var bottomUI = this.add.sprite(950, 825, 'imgBottomUI').setInteractive();
         bottomUI.depth = -1;
@@ -95,7 +102,7 @@ var LevelTwo = new Phaser.Class({
         var gameStatsBG = this.add.sprite(150, 75, 'imgGameStatsBG').setInteractive();
         gameStatsBG.depth = -1;
         goldText = this.add.text(45, 25, "GOLD : " + gameGold, {font: '14pt pixel', fill: '0xffffff'});
-        livesText = this.add.text(45, 60, "LIVES : 10",{font: '14pt pixel', fill: '0xffffff'});
+        livesText = this.add.text(45, 60, "LIVES : " + lives,{font: '14pt pixel', fill: '0xffffff'});
         waveText = this.add.text(45, 95, "WAVE : 1",{font: '14pt pixel', fill: '0xffffff'});
         var gameStatsCtn = this.add.container(0, 0);
         gameStatsCtn.add(gameStatsBG);
@@ -356,7 +363,7 @@ var LevelTwo = new Phaser.Class({
                         sellText.setText("SELL");
                     });
                 });
-                gameGold -= windTower.cost;
+                gameGold -= WINDCOST;
                 curBut = 'None';
             }
             else if (curBut == 'iceTower' && (gameGold - ICECOST >= 0)) {
@@ -478,10 +485,16 @@ var LevelTwo = new Phaser.Class({
         })
 
         bullets = this.physics.add.group({classType: Bullet, runChildUpdate: true});
+        
         this.physics.add.overlap(enemies, bullets, damageEnemy);
         this.physics.add.overlap(enemies2, bullets, damageEnemy);
         this.physics.add.overlap(enemies3, bullets, damageEnemy);
-
+        this.physics.add.overlap(enemies4, bullets, damageEnemy);
+        this.physics.add.overlap(enemies5, bullets, damageEnemy);
+        this.physics.add.overlap(enemies6, bullets, damageEnemy);
+        this.physics.add.overlap(enemies7, bullets, damageEnemy);
+        this.physics.add.overlap(enemies8, bullets, damageEnemy);
+        this.physics.add.overlap(enemies9, bullets, damageEnemy);
     },
 
     update: function(time, delta) {
@@ -863,11 +876,99 @@ function getEnemy9(x, y, distance) {
 
 
 function damageEnemy(enemy, bullet) {  
+    var damage = bullet.dmg;
     if (enemy.active === true && bullet.active === true) {
         if(bullet.element != 'Fire' && bullet.element != 'Wind') {
+            // remove bullet sprite
             bullet.consume();
+
+            // Ice reactions
+            if(bullet.element == 'Ice') {
+                if(enemy.status != 'Water' || enemy.status != 'Fire' || enemy.status != 'Electric' || enemy.status != 'Stun') {
+                    enemy.slow();
+                    enemy.setStatus('Ice', ICETINT);
+                }
+                else if (enemy.status == 'Water') {
+                    enemy.freeze();
+                    enemy.setStatus('Ice', ICETINT);
+                }
+                else  if (enemy.status == 'Fire') {
+                    damage *= 3;
+                    enemy.setStatus('None', '0xffffff');
+                }
+                else  if (enemy.status == 'Electric') {
+                    enemy.stun();
+                    enemy.setStatus('Stun', '0xffffff');
+                }
+            }
+
+            // Water reactions
+            if(bullet.element == 'Water') {
+                if(enemy.status != 'Electric' && enemy.status != 'Fire' && enemy.status != 'Ice') {
+                    enemy.setStatus('Water', WATERTINT);
+                }
+                if (enemy.status == 'Ice') {
+                    enemy.freeze();
+                    enemy.setStatus('Ice', ICETINT);
+                }
+                else if (enemy.status == 'Fire') {
+                    damage *= 2;
+                    enemy.setStatus('None', '0xffffff');
+                }
+                else if(enemy.status == 'Electric') {
+                    //
+                }
+            }
+
+            // Electric Reactions
+            if(bullet.element == 'Electric') {
+                if(enemy.status != 'Water' && enemy.status != 'Fire' && enemy.status != 'Ice') {
+                    enemy.setStatus('Electric', ELECTINT);
+                }
+                if(enemy.status == 'Water') {
+                    //
+                }
+                if(enemy.status == 'Fire') {
+                    enemy.stun();
+                    enemy.setStatus('Stun', '0xffffff');
+                }
+                if(enemy.status == 'Ice') {
+                    enemy.stun();
+                    enemy.setStatus('Stun', '0xffffff');
+                }
+                
+            }
+
+            // Wind behavior 
+        } else if(bullet.element == 'Wind'){
+            if(((bullet.x > enemy.x) && (bullet.y < enemy.y)) || ((bullet.x >= enemy.x) && (bullet.y >= enemy.y))) {
+                enemy.pull();
+                enemy.setStatus('None', '0xffffff');
+            }
+            else if(((bullet.x < enemy.x) && (bullet.y > enemy.y)) || ((bullet.x <= enemy.x) && (bullet.y <= enemy.y))) {
+                enemy.push();
+                enemy.setStatus('None', '0xffffff');
+            }
+
+            // Fire reactions
+        } else if(bullet.element == 'Fire') {
+            if(enemy.status != 'Water' && enemy.status != 'Wind' && enemy.status != 'Ice' && enemy.status != 'Electric') {
+                enemy.setStatus('Fire', FIRETINT);
+            }
+            else if(enemy.status == 'Water') {
+                damage *= 2;
+                enemy.setStatus('None', '0xffffff');
+            }
+            else if(enemy.status == 'Ice') {
+                damage *= 3;
+                enemy.setStatus('None', '0xffffff');
+            }
+            else if(enemy.status == 'Electric') {
+                damage *=1.5;
+                enemy.setStatus('None', '0xffffff');
+            }
         }
-        enemy.receiveDamage(bullet.dmg);
+        enemy.receiveDamage(damage);
     }
 }
 
@@ -890,11 +991,10 @@ var Enemy = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('wraithEnemyEasy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.bounty = 3;
+        this.bounty = 1;
         this.hp = 0;
         this.status = 'None';
         this.speed = 1/30000;
-
     },
     startOnPath: function ()
     {
@@ -909,17 +1009,47 @@ var Enemy = new Phaser.Class({
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
         
     },
+    setStatus: function(status, tint) {
+        this.status = status;
+        this.setTint(tint);
+    },
     restoreSpeed: function() {
-        this.speed = 1/100000;
+        this.speed = 1/30000;
     },
     push: function() {
-        this.speed = 1/10000;
+        var that = this;
+        that.speed = 1/10000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     pull: function() {
-        this.speed = -1/100000;
+        var that = this;
+        that.speed = -1/20000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     stun: function() {
-        this.speed = 0;
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 2000);
+    },
+    slow: function() {
+        var that = this;
+        that.speed = 1/45000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 1000);
+    },
+    freeze: function() {
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 3000);
     },
 
     place: function(i, j) {
@@ -966,7 +1096,7 @@ var Enemy2 = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('golemEnemyEasy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.bounty = 10;
+        this.bounty = 2;
         this.hp = 0;
         this.status = 'None';
         this.speed = 1/25000;
@@ -985,22 +1115,47 @@ var Enemy2 = new Phaser.Class({
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
         
     },
+    setStatus: function(status, tint) {
+        this.status = status;
+        this.setTint(tint);
+    },
     restoreSpeed: function() {
-        this.speed = 1/100000;
+        this.speed = 1/30000;
     },
     push: function() {
-        this.speed = 1/10000;
+        var that = this;
+        that.speed = 1/10000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     pull: function() {
-        this.speed = -1/100000;
+        var that = this;
+        that.speed = -1/20000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     stun: function() {
-        this.speed = 0;
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 2000);
     },
-
-    place: function(i, j) {
-        this.x = i;
-        this.y = j;
+    slow: function() {
+        var that = this;
+        that.speed = 1/45000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 1000);
+    },
+    freeze: function() {
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 3000);
     },
 
     receiveDamage: function(damage) {
@@ -1042,7 +1197,7 @@ var Enemy3 = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('minotaurEnemyEasy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.bounty = 15;
+        this.bounty = 3;
         this.hp = 0;
         this.status = 'None';
         this.speed = 1/25000;
@@ -1061,22 +1216,47 @@ var Enemy3 = new Phaser.Class({
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
         
     },
+    setStatus: function(status, tint) {
+        this.status = status;
+        this.setTint(tint);
+    },
     restoreSpeed: function() {
-        this.speed = 1/100000;
+        this.speed = 1/30000;
     },
     push: function() {
-        this.speed = 1/10000;
+        var that = this;
+        that.speed = 1/10000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     pull: function() {
-        this.speed = -1/100000;
+        var that = this;
+        that.speed = -1/20000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     stun: function() {
-        this.speed = 0;
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 2000);
     },
-
-    place: function(i, j) {
-        this.x = i;
-        this.y = j;
+    slow: function() {
+        var that = this;
+        that.speed = 1/45000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 1000);
+    },
+    freeze: function() {
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 3000);
     },
 
     receiveDamage: function(damage) {
@@ -1118,7 +1298,7 @@ var Enemy4 = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('wraithEnemyMedium');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.bounty = 15;
+        this.bounty = 4;
         this.hp = 0;
         this.status = 'None';
         this.speed = 1/25000;
@@ -1137,22 +1317,47 @@ var Enemy4 = new Phaser.Class({
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
         
     },
+    setStatus: function(status, tint) {
+        this.status = status;
+        this.setTint(tint);
+    },
     restoreSpeed: function() {
-        this.speed = 1/100000;
+        this.speed = 1/30000;
     },
     push: function() {
-        this.speed = 1/10000;
+        var that = this;
+        that.speed = 1/10000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     pull: function() {
-        this.speed = -1/100000;
+        var that = this;
+        that.speed = -1/20000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     stun: function() {
-        this.speed = 0;
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 2000);
     },
-
-    place: function(i, j) {
-        this.x = i;
-        this.y = j;
+    slow: function() {
+        var that = this;
+        that.speed = 1/45000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 1000);
+    },
+    freeze: function() {
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 3000);
     },
 
     receiveDamage: function(damage) {
@@ -1194,7 +1399,7 @@ var Enemy5 = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('golemEnemyMedium');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.bounty = 15;
+        this.bounty = 5;
         this.hp = 0;
         this.status = 'None';
         this.speed = 1/20000;
@@ -1213,22 +1418,47 @@ var Enemy5 = new Phaser.Class({
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
         
     },
+    setStatus: function(status, tint) {
+        this.status = status;
+        this.setTint(tint);
+    },
     restoreSpeed: function() {
-        this.speed = 1/100000;
+        this.speed = 1/30000;
     },
     push: function() {
-        this.speed = 1/10000;
+        var that = this;
+        that.speed = 1/10000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     pull: function() {
-        this.speed = -1/100000;
+        var that = this;
+        that.speed = -1/20000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     stun: function() {
-        this.speed = 0;
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 2000);
     },
-
-    place: function(i, j) {
-        this.x = i;
-        this.y = j;
+    slow: function() {
+        var that = this;
+        that.speed = 1/45000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 1000);
+    },
+    freeze: function() {
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 3000);
     },
 
     receiveDamage: function(damage) {
@@ -1270,7 +1500,7 @@ var Enemy6 = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('minotaurEnemyMedium');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.bounty = 15;
+        this.bounty = 6;
         this.hp = 0;
         this.status = 'None';
         this.speed = 1/20000;
@@ -1289,22 +1519,47 @@ var Enemy6 = new Phaser.Class({
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
         
     },
+    setStatus: function(status, tint) {
+        this.status = status;
+        this.setTint(tint);
+    },
     restoreSpeed: function() {
-        this.speed = 1/100000;
+        this.speed = 1/30000;
     },
     push: function() {
-        this.speed = 1/10000;
+        var that = this;
+        that.speed = 1/10000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     pull: function() {
-        this.speed = -1/100000;
+        var that = this;
+        that.speed = -1/20000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     stun: function() {
-        this.speed = 0;
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 2000);
     },
-
-    place: function(i, j) {
-        this.x = i;
-        this.y = j;
+    slow: function() {
+        var that = this;
+        that.speed = 1/45000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 1000);
+    },
+    freeze: function() {
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 3000);
     },
 
     receiveDamage: function(damage) {
@@ -1346,7 +1601,7 @@ var Enemy7 = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('wraithEnemyHard');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.bounty = 15;
+        this.bounty = 7;
         this.hp = 0;
         this.status = 'None';
         this.speed = 1/15000;
@@ -1365,22 +1620,47 @@ var Enemy7 = new Phaser.Class({
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
         
     },
+    setStatus: function(status, tint) {
+        this.status = status;
+        this.setTint(tint);
+    },
     restoreSpeed: function() {
-        this.speed = 1/100000;
+        this.speed = 1/30000;
     },
     push: function() {
-        this.speed = 1/10000;
+        var that = this;
+        that.speed = 1/10000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     pull: function() {
-        this.speed = -1/100000;
+        var that = this;
+        that.speed = -1/20000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     stun: function() {
-        this.speed = 0;
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 2000);
     },
-
-    place: function(i, j) {
-        this.x = i;
-        this.y = j;
+    slow: function() {
+        var that = this;
+        that.speed = 1/45000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 1000);
+    },
+    freeze: function() {
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 3000);
     },
 
     receiveDamage: function(damage) {
@@ -1422,7 +1702,7 @@ var Enemy8 = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('golemEnemyHard');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.bounty = 15;
+        this.bounty = 8;
         this.hp = 0;
         this.status = 'None';
         this.speed = 1/15000;
@@ -1441,22 +1721,47 @@ var Enemy8 = new Phaser.Class({
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
         
     },
+    setStatus: function(status, tint) {
+        this.status = status;
+        this.setTint(tint);
+    },
     restoreSpeed: function() {
-        this.speed = 1/100000;
+        this.speed = 1/30000;
     },
     push: function() {
-        this.speed = 1/10000;
+        var that = this;
+        that.speed = 1/10000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     pull: function() {
-        this.speed = -1/100000;
+        var that = this;
+        that.speed = -1/20000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     stun: function() {
-        this.speed = 0;
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 2000);
     },
-
-    place: function(i, j) {
-        this.x = i;
-        this.y = j;
+    slow: function() {
+        var that = this;
+        that.speed = 1/45000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 1000);
+    },
+    freeze: function() {
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 3000);
     },
 
     receiveDamage: function(damage) {
@@ -1498,7 +1803,7 @@ var Enemy9 = new Phaser.Class({
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
         this.setTexture('minotaurEnemyHard');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.bounty = 15;
+        this.bounty = 9;
         this.hp = 0;
         this.status = 'None';
         this.speed = 1/15000;
@@ -1517,22 +1822,47 @@ var Enemy9 = new Phaser.Class({
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
         
     },
+    setStatus: function(status, tint) {
+        this.status = status;
+        this.setTint(tint);
+    },
     restoreSpeed: function() {
-        this.speed = 1/100000;
+        this.speed = 1/30000;
     },
     push: function() {
-        this.speed = 1/10000;
+        var that = this;
+        that.speed = 1/10000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     pull: function() {
-        this.speed = -1/100000;
+        var that = this;
+        that.speed = -1/20000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 500);
     },
     stun: function() {
-        this.speed = 0;
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 2000);
     },
-
-    place: function(i, j) {
-        this.x = i;
-        this.y = j;
+    slow: function() {
+        var that = this;
+        that.speed = 1/45000;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 1000);
+    },
+    freeze: function() {
+        var that = this;
+        that.speed = 0;
+        setTimeout(function() {
+            that.restoreSpeed();
+        }, 3000);
     },
 
     receiveDamage: function(damage) {
@@ -1563,8 +1893,14 @@ var Enemy9 = new Phaser.Class({
 
 });
 
-
-
+/***************************
+TOWER CLASSES
+FIRE
+WATER
+WIND
+ICE
+ELECTRIC
+****************************/
 var FireTower = new Phaser.Class ({
     Extends: Phaser.GameObjects.Image,
     initialize:
@@ -1639,7 +1975,7 @@ var WaterTower = new Phaser.Class ({
         this.element = 'Water';
         this.level = 1;
         this.range = 200;
-        this.dmg = 1;
+        this.dmg = 3;
         this.upgradeCost = (this.level * 2 * WATERCOST);
         this.sellVal = Math.round((WATERCOST / 2));
     },
@@ -1700,9 +2036,9 @@ var WindTower = new Phaser.Class ({
         this.element = 'Wind';
         this.level = 1;
         this.range = 200;
-        this.dmg = 0;
-        this.upgradeCost = (this.level * 2 * WATERCOST);
-        this.sellVal = Math.round((WATERCOST / 2));
+        this.dmg = 1;
+        this.upgradeCost = (this.level * 2 * WINDCOST);
+        this.sellVal = Math.round((WINDCOST / 2));
     },
 
     place: function(i, j) {
@@ -1715,8 +2051,8 @@ var WindTower = new Phaser.Class ({
             this.level++;
             this.range += 50;
             this.dmg *= 2;
-            this.upgradeCost = (this.level * 2 * WATERCOST);
-            this.sellVal = Math.round((this.level * WATERCOST) / 2);
+            this.upgradeCost = (this.level * 2 * WINDCOST);
+            this.sellVal = Math.round((this.level * WINDCOST) / 2);
         }
     },
 
@@ -1743,7 +2079,7 @@ var WindTower = new Phaser.Class ({
     update: function(time, delta) {
         if(time > this.nextTic) {
             this.fire();
-            this.nextTic = time + 1000;
+            this.nextTic = time + 4000;
         }
     }
 });
@@ -1762,8 +2098,8 @@ var IceTower = new Phaser.Class ({
         this.level = 1;
         this.range = 200;
         this.dmg = 5;
-        this.upgradeCost = (this.level * 2 * WATERCOST);
-        this.sellVal = Math.round((WATERCOST / 2));
+        this.upgradeCost = (this.level * 2 * ICECOST);
+        this.sellVal = Math.round((ICECOST / 2));
     },
 
     place: function(i, j) {
@@ -1776,8 +2112,8 @@ var IceTower = new Phaser.Class ({
             this.level++;
             this.range += 50;
             this.dmg *= 2;
-            this.upgradeCost = (this.level * 2 * WATERCOST);
-            this.sellVal = Math.round((this.level * WATERCOST) / 2);
+            this.upgradeCost = (this.level * 2 * ICECOST);
+            this.sellVal = Math.round((this.level * ICECOST) / 2);
         }
     },
 
@@ -1823,8 +2159,8 @@ var ElecTower = new Phaser.Class ({
         this.level = 1;
         this.range = 200;
         this.dmg = 5;
-        this.upgradeCost = (this.level * 2 * WATERCOST);
-        this.sellVal = Math.round((WATERCOST / 2));
+        this.upgradeCost = (this.level * 2 * ELECCOST);
+        this.sellVal = Math.round((ELECCOST / 2));
     },
 
     place: function(i, j) {
@@ -1837,8 +2173,8 @@ var ElecTower = new Phaser.Class ({
             this.level++;
             this.range += 50;
             this.dmg *= 2;
-            this.upgradeCost = (this.level * 2 * WATERCOST);
-            this.sellVal = Math.round((this.level * WATERCOST) / 2);
+            this.upgradeCost = (this.level * 2 * ELECCOST);
+            this.sellVal = Math.round((this.level * ELECCOST) / 2);
         }
     },
 
@@ -1870,6 +2206,12 @@ var ElecTower = new Phaser.Class ({
     }
 });
 
+
+/********************************************
+BULLET CLASS
+CONSTRUCTOR ALLOWS DYNAMIC ELEMENTAL CHANGES
+*********************************************/
+
 var Bullet = new Phaser.Class ({
     Extends: Phaser.GameObjects.Image,
     initialize:
@@ -1889,30 +2231,34 @@ var Bullet = new Phaser.Class ({
 
         if(this.element == 'Fire') {
             this.setTexture('imgFireBullet');
+            this.speed = Phaser.Math.GetSpeed(300, 1);
         }
         if(this.element == 'Water') {
             this.setTexture('imgWaterBullet');
+            this.speed = Phaser.Math.GetSpeed(600, 1);
         }
         if(this.element == 'Wind') {
             this.setTexture('imgWindBullet');
+            this.speed = Phaser.Math.GetSpeed(400, 1);
         }
         if(this.element == 'Ice') {
             this.setTexture('imgIceBullet');
+            this.speed = Phaser.Math.GetSpeed(500, 1);
         }
         if(this.element == 'Electric') {
             this.setTexture('imgElecBullet');
+            this.speed = Phaser.Math.GetSpeed(600, 1);
         }
 
         this.setActive(true);
         this.setVisible(true);
-        //  Bullets fire from the middle of the screen to the given x/y
         this.setPosition(x, y);
 
         this.dx = Math.cos(angle);
         this.dy = Math.sin(angle);
         this.setRotation(angle);
 
-        this.lifespan = 500;
+        this.lifespan = 600;
     },
 
     consume: function(){
@@ -1931,19 +2277,5 @@ var Bullet = new Phaser.Class ({
             this.setActive(false);
             this.setVisible(false);
         }
-    }
-});
-
-var StatsMenu = new Phaser.Class ({
-    Extends: Phaser.GameObjects.Container,
-    initialize:
-
-    function StatsMenu (scene, x, y) {
-        Phaser.GameObjects.Container.call(this, scene, 0, 0);
-        scene.add.rectangle(0, 0, 0, 35, 0x00AAFF);
-
-    },
-
-    update: function(time, delta) {
     }
 });
