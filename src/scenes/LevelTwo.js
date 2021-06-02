@@ -54,6 +54,7 @@ var LevelTwo = new Phaser.Class({
     },
     
     preload: function() {
+        this.load.image('imgGrass', 'src/assets/backgrounds/imgGrass.jpg');
         this.load.image('imgMainMenuButton', 'src/assets/imgMainMenuButton.png');
         this.load.image('imgFireTower', 'src/assets/towers/fireTower.png');
         this.load.image('imgWaterTower', 'src/assets/towers/waterTower.png');
@@ -95,6 +96,10 @@ var LevelTwo = new Phaser.Class({
         .on('pointerdown', () => this.scene.start('MainMenu'), this);
         var mainMenuTxt = this.add.text(1465, 20, "MAIN MENU", {font: '14pt pixel', fill: '0xffffff'});
 
+        this.background = this.add.sprite(0, 0, "imgGrass");
+        this.background.setOrigin(0, 0);
+        this.background.depth = -3;
+
         var bottomUI = this.add.sprite(950, 825, 'imgBottomUI').setInteractive();
         bottomUI.depth = -1;
         
@@ -110,6 +115,7 @@ var LevelTwo = new Phaser.Class({
         gameStatsCtn.add(livesText);
         gameStatsCtn.add(waveText);
 
+        // Tower stats container
         var towerStatsCtn = this.add.container(150,825);
         var towerStatsBG = this.add.sprite(0, 0, 'imgTowerStatsBG').setInteractive();
         var upgradeButton = this.add.sprite(-115, 45, 'imgUpgrade').setInteractive()

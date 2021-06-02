@@ -18,6 +18,9 @@ var SplashScreen = new Phaser.Class({
     create: function ()
     {
         this.add.text(550, 225, "ELEMENT JS TD", {font: '64px pixel', fill: '#000000'});
+        
+        level2unlock = false;
+        level3unlock = false;
 
         //this.background = this.add.tileSprite(0,0, config.width, config.height, "imgBackground");
         this.background = this.add.tileSprite(0, 0, 1600, 900, "imgSplashBG");
