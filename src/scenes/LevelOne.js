@@ -7,6 +7,9 @@ var enemies;
 var enemies2;
 var enemies3;
 var bullets;
+var rocks;
+var trees;
+
 var curBut ='None';
 
 var goldText;
@@ -41,8 +44,8 @@ var wave8 = 40;
 var wave9 = 45;
 var wave10 = 50;
 
-var pointsX = [200, 300, 456, 640, 900, 1200, 1600];
-var pointsY = [300, 350, 456, 480, 300, 500, 450];
+var pointsX = [0, 100, 100, 400, 400, 650, 650, 900, 900, 1200, 1200, 1400, 1400, 1600];
+var pointsY = [450, 450, 350, 350, 600, 600, 100, 100, 650, 650, 250, 250, 450, 450];
 
 var LevelOne = new Phaser.Class({
     Extends: Phaser.Scene,
@@ -81,6 +84,16 @@ var LevelOne = new Phaser.Class({
         this.load.image('minotaurEnemyEasy', 'src/assets/enemies/minotaurEasy.png');
         this.load.image('minotaurEnemyMedium', 'src/assets/enemies/minotaurMedium.png');
         this.load.image('minotaurEnemyHard', 'src/assets/enemies/minotaurHard.png');
+        this.load.image('pathTextureA', 'src/assets/Map/path_base.png');
+        this.load.image('pathTextureB', 'src/assets/Map/path_top.png');
+        this.load.image('rock1', 'src/assets/Map/rock_1.png');
+        this.load.image('rock2', 'src/assets/Map/rock_2.png');
+        this.load.image('rock3', 'src/assets/Map/rock_3.png');
+        this.load.image('rock4', 'src/assets/Map/rock_4.png');
+        this.load.image('rock5', 'src/assets/Map/rock_5.png');
+        this.load.image('tree1', 'src/assets/Map/tree_1.png');
+        this.load.image('tree2', 'src/assets/Map/tree_2.png');
+        this.load.image('tree3', 'src/assets/Map/tree_3.png');
     },
 
     create: function() {
@@ -251,6 +264,9 @@ var LevelOne = new Phaser.Class({
         enemies7 = this.physics.add.group({classType: Enemy7, runChildUpdate: true});
         enemies8 = this.physics.add.group({classType: Enemy8, runChildUpdate: true});
         enemies9 = this.physics.add.group({classType: Enemy9, runChildUpdate: true});
+        rocks = this.add.group({classType: Rock, runChildUpdate: true});
+        trees = this.add.group({classType: Tree, runChildUpdate: true});
+
         var fireCursor = this.add.image(0, 0, 'imgFireTower').setVisible(false);
         var waterCursor = this.add.image(0, 0, 'imgWaterTower').setVisible(false);
         var windCursor = this.add.image(0, 0, 'imgWindTower').setVisible(false);
@@ -258,6 +274,14 @@ var LevelOne = new Phaser.Class({
         var elecCursor = this.add.image(0, 0, 'imgElecTower').setVisible(false);
 
         this.nextEnemy = 0;
+
+        var rock1 = rocks.get();
+        rock1.place(500, 500);
+        rock1.setInteractive();
+
+        var tree1 = trees.get();
+        tree1.place(600, 500);
+        tree1.setInteractive();
 
         this.input.on('pointerdown', function (pointer, gameObjects) {
             if(curBut == 'None' || gameObjects.length > 0) {
@@ -2283,4 +2307,40 @@ var Bullet = new Phaser.Class ({
             this.setVisible(false);
         }
     }
+});
+
+var Tree = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+    initialize:
+
+    function Tree (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setPosition(x, y);
+        this.setTexture('tree1');
+        this.setScale(.5);
+        this.setDepth(-1);
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+});
+
+var Rock = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+    initialize:
+
+    function Rock (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setPosition(x, y);
+        this.setTexture('rock1');
+        this.setScale(1);
+        this.setDepth(-1);
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
 });
