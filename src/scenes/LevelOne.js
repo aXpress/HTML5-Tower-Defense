@@ -6,6 +6,12 @@ var elecTowers;
 var enemies;
 var enemies2;
 var enemies3;
+var enemies4;
+var enemies5;
+var enemies6;
+var enemies7;
+var enemies8;
+var enemies9;
 var bullets;
 var rocks;
 var trees;
@@ -2024,6 +2030,12 @@ var FireTower = new Phaser.Class ({
         var enemy = getEnemy(this.x, this.y, this.range);
         var enemy2 = getEnemy2(this.x, this.y, this.range);
         var enemy3 = getEnemy3(this.x, this.y, this.range);
+        var enemy4 = getEnemy4(this.x, this.y, this.range);
+        var enemy5 = getEnemy5(this.x, this.y, this.range);
+        var enemy6 = getEnemy6(this.x, this.y, this.range);
+        var enemy7 = getEnemy7(this.x, this.y, this.range);
+        var enemy8 = getEnemy8(this.x, this.y, this.range);
+        var enemy9 = getEnemy9(this.x, this.y, this.range);
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
             addBullet(this.x, this.y, angle, 'Fire', this.dmg);
@@ -2035,6 +2047,36 @@ var FireTower = new Phaser.Class ({
         }
 
         if(enemy3) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Fire', this.dmg);
+        }
+
+        if(enemy4) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Fire', this.dmg);
+        }
+
+        if(enemy5) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Fire', this.dmg);
+        }
+
+        if(enemy6) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Fire', this.dmg);
+        }
+
+        if(enemy7) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Fire', this.dmg);
+        }
+
+        if(enemy8) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Fire', this.dmg);
+        }
+
+        if(enemy9) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
             addBullet(this.x, this.y, angle, 'Fire', this.dmg);
         }
@@ -2085,6 +2127,13 @@ var WaterTower = new Phaser.Class ({
         var enemy = getEnemy(this.x, this.y, this.range);
         var enemy2 = getEnemy2(this.x, this.y, this.range);
         var enemy3 = getEnemy3(this.x, this.y, this.range);
+        var enemy4 = getEnemy4(this.x, this.y, this.range);
+        var enemy5 = getEnemy5(this.x, this.y, this.range);
+        var enemy6 = getEnemy6(this.x, this.y, this.range);
+        var enemy7 = getEnemy7(this.x, this.y, this.range);
+        var enemy8 = getEnemy8(this.x, this.y, this.range);
+        var enemy9 = getEnemy9(this.x, this.y, this.range);
+
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
             addBullet(this.x, this.y, angle, 'Water', this.dmg);
@@ -2096,6 +2145,36 @@ var WaterTower = new Phaser.Class ({
         }
 
         if(enemy3) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Water', this.dmg);
+        }
+
+        if(enemy4) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+            addBullet(this.x, this.y, angle, 'Water', this.dmg);
+        }
+
+        if(enemy5) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy2.x, enemy2.y);
+            addBullet(this.x, this.y, angle, 'Water', this.dmg);
+        }
+
+        if(enemy6) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Water', this.dmg);
+        }
+
+        if(enemy7) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+            addBullet(this.x, this.y, angle, 'Water', this.dmg);
+        }
+
+        if(enemy8) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy2.x, enemy2.y);
+            addBullet(this.x, this.y, angle, 'Water', this.dmg);
+        }
+
+        if(enemy9) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
             addBullet(this.x, this.y, angle, 'Water', this.dmg);
         }
@@ -2146,6 +2225,14 @@ var WindTower = new Phaser.Class ({
         var enemy = getEnemy(this.x, this.y, this.range);
         var enemy2 = getEnemy2(this.x, this.y, this.range);
         var enemy3 = getEnemy3(this.x, this.y, this.range);
+        var enemy4 = getEnemy3(this.x, this.y, this.range);
+        var enemy5 = getEnemy3(this.x, this.y, this.range);
+        var enemy6 = getEnemy3(this.x, this.y, this.range);
+        var enemy7 = getEnemy3(this.x, this.y, this.range);
+        var enemy8 = getEnemy3(this.x, this.y, this.range);
+        var enemy3 = getEnemy3(this.x, this.y, this.range);
+        var enemy3 = getEnemy3(this.x, this.y, this.range);
+
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
             addBullet(this.x, this.y, angle, 'Wind', this.dmg);
@@ -2157,6 +2244,36 @@ var WindTower = new Phaser.Class ({
         }
 
         if(enemy3) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Wind', this.dmg);
+        }
+
+        if(enemy4) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+            addBullet(this.x, this.y, angle, 'Wind', this.dmg);
+        }
+
+        if(enemy5) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy2.x, enemy2.y);
+            addBullet(this.x, this.y, angle, 'Wind', this.dmg);
+        }
+
+        if(enemy6) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Wind', this.dmg);
+        }
+
+        if(enemy7) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+            addBullet(this.x, this.y, angle, 'Wind', this.dmg);
+        }
+
+        if(enemy8) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy2.x, enemy2.y);
+            addBullet(this.x, this.y, angle, 'Wind', this.dmg);
+        }
+
+        if(enemy9) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
             addBullet(this.x, this.y, angle, 'Wind', this.dmg);
         }
@@ -2207,6 +2324,13 @@ var IceTower = new Phaser.Class ({
         var enemy = getEnemy(this.x, this.y, this.range);
         var enemy2 = getEnemy2(this.x, this.y, this.range);
         var enemy3 = getEnemy3(this.x, this.y, this.range);
+        var enemy4 = getEnemy3(this.x, this.y, this.range);
+        var enemy5 = getEnemy3(this.x, this.y, this.range);
+        var enemy6 = getEnemy3(this.x, this.y, this.range);
+        var enemy7 = getEnemy3(this.x, this.y, this.range);
+        var enemy8 = getEnemy3(this.x, this.y, this.range);
+        var enemy9 = getEnemy3(this.x, this.y, this.range);
+
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
             addBullet(this.x, this.y, angle, 'Ice', this.dmg);
@@ -2218,6 +2342,36 @@ var IceTower = new Phaser.Class ({
         }
 
         if(enemy3) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Ice', this.dmg);
+        }
+
+        if(enemy4) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+            addBullet(this.x, this.y, angle, 'Ice', this.dmg);
+        }
+
+        if(enemy5) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy2.x, enemy2.y);
+            addBullet(this.x, this.y, angle, 'Ice', this.dmg);
+        }
+
+        if(enemy6) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Ice', this.dmg);
+        }
+
+        if(enemy7) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+            addBullet(this.x, this.y, angle, 'Ice', this.dmg);
+        }
+
+        if(enemy8) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy2.x, enemy2.y);
+            addBullet(this.x, this.y, angle, 'Ice', this.dmg);
+        }
+
+        if(enemy9) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
             addBullet(this.x, this.y, angle, 'Ice', this.dmg);
         }
@@ -2268,6 +2422,13 @@ var ElecTower = new Phaser.Class ({
         var enemy = getEnemy(this.x, this.y, this.range);
         var enemy2 = getEnemy2(this.x, this.y, this.range);
         var enemy3 = getEnemy3(this.x, this.y, this.range);
+        var enemy4 = getEnemy3(this.x, this.y, this.range);
+        var enemy5 = getEnemy3(this.x, this.y, this.range);
+        var enemy6 = getEnemy3(this.x, this.y, this.range);
+        var enemy7 = getEnemy3(this.x, this.y, this.range);
+        var enemy8 = getEnemy3(this.x, this.y, this.range);
+        var enemy9 = getEnemy3(this.x, this.y, this.range);
+
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
             addBullet(this.x, this.y, angle, 'Electric', this.dmg);
@@ -2279,6 +2440,36 @@ var ElecTower = new Phaser.Class ({
         }
 
         if(enemy3) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Electric', this.dmg);
+        }
+
+        if(enemy4) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+            addBullet(this.x, this.y, angle, 'Electric', this.dmg);
+        }
+
+        if(enemy5) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy2.x, enemy2.y);
+            addBullet(this.x, this.y, angle, 'Electric', this.dmg);
+        }
+
+        if(enemy6) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            addBullet(this.x, this.y, angle, 'Electric', this.dmg);
+        }
+
+        if(enemy7) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+            addBullet(this.x, this.y, angle, 'Electric', this.dmg);
+        }
+
+        if(enemy8) {
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy2.x, enemy2.y);
+            addBullet(this.x, this.y, angle, 'Electric', this.dmg);
+        }
+
+        if(enemy9) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
             addBullet(this.x, this.y, angle, 'Electric', this.dmg);
         }
