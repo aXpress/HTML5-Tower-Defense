@@ -23,9 +23,18 @@ var ELECCOST = 6;
 
 var path;
 
+var curWave = 1;
+
 var wave1 = 5;
 var wave2 = 10;
 var wave3 = 15;
+var wave4 = 20;
+var wave5 = 25;
+var wave6 = 30;
+var wave7 = 35;
+var wave8 = 40;
+var wave9 = 45;
+var wave10 = 50;
 
 var pointsX = [200, 300, 456, 640, 1600];
 var pointsY = [300, 350, 456, 480, 450];
@@ -57,9 +66,15 @@ var LevelTwo = new Phaser.Class({
         this.load.image('imgTowerStatsBG', 'src/assets/imgTowerStatsBG.png');
         this.load.image('imgUpgrade', 'src/assets/imgUpgrade.png');
         this.load.image('imgSell', 'src/assets/imgSell.png');
-        this.load.image('wraithEnemy', 'src/assets/enemies/wraith.png');
-        this.load.image('golemEnemy', 'src/assets/enemies/golem.png');
-        this.load.image('minotaurEnemy', 'src/assets/enemies/minotaur.png');
+        this.load.image('wraithEnemyEasy', 'src/assets/enemies/wraithEasy.png');
+        this.load.image('wraithEnemyMedium', 'src/assets/enemies/wraithMedium.png');
+        this.load.image('wraithEnemyHard', 'src/assets/enemies/wraithHard.png');
+        this.load.image('golemEnemyEasy', 'src/assets/enemies/golemEasy.png');
+        this.load.image('golemEnemyMedium', 'src/assets/enemies/golemMedium.png');
+        this.load.image('golemEnemyHard', 'src/assets/enemies/golemHard.png');
+        this.load.image('minotaurEnemyEasy', 'src/assets/enemies/minotaurEasy.png');
+        this.load.image('minotaurEnemyMedium', 'src/assets/enemies/minotaurMedium.png');
+        this.load.image('minotaurEnemyHard', 'src/assets/enemies/minotaurHard.png');
     },
 
     create: function() {
@@ -218,6 +233,12 @@ var LevelTwo = new Phaser.Class({
         enemies = this.physics.add.group({classType: Enemy, runChildUpdate: true});
         enemies2 = this.physics.add.group({classType: Enemy2, runChildUpdate: true});
         enemies3 = this.physics.add.group({classType: Enemy3, runChildUpdate: true});
+        enemies4 = this.physics.add.group({classType: Enemy4, runChildUpdate: true});
+        enemies5 = this.physics.add.group({classType: Enemy5, runChildUpdate: true});
+        enemies6 = this.physics.add.group({classType: Enemy6, runChildUpdate: true});
+        enemies7 = this.physics.add.group({classType: Enemy7, runChildUpdate: true});
+        enemies8 = this.physics.add.group({classType: Enemy8, runChildUpdate: true});
+        enemies9 = this.physics.add.group({classType: Enemy9, runChildUpdate: true});
         var fireCursor = this.add.image(0, 0, 'imgFireTower').setVisible(false);
         var waterCursor = this.add.image(0, 0, 'imgWaterTower').setVisible(false);
         var windCursor = this.add.image(0, 0, 'imgWindTower').setVisible(false);
@@ -492,6 +513,7 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave1--;
+                curWave++;
             }
         }
 
@@ -519,9 +541,8 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave2--;
+                curWave++;
             }
-
-
         }
 
         if (time > this.nextEnemy && wave3 > 0 && wave2 == -1)
@@ -537,6 +558,190 @@ var LevelTwo = new Phaser.Class({
                 wave3--;
             }
         }
+
+        if (wave3 == 0) {
+            var enemy = enemies3.get();
+            if (enemy)
+            {
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 30000;
+                wave3--;
+                curWave++;
+            }
+        }
+
+        if (time > this.nextEnemy && wave4 > 0 && wave3 == -1)
+        {
+            var enemy = enemies4.get();
+            if (enemy)
+            {
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 3000;
+                wave4--;
+            }
+        }
+
+        if (wave4 == 0) {
+            var enemy = enemies4.get();
+            if (enemy)
+            {
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 30000;
+                wave4--;
+                curWave++;
+            }
+        }
+
+        if (time > this.nextEnemy && wave5 > 0 && wave4 == -1)
+        {
+            var enemy = enemies5.get();
+            if (enemy)
+            {
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 3000;
+                wave5--;
+            }
+        }
+
+        if (wave5 == 0) {
+            var enemy = enemies5.get();
+            if (enemy)
+            {
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 30000;
+                wave5--;
+                curWave++;
+            }
+        }
+
+        if (time > this.nextEnemy && wave6 > 0 && wave5 == -1)
+        {
+            var enemy = enemies6.get();
+            if (enemy)
+            {
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 3000;
+                wave6--;
+            }
+        }
+
+        if (wave6 == 0) {
+            var enemy = enemies6.get();
+            if (enemy)
+            {
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 30000;
+                wave6--;
+                curWave++;
+            }
+        }
+
+        if (time > this.nextEnemy && wave7 > 0 && wave6 == -1)
+        {
+            var enemy = enemies7.get();
+            if (enemy)
+            {
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 3000;
+                wave7--;
+            }
+        }
+
+        if (wave7 == 0) {
+            var enemy = enemies7.get();
+            if (enemy)
+            {
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 30000;
+                wave7--;
+                curWave++;
+            }
+        }
+
+        if (time > this.nextEnemy && wave8 > 0 && wave7 == -1)
+        {
+            var enemy = enemies8.get();
+            if (enemy)
+            {
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 3000;
+                wave8--;
+            }
+        }
+
+        if (wave8 == 0) {
+            var enemy = enemies8.get();
+            if (enemy)
+            {
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 30000;
+                wave8--;
+                curWave++;
+            }
+        }
+
+        if (time > this.nextEnemy && wave9 > 0 && wave8 == -1)
+        {
+            var enemy = enemies8.get();
+            if (enemy)
+            {
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 3000;
+                wave9--;
+            }
+        }
+
+        if (wave9 == 0) {
+            var enemy = enemies9.get();
+            if (enemy)
+            {
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 30000;
+                wave8--;
+                curWave++;
+            }
+        }
+
+        waveText.setText("WAVE: " + curWave);
         livesText.setText("LIVES: " + lives);
     },
 })
@@ -566,7 +771,62 @@ function getEnemy3(x, y, distance) {
             return enemyUnits[i];
     }
     return false;
+}
+
+function getEnemy4(x, y, distance) {
+    var enemyUnits = enemies4.getChildren();
+    for(var i = 0; i < enemyUnits.length; i++) {       
+        if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
+            return enemyUnits[i];
+    }
+    return false;
 } 
+
+function getEnemy5(x, y, distance) {
+    var enemyUnits = enemies5.getChildren();
+    for(var i = 0; i < enemyUnits.length; i++) {       
+        if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
+            return enemyUnits[i];
+    }
+    return false;
+} 
+
+function getEnemy6(x, y, distance) {
+    var enemyUnits = enemies6.getChildren();
+    for(var i = 0; i < enemyUnits.length; i++) {       
+        if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
+            return enemyUnits[i];
+    }
+    return false;
+} 
+
+function getEnemy7(x, y, distance) {
+    var enemyUnits = enemies7.getChildren();
+    for(var i = 0; i < enemyUnits.length; i++) {       
+        if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
+            return enemyUnits[i];
+    }
+    return false;
+} 
+
+function getEnemy8(x, y, distance) {
+    var enemyUnits = enemies8.getChildren();
+    for(var i = 0; i < enemyUnits.length; i++) {       
+        if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
+            return enemyUnits[i];
+    }
+    return false;
+} 
+
+function getEnemy9(x, y, distance) {
+    var enemyUnits = enemies9.getChildren();
+    for(var i = 0; i < enemyUnits.length; i++) {       
+        if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
+            return enemyUnits[i];
+    }
+    return false;
+} 
+
 
 function damageEnemy(enemy, bullet) {  
     if (enemy.active === true && bullet.active === true) {
@@ -594,12 +854,12 @@ var Enemy = new Phaser.Class({
     function Enemy (scene)
     {
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
-        this.setTexture('wraithEnemy');
+        this.setTexture('wraithEnemyEasy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.bounty = 3;
         this.hp = 0;
         this.status = 'None';
-        this.speed = 1/100000;
+        this.speed = 1/30000;
 
     },
     startOnPath: function ()
@@ -670,12 +930,12 @@ var Enemy2 = new Phaser.Class({
     function Enemy (scene)
     {
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
-        this.setTexture('golemEnemy');
+        this.setTexture('golemEnemyEasy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.bounty = 10;
         this.hp = 0;
         this.status = 'None';
-        this.speed = 1/100000;
+        this.speed = 1/25000;
 
     },
     startOnPath: function ()
@@ -746,12 +1006,12 @@ var Enemy3 = new Phaser.Class({
     function Enemy (scene)
     {
         Phaser.GameObjects.Image.call(this, scene, 0, 0);
-        this.setTexture('minotaurEnemy');
+        this.setTexture('minotaurEnemyEasy');
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.bounty = 15;
         this.hp = 0;
         this.status = 'None';
-        this.speed = 1/100000;
+        this.speed = 1/250000;
 
     },
     startOnPath: function ()
@@ -812,6 +1072,464 @@ var Enemy3 = new Phaser.Class({
     }
 
 });
+
+var Enemy4 = new Phaser.Class({
+ 
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function Enemy (scene)
+    {
+        Phaser.GameObjects.Image.call(this, scene, 0, 0);
+        this.setTexture('wraithEnemyMedium');
+        this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        this.bounty = 15;
+        this.hp = 0;
+        this.status = 'None';
+        this.speed = 1/25000;
+
+    },
+    startOnPath: function ()
+    {
+        // set the t parameter at the start of the path
+        this.follower.t = 0;
+        this.hp = 1000;
+        
+        // get x and y of the given t point            
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        // set the x and y of our enemy to the received from the previous step
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        
+    },
+    restoreSpeed: function() {
+        this.speed = 1/100000;
+    },
+    push: function() {
+        this.speed = 1/10000;
+    },
+    pull: function() {
+        this.speed = -1/100000;
+    },
+    stun: function() {
+        this.speed = 0;
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+
+    receiveDamage: function(damage) {
+        this.hp -= damage;
+        if(this.hp <= 0) {
+            // this.setActive(false);
+            // this.setVisible(false);
+            this.destroy();
+            gameGold += this.bounty;
+        }
+    },
+    
+    update: function (time, delta)
+    {
+        this.follower.t += this.speed * delta;
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+        if (this.follower.t >= 1)
+        {
+            this.setActive(false);
+            this.setVisible(false);
+            lives--;
+        }
+
+    }
+
+});
+
+var Enemy5 = new Phaser.Class({
+ 
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function Enemy (scene)
+    {
+        Phaser.GameObjects.Image.call(this, scene, 0, 0);
+        this.setTexture('golemEnemyMedium');
+        this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        this.bounty = 15;
+        this.hp = 0;
+        this.status = 'None';
+        this.speed = 1/20000;
+
+    },
+    startOnPath: function ()
+    {
+        // set the t parameter at the start of the path
+        this.follower.t = 0;
+        this.hp = 1000;
+        
+        // get x and y of the given t point            
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        // set the x and y of our enemy to the received from the previous step
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        
+    },
+    restoreSpeed: function() {
+        this.speed = 1/100000;
+    },
+    push: function() {
+        this.speed = 1/10000;
+    },
+    pull: function() {
+        this.speed = -1/100000;
+    },
+    stun: function() {
+        this.speed = 0;
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+
+    receiveDamage: function(damage) {
+        this.hp -= damage;
+        if(this.hp <= 0) {
+            // this.setActive(false);
+            // this.setVisible(false);
+            this.destroy();
+            gameGold += this.bounty;
+        }
+    },
+    
+    update: function (time, delta)
+    {
+        this.follower.t += this.speed * delta;
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+        if (this.follower.t >= 1)
+        {
+            this.setActive(false);
+            this.setVisible(false);
+            lives--;
+        }
+
+    }
+
+});
+
+var Enemy6 = new Phaser.Class({
+ 
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function Enemy (scene)
+    {
+        Phaser.GameObjects.Image.call(this, scene, 0, 0);
+        this.setTexture('minotaurEnemyMedium');
+        this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        this.bounty = 15;
+        this.hp = 0;
+        this.status = 'None';
+        this.speed = 1/20000;
+
+    },
+    startOnPath: function ()
+    {
+        // set the t parameter at the start of the path
+        this.follower.t = 0;
+        this.hp = 1000;
+        
+        // get x and y of the given t point            
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        // set the x and y of our enemy to the received from the previous step
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        
+    },
+    restoreSpeed: function() {
+        this.speed = 1/100000;
+    },
+    push: function() {
+        this.speed = 1/10000;
+    },
+    pull: function() {
+        this.speed = -1/100000;
+    },
+    stun: function() {
+        this.speed = 0;
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+
+    receiveDamage: function(damage) {
+        this.hp -= damage;
+        if(this.hp <= 0) {
+            // this.setActive(false);
+            // this.setVisible(false);
+            this.destroy();
+            gameGold += this.bounty;
+        }
+    },
+    
+    update: function (time, delta)
+    {
+        this.follower.t += this.speed * delta;
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+        if (this.follower.t >= 1)
+        {
+            this.setActive(false);
+            this.setVisible(false);
+            lives--;
+        }
+
+    }
+
+});
+
+var Enemy7 = new Phaser.Class({
+ 
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function Enemy (scene)
+    {
+        Phaser.GameObjects.Image.call(this, scene, 0, 0);
+        this.setTexture('wraithEnemyHard');
+        this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        this.bounty = 15;
+        this.hp = 0;
+        this.status = 'None';
+        this.speed = 1/15000;
+
+    },
+    startOnPath: function ()
+    {
+        // set the t parameter at the start of the path
+        this.follower.t = 0;
+        this.hp = 1000;
+        
+        // get x and y of the given t point            
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        // set the x and y of our enemy to the received from the previous step
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        
+    },
+    restoreSpeed: function() {
+        this.speed = 1/100000;
+    },
+    push: function() {
+        this.speed = 1/10000;
+    },
+    pull: function() {
+        this.speed = -1/100000;
+    },
+    stun: function() {
+        this.speed = 0;
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+
+    receiveDamage: function(damage) {
+        this.hp -= damage;
+        if(this.hp <= 0) {
+            // this.setActive(false);
+            // this.setVisible(false);
+            this.destroy();
+            gameGold += this.bounty;
+        }
+    },
+    
+    update: function (time, delta)
+    {
+        this.follower.t += this.speed * delta;
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+        if (this.follower.t >= 1)
+        {
+            this.setActive(false);
+            this.setVisible(false);
+            lives--;
+        }
+
+    }
+
+});
+
+var Enemy8 = new Phaser.Class({
+ 
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function Enemy (scene)
+    {
+        Phaser.GameObjects.Image.call(this, scene, 0, 0);
+        this.setTexture('golemEnemyHard');
+        this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        this.bounty = 15;
+        this.hp = 0;
+        this.status = 'None';
+        this.speed = 1/15000;
+
+    },
+    startOnPath: function ()
+    {
+        // set the t parameter at the start of the path
+        this.follower.t = 0;
+        this.hp = 1000;
+        
+        // get x and y of the given t point            
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        // set the x and y of our enemy to the received from the previous step
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        
+    },
+    restoreSpeed: function() {
+        this.speed = 1/100000;
+    },
+    push: function() {
+        this.speed = 1/10000;
+    },
+    pull: function() {
+        this.speed = -1/100000;
+    },
+    stun: function() {
+        this.speed = 0;
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+
+    receiveDamage: function(damage) {
+        this.hp -= damage;
+        if(this.hp <= 0) {
+            // this.setActive(false);
+            // this.setVisible(false);
+            this.destroy();
+            gameGold += this.bounty;
+        }
+    },
+    
+    update: function (time, delta)
+    {
+        this.follower.t += this.speed * delta;
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+        if (this.follower.t >= 1)
+        {
+            this.setActive(false);
+            this.setVisible(false);
+            lives--;
+        }
+
+    }
+
+});
+
+var Enemy9 = new Phaser.Class({
+ 
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function Enemy (scene)
+    {
+        Phaser.GameObjects.Image.call(this, scene, 0, 0);
+        this.setTexture('minotaurEnemyHard');
+        this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+        this.bounty = 15;
+        this.hp = 0;
+        this.status = 'None';
+        this.speed = 1/15000;
+
+    },
+    startOnPath: function ()
+    {
+        // set the t parameter at the start of the path
+        this.follower.t = 0;
+        this.hp = 1000;
+        
+        // get x and y of the given t point            
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        // set the x and y of our enemy to the received from the previous step
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        
+    },
+    restoreSpeed: function() {
+        this.speed = 1/100000;
+    },
+    push: function() {
+        this.speed = 1/10000;
+    },
+    pull: function() {
+        this.speed = -1/100000;
+    },
+    stun: function() {
+        this.speed = 0;
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+
+    receiveDamage: function(damage) {
+        this.hp -= damage;
+        if(this.hp <= 0) {
+            // this.setActive(false);
+            // this.setVisible(false);
+            this.destroy();
+            gameGold += this.bounty;
+        }
+    },
+    
+    update: function (time, delta)
+    {
+        this.follower.t += this.speed * delta;
+        path.getPoint(this.follower.t, this.follower.vec);
+        
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+        if (this.follower.t >= 1)
+        {
+            this.setActive(false);
+            this.setVisible(false);
+            lives--;
+        }
+
+    }
+
+});
+
+
 
 var FireTower = new Phaser.Class ({
     Extends: Phaser.GameObjects.Image,
