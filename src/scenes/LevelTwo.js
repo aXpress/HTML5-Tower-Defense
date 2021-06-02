@@ -493,6 +493,7 @@ var LevelTwo = new Phaser.Class({
         if (time > this.nextEnemy && wave1 > 0)
         {
             var enemy = enemies.get();
+
             if (enemy)
             {
                 enemy.setActive(true);
@@ -738,6 +739,39 @@ var LevelTwo = new Phaser.Class({
                 this.nextEnemy = time + 30000;
                 wave8--;
                 curWave++;
+            }
+        }
+
+        if (time > this.nextEnemy && wave10 > 0 && wave9 == -1)
+        {
+            var enemy = enemies7.get();
+            var enemy2 = enemies8.get();
+            var enemy3 = enemies9.get();
+
+            if (enemy)
+            {
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 5000;
+                wave10--;
+            }
+
+            if (enemy2)
+            {
+                enemy2.setActive(true);
+                enemy2.setVisible(true);
+                enemy2.startOnPath();
+                this.nextEnemy = time + 3000;
+            }
+
+            if (enemy3)
+            {
+                enemy3.setActive(true);
+                enemy3.setVisible(true);
+                enemy3.startOnPath();
+                this.nextEnemy = time + 4000;
             }
         }
 
@@ -1011,7 +1045,7 @@ var Enemy3 = new Phaser.Class({
         this.bounty = 15;
         this.hp = 0;
         this.status = 'None';
-        this.speed = 1/250000;
+        this.speed = 1/25000;
 
     },
     startOnPath: function ()
