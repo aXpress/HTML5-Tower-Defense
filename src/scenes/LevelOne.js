@@ -169,6 +169,8 @@ var LevelOne = new Phaser.Class({
         // visualize the path
         path.draw(graphics);
 
+
+
         // Tower selection container
         var towerContainer = this.add.container(450, 850);
         var fireTowerBtn = this.add.rectangle(0, 0, 150, 35, 0xff0000);
@@ -265,7 +267,13 @@ var LevelOne = new Phaser.Class({
         enemies8 = this.physics.add.group({classType: Enemy8, runChildUpdate: true});
         enemies9 = this.physics.add.group({classType: Enemy9, runChildUpdate: true});
         rocks = this.add.group({classType: Rock, runChildUpdate: true});
+        rocks2 = this.add.group({classType: Rock2, runChildUpdate: true});
+        rocks3 = this.add.group({classType: Rock3, runChildUpdate: true});
+        rocks4 = this.add.group({classType: Rock4, runChildUpdate: true});
+        rocks5 = this.add.group({classType: Rock5, runChildUpdate: true});
         trees = this.add.group({classType: Tree, runChildUpdate: true});
+        trees2 = this.add.group({classType: Tree2, runChildUpdate: true});
+        trees3 = this.add.group({classType: Tree3, runChildUpdate: true});
 
         var fireCursor = this.add.image(0, 0, 'imgFireTower').setVisible(false);
         var waterCursor = this.add.image(0, 0, 'imgWaterTower').setVisible(false);
@@ -276,12 +284,22 @@ var LevelOne = new Phaser.Class({
         this.nextEnemy = 0;
 
         var rock1 = rocks.get();
-        rock1.place(500, 500);
-        rock1.setInteractive();
+        rock1.place(450, 400);
+
+        var rock2 = rocks2.get();
+        rock2.place(600, 500);
+
+        var rock3 = rocks3.get();
+        rock3.place(500, 500);
+
+        var rock4 = rocks4.get();
+        rock4.place(500, 500);
+
+        var rock5 = rocks5.get();
+        rock5.place(500, 500);
 
         var tree1 = trees.get();
-        tree1.place(600, 500);
-        tree1.setInteractive();
+        tree1.place(600, 650);
 
         this.input.on('pointerdown', function (pointer, gameObjects) {
             if(curBut == 'None' || gameObjects.length > 0) {
@@ -2317,8 +2335,47 @@ var Tree = new Phaser.Class ({
         Phaser.GameObjects.Image.call(this, scene);
         this.setPosition(x, y);
         this.setTexture('tree1');
+        this.setScale(.3);
+        this.setDepth(-1);
+        this.setInteractive();
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+});
+
+var Tree2 = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+    initialize:
+
+    function Tree2 (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setPosition(x, y);
+        this.setTexture('tree2');
+        this.setScale(.35);
+        this.setDepth(-1);
+        this.setInteractive();
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+});
+
+var Tree3 = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+    initialize:
+
+    function Tree3 (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setPosition(x, y);
+        this.setTexture('tree3');
         this.setScale(.5);
         this.setDepth(-1);
+        this.setInteractive();
     },
 
     place: function(i, j) {
@@ -2337,6 +2394,83 @@ var Rock = new Phaser.Class ({
         this.setTexture('rock1');
         this.setScale(1);
         this.setDepth(-1);
+        this.setInteractive();
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+});
+
+var Rock2 = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+    initialize:
+
+    function Rock (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setPosition(x, y);
+        this.setTexture('rock2');
+        this.setScale(1);
+        this.setDepth(-1);
+        this.setInteractive();
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+});
+
+var Rock3 = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+    initialize:
+
+    function Rock (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setPosition(x, y);
+        this.setTexture('rock3');
+        this.setScale(1);
+        this.setDepth(-1);
+        this.setInteractive();
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+});
+
+var Rock4 = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+    initialize:
+
+    function Rock (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setPosition(x, y);
+        this.setTexture('rock4');
+        this.setScale(1);
+        this.setDepth(-1);
+        this.setInteractive();
+    },
+
+    place: function(i, j) {
+        this.x = i;
+        this.y = j;
+    },
+});
+
+var Rock5 = new Phaser.Class ({
+    Extends: Phaser.GameObjects.Image,
+    initialize:
+
+    function Rock (scene, x, y) {
+        Phaser.GameObjects.Image.call(this, scene);
+        this.setPosition(x, y);
+        this.setTexture('rock5');
+        this.setScale(1);
+        this.setDepth(-1);
+        this.setInteractive();
     },
 
     place: function(i, j) {
