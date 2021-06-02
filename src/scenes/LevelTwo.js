@@ -36,8 +36,8 @@ var wave8 = 40;
 var wave9 = 45;
 var wave10 = 50;
 
-var pointsX = [200, 300, 456, 640, 1600];
-var pointsY = [300, 350, 456, 480, 450];
+var pointsX = [200, 300, 456, 640, 900, 1200, 1600];
+var pointsY = [300, 350, 456, 480, 300, 500, 450];
 
 var LevelTwo = new Phaser.Class({
     Extends: Phaser.Scene,
