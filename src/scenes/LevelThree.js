@@ -580,9 +580,10 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave1--;
-                curWave++;
             }
         }
+
+        
 
         if (time > this.nextEnemy && wave2 > 0 && wave1 == -1)
         {
@@ -595,6 +596,10 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 4000;
                 wave2--;
+                if(wave1 == -1) {
+                    curWave++;
+                    wave1--;
+                }
             }
         }
 
@@ -608,7 +613,6 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave2--;
-                curWave++;
             }
         }
 
@@ -623,6 +627,10 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave3--;
+                if(wave2 == -1) {
+                    curWave++;
+                    wave2--;
+                }
             }
         }
 
@@ -651,6 +659,10 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave4--;
+                if(wave3 == -1) {
+                    curWave++;
+                    wave3--;
+                }
             }
         }
 
@@ -664,7 +676,6 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave4--;
-                curWave++;
             }
         }
 
@@ -679,6 +690,10 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave5--;
+                if(wave4 == -1) {
+                    curWave++;
+                    wave4--;
+                }
             }
         }
 
@@ -692,7 +707,6 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave5--;
-                curWave++;
             }
         }
 
@@ -707,6 +721,10 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave6--;
+                if(wave5 == -1) {
+                    curWave++;
+                    wave6--;
+                }
             }
         }
 
@@ -720,7 +738,6 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave6--;
-                curWave++;
             }
         }
 
@@ -735,6 +752,10 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave7--;
+                if(wave6 == -1) {
+                    curWave++;
+                    wave6--;
+                }
             }
         }
 
@@ -748,7 +769,6 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave7--;
-                curWave++;
             }
         }
 
@@ -763,6 +783,10 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave8--;
+                if(wave7 == -1) {
+                    curWave++;
+                    wave7--;
+                }
             }
         }
 
@@ -776,7 +800,6 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave8--;
-                curWave++;
             }
         }
 
@@ -791,6 +814,10 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave9--;
+                if(wave8 == -1) {
+                    curWave++;
+                    wave8--;
+                }
             }
         }
 
@@ -804,7 +831,6 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave8--;
-                curWave++;
             }
         }
 
@@ -822,6 +848,10 @@ var LevelThree = new Phaser.Class({
 
                 this.nextEnemy = time + 5000;
                 wave10--;
+                if(wave9 == -1) {
+                    curWave++;
+                    wave9--;
+                }
             }
 
             if (enemy2)
