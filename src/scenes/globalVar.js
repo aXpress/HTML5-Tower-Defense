@@ -17,7 +17,13 @@ var enemies8;
 var enemies9;
 var bullets;
 var rocks;
+var rocks2;
+var rocks3;
+var rocks4;
+var rocks5;
 var trees;
+var trees2;
+var trees3;
 
 var curBut ='None';
 
@@ -45,9 +51,9 @@ var pointsY = [];
 
 var curWave = 1;
 
-var wave1 = 5;
-var wave2 = 10;
-var wave3 = 15;
+var wave1 = 20;
+var wave2 = 30;
+var wave3 = 30;
 var wave4 = 20;
 var wave5 = 25;
 var wave6 = 30;
