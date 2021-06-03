@@ -683,10 +683,11 @@ var LevelOne = new Phaser.Class({
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 5000;
+                this.nextEnemy = time + 25000;
                 wave4--;
                 if (wave4 < 0) {
                     this.scene.start('Victory');
+                    level2unlock = true;
                 }
             }
         }
