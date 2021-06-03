@@ -1,6 +1,3 @@
-var pointsX = [0, 100, 100, 400, 400, 650, 650, 900, 900, 1200, 1200, 1400, 1400, 1600];
-var pointsY = [450, 450, 350, 350, 600, 600, 100, 100, 650, 650, 250, 250, 450, 450];
-
 var LevelThree = new Phaser.Class({
     Extends: Phaser.Scene,
     initialize:
@@ -135,7 +132,7 @@ var LevelThree = new Phaser.Class({
 
         // the path for our enemies
         // parameters are the start x and y of our path
-        path = this.add.path(0, 450);
+        path = this.add.path(0, 300);
 
         for (var i = 0; i < pointsX.length; i++) {
             path.lineTo(pointsX[i], pointsY[i]);
