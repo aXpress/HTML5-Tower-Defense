@@ -263,9 +263,45 @@ var LevelTwo = new Phaser.Class({
         rock2.place(150, 450);
         rock2.setScale(1);
 
+        var rock3 = rocks3.get();
+        rock3.place(300, 550);
+        rock3.setScale(2);
+
+        var rock4 = rocks4.get();
+        rock4.place(700, 450);
+        rock4.setScale(3);
+
+        var rock5 = rocks4.get();
+        rock5.place(1550, 350);
+        rock5.setScale(2);
+
+        var rock6 = rocks.get();
+        rock6.place(1550, 575);
+        rock6.setScale(2);
+
         var tree1 = trees.get();
         tree1.place(55, 550);
         tree1.setScale(.5);
+        
+        var tree2 = trees2.get();
+        tree2.place(475, 350);
+        tree2.setScale(.5);
+
+        var tree3 = trees3.get();
+        tree3.place(300, 250);
+        tree3.setScale(.5);
+
+        var tree4 = trees.get();
+        tree4.place(800, 125);
+        tree4.setScale(1);
+
+        var tree5 = trees2.get();
+        tree5.place(950, 500);
+        tree5.setScale(.5);
+
+        var tree6 = trees3.get();
+        tree5.place(1250, 300);
+        tree5.setScale(.5);
 
         this.input.on('pointerdown', function (pointer, gameObjects) {
             if(curBut == 'None' || gameObjects.length > 0) {
