@@ -9,7 +9,7 @@ window.onload = function() {
             arcade: { debug: true }
         },
         backgroundcolor: 0x000000,
-        scene: [SplashScreen, MainMenu, LevelOne, LevelTwo, LevelThree, MapCreation, GameOver],
+        scene: [SplashScreen, MainMenu, LevelOne, LevelTwo, LevelThree, MapCreation, GameOver, Victory],
     }
 
     // Disable right click

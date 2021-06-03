@@ -11,7 +11,7 @@ var LevelOne = new Phaser.Class({
     },
     
     preload: function() {
-        this.load.image('imgGrass', 'src/assets/backgrounds/imgGrass.jpg');
+        this.load.image('imgGrass1', 'src/assets/backgrounds/imgGrass1.jpg');
         this.load.image('imgMainMenuButton', 'src/assets/imgMainMenuButton.png');
         this.load.image('imgFireTower', 'src/assets/towers/fireTower.png');
         this.load.image('imgWaterTower', 'src/assets/towers/waterTower.png');
@@ -53,7 +53,7 @@ var LevelOne = new Phaser.Class({
     create: function() {
         //this.add.text(20, 20, "Level Two");
         gameGold = 10;
-        lives = 10;
+        lives = 1;
         curWave = 1;
         wave1 = 5;
         wave2 = 10;
@@ -76,7 +76,7 @@ var LevelOne = new Phaser.Class({
         .on('pointerdown', () => this.scene.start('MainMenu'), this);
         var mainMenuTxt = this.add.text(1465, 20, "MAIN MENU", {font: '14pt pixel', fill: '0xffffff'});
 
-        this.background = this.add.sprite(0, 0, "imgGrass");
+        this.background = this.add.sprite(0, 0, "imgGrass1");
         this.background.setOrigin(0, 0);
         this.background.depth = -3;
 
@@ -131,8 +131,7 @@ var LevelOne = new Phaser.Class({
             path.lineTo(pointsX[i], pointsY[i]);
         }
         
-        
-        graphics.lineStyle(10, 0xffffff, 1);
+        graphics.lineStyle(0, 0xffffff, 1);
         // visualize the path
         path.draw(graphics);
 
@@ -551,6 +550,9 @@ var LevelOne = new Phaser.Class({
     },
 
     update: function(time, delta) {
+        if(lives == 0) {
+            this.scene.start('GameOver');
+        }
         goldText.setText("GOLD: " + gameGold);
         if(isNaN(gameGold)) {
             gameGold = 0;
@@ -1133,7 +1135,6 @@ var Enemy = new Phaser.Class({
             this.setVisible(false);
             lives--;
         }
-
     }
 
 });
