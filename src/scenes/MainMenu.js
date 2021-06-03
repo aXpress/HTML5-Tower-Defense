@@ -15,7 +15,7 @@ var MainMenu = new Phaser.Class({
         this.load.image('imgSelectLevelTwo', 'src/assets/imgSelectLevelTwo.png');
         this.load.image('imgSelectLevelThree', 'src/assets/imgSelectLevelThree.png');
         this.load.image('imgLevelLore', 'src/assets/imgLevelLore.png');
-        this.load.image('imgMenuBG', 'src/assets/backgrounds/menuBG.jpg');
+        this.load.image('imgMenuBG', 'src/assets/backgrounds/menuBG.png');
         this.load.image('imgMainMenuButton', 'src/assets/imgMainMenuButton.png');
         this.load.image('imgLock', 'src/assets/imgLock.png');
     },
@@ -32,7 +32,7 @@ var MainMenu = new Phaser.Class({
         // Container that can change text dynamically via below level menu functions
         var loreContainer = this.add.container(800, 690);
         var loreBox = this.add.sprite(0, 0, 'imgLevelLore');
-        var loreText = this.add.text(0, -10, '', {font: '32pt pixel', fill: '#fff'});
+        var loreText = this.add.text(0, -10, '', {font: '33pt pixel', fill: '#000'});
         loreText.setOrigin(0.5, 0.5);
         loreContainer.add(loreBox);
         loreContainer.add(loreText);
