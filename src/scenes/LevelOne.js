@@ -686,7 +686,7 @@ var LevelOne = new Phaser.Class({
                 this.nextEnemy = time + 5000;
                 wave4--;
                 if (wave4 < 0) {
-                    //put victory here
+                    this.scene.start('Victory');
                 }
             }
         }
@@ -1008,7 +1008,7 @@ var Enemy2 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 100;
+        this.hp = 130;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1102,14 +1102,14 @@ var Enemy3 = new Phaser.Class({
         this.bounty = 3;
         this.hp = 0;
         this.status = 'None';
-        this.speed = 1/25000;
+        this.speed = 1/20000;
 
     },
     startOnPath: function ()
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 150;
+        this.hp = 230;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
