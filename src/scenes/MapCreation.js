@@ -91,6 +91,7 @@ var MapCreation = new Phaser.Class({
         var gameStatsBG = this.add.sprite(150, 75, 'imgGameStatsBG').setInteractive();
         gameStatsBG.depth = -1;
 
+
         /*---------------------------------------------------------------------
         ** Message function. This takes a string arg and changes the message
         ** that is dispalyed at the top of the screen.
@@ -838,6 +839,7 @@ var MapCreation = new Phaser.Class({
                 }
             }
         };
+
 
         /*---------------------------------------------------------------------
         ** This handles the dragging mechanic. This allows the user to drag
