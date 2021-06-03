@@ -51,19 +51,14 @@ var LevelOne = new Phaser.Class({
         //this.add.text(20, 20, "Level Two");
         pointsX = [0, 100, 100, 400, 400, 650, 650, 900, 900, 1200, 1200, 1400, 1400, 1600];
         pointsY = [450, 450, 350, 350, 600, 600, 100, 100, 650, 650, 250, 250, 450, 450];
-        gameGold = 10;
-        lives = 1;
+        gameGold = 100;
+        lives = 20;
         curWave = 1;
-        wave1 = 5;
-        wave2 = 10;
-        wave3 = 15;
-        wave4 = 20;
-        wave5 = 25;
-        wave6 = 30;
-        wave7 = 35;
-        wave8 = 40;
-        wave9 = 45;
-        wave10 = 50;
+        wave1 = 20;
+        wave2 = 30;
+        wave3 = 30;
+        wave4 = 35;
+
         rocks = null;
         rocks2 = null;
         rocks3 = null;
@@ -332,6 +327,7 @@ var LevelOne = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - fireTower.upgradeCost >= 0) {
+                            gameGold -= fireTower.upgradeCost;
                             fireTower.upgrade()
                             towerName.setText("TYPE: " + fireTower.element);
                             towerLevel.setText("LEVEL: " + fireTower.level);
@@ -368,6 +364,7 @@ var LevelOne = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - waterTower.upgradeCost >= 0) {
+                            gameGold -= waterTower.upgradeCost;
                             waterTower.upgrade()
                             towerName.setText("TYPE: " + waterTower.element);
                             towerLevel.setText("LEVEL: " + waterTower.level);
@@ -404,6 +401,7 @@ var LevelOne = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - windTower.upgradeCost >= 0) {
+                            gameGold -= windTower.upgradeCost;
                             windTower.upgrade()
                             towerName.setText("TYPE: " + windTower.element);
                             towerLevel.setText("LEVEL: " + windTower.level);
@@ -440,6 +438,7 @@ var LevelOne = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - iceTower.upgradeCost >= 0) {
+                            gameGold -= iceTower.upgradeCost;
                             iceTower.upgrade()
                             towerName.setText("TYPE: " + iceTower.element);
                             towerLevel.setText("LEVEL: " + iceTower.level);
@@ -476,6 +475,7 @@ var LevelOne = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - elecTower.upgradeCost >= 0) {
+                            gameGold -= elecTower.upgradeCost;
                             elecTower.upgrade()
                             towerName.setText("TYPE: " + elecTower.element);
                             towerLevel.setText("LEVEL: " + elecTower.level);
@@ -575,7 +575,7 @@ var LevelOne = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 5000;
+                this.nextEnemy = time + 2000;
                 wave1--;
             }
         }
@@ -587,7 +587,7 @@ var LevelOne = new Phaser.Class({
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 30000;
+                this.nextEnemy = time + 10000;
                 wave1--;
             }
         }
@@ -603,7 +603,7 @@ var LevelOne = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 4000;
+                this.nextEnemy = time + 1500;
                 wave2--;
                 if(wave1 == -1) {
                     curWave++;
@@ -620,7 +620,7 @@ var LevelOne = new Phaser.Class({
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 30000;
+                this.nextEnemy = time + 10000;
                 wave2--;
             }
         }
@@ -634,7 +634,7 @@ var LevelOne = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 3000;
+                this.nextEnemy = time + 1500;
                 wave3--;
                 if(wave2 == -1) {
                     curWave++;
@@ -651,22 +651,22 @@ var LevelOne = new Phaser.Class({
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 30000;
+                this.nextEnemy = time + 10000;
                 wave3--;
-                curWave++;
             }
         }
 
         if (time > this.nextEnemy && wave4 > 0 && wave3 <= -1)
         {
-            var enemy = enemies4.get();
+            var enemy = enemies3.get();
+
             if (enemy)
             {
                 enemy.setActive(true);
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 3000;
+                this.nextEnemy = time + 1000;
                 wave4--;
                 if(wave3 == -1) {
                     curWave++;
@@ -676,250 +676,25 @@ var LevelOne = new Phaser.Class({
         }
 
         if (wave4 == 0) {
-            var enemy = enemies4.get();
+            var enemy = enemies3.get();
             if (enemy)
             {
                 enemy.setActive(false);
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 30000;
+                this.nextEnemy = time + 25000;
                 wave4--;
-            }
-        }
-
-        if (time > this.nextEnemy && wave5 > 0 && wave4 <= -1)
-        {
-            var enemy = enemies5.get();
-            if (enemy)
-            {
-                enemy.setActive(true);
-                enemy.setVisible(true);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 3000;
-                wave5--;
-                if(wave4 == -1) {
-                    curWave++;
-                    wave4--;
+                if (wave4 < 0) {
+                    this.scene.start('Victory');
+                    level2unlock = true;
                 }
-            }
-        }
-
-        if (wave5 == 0) {
-            var enemy = enemies5.get();
-            if (enemy)
-            {
-                enemy.setActive(false);
-                enemy.setVisible(false);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 30000;
-                wave5--;
-            }
-        }
-
-        if (time > this.nextEnemy && wave6 > 0 && wave5 <= -1)
-        {
-            var enemy = enemies6.get();
-            if (enemy)
-            {
-                enemy.setActive(true);
-                enemy.setVisible(true);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 3000;
-                wave6--;
-                if(wave5 == -1) {
-                    curWave++;
-                    wave6--;
-                }
-            }
-        }
-
-        if (wave6 == 0) {
-            var enemy = enemies6.get();
-            if (enemy)
-            {
-                enemy.setActive(false);
-                enemy.setVisible(false);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 30000;
-                wave6--;
-            }
-        }
-
-        if (time > this.nextEnemy && wave7 > 0 && wave6 <= -1)
-        {
-            var enemy = enemies7.get();
-            if (enemy)
-            {
-                enemy.setActive(true);
-                enemy.setVisible(true);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 3000;
-                wave7--;
-                if(wave6 == -1) {
-                    curWave++;
-                    wave6--;
-                }
-            }
-        }
-
-        if (wave7 == 0) {
-            var enemy = enemies7.get();
-            if (enemy)
-            {
-                enemy.setActive(false);
-                enemy.setVisible(false);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 30000;
-                wave7--;
-            }
-        }
-
-        if (time > this.nextEnemy && wave8 > 0 && wave7 <= -1)
-        {
-            var enemy = enemies8.get();
-            if (enemy)
-            {
-                enemy.setActive(true);
-                enemy.setVisible(true);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 3000;
-                wave8--;
-                if(wave7 == -1) {
-                    curWave++;
-                    wave7--;
-                }
-            }
-        }
-
-        if (wave8 == 0) {
-            var enemy = enemies8.get();
-            if (enemy)
-            {
-                enemy.setActive(false);
-                enemy.setVisible(false);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 30000;
-                wave8--;
-            }
-        }
-
-        if (time > this.nextEnemy && wave9 > 0 && wave8 <= -1)
-        {
-            var enemy = enemies8.get();
-            if (enemy)
-            {
-                enemy.setActive(true);
-                enemy.setVisible(true);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 3000;
-                wave9--;
-                if(wave8 == -1) {
-                    curWave++;
-                    wave8--;
-                }
-            }
-        }
-
-        if (wave9 == 0) {
-            var enemy = enemies9.get();
-            if (enemy)
-            {
-                enemy.setActive(false);
-                enemy.setVisible(false);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 30000;
-                wave8--;
-            }
-        }
-
-        if (time > this.nextEnemy && wave10 > 0 && wave9 <= -1)
-        {
-            var enemy = enemies7.get();
-            var enemy2 = enemies8.get();
-            var enemy3 = enemies9.get();
-
-            if (enemy)
-            {
-                enemy.setActive(true);
-                enemy.setVisible(true);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 5000;
-                wave10--;
-                if(wave9 == -1) {
-                    curWave++;
-                    wave9--;
-                }
-            }
-
-            if (enemy2)
-            {
-                enemy2.setActive(true);
-                enemy2.setVisible(true);
-                enemy2.startOnPath();
-                this.nextEnemy = time + 3000;
-            }
-
-            if (enemy3)
-            {
-                enemy3.setActive(true);
-                enemy3.setVisible(true);
-                enemy3.startOnPath();
-                this.nextEnemy = time + 4000;
-            }
-        }
-
-        if (time > this.nextEnemy && wave10 > 0 && wave9 == -1)
-        {
-            var enemy = enemies7.get();
-            var enemy2 = enemies8.get();
-            var enemy3 = enemies9.get();
-
-            if (enemy)
-            {
-                enemy.setActive(true);
-                enemy.setVisible(true);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 5000;
-                wave10--;
-                if(wave9 == -1) {
-                    curWave++;
-                    wave9--;
-                }
-            }
-
-            if (enemy2)
-            {
-                enemy2.setActive(true);
-                enemy2.setVisible(true);
-                enemy2.startOnPath();
-                this.nextEnemy = time + 3000;
-            }
-
-            if (enemy3)
-            {
-                enemy3.setActive(true);
-                enemy3.setVisible(true);
-                enemy3.startOnPath();
-                this.nextEnemy = time + 4000;
             }
         }
 
         waveText.setText("WAVE: " + curWave);
         livesText.setText("LIVES: " + lives);
-    },
+    }
 })
 
 function getEnemy(x, y, distance) {
@@ -1129,7 +904,7 @@ var Enemy = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 100;
+        this.hp = 50;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1234,7 +1009,7 @@ var Enemy2 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 500;
+        this.hp = 130;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1328,14 +1103,14 @@ var Enemy3 = new Phaser.Class({
         this.bounty = 3;
         this.hp = 0;
         this.status = 'None';
-        this.speed = 1/25000;
+        this.speed = 1/20000;
 
     },
     startOnPath: function ()
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 230;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -2088,32 +1863,32 @@ var FireTower = new Phaser.Class ({
         }
 
         if(enemy4) {
-            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy4.x, enemy4.y);
             addBullet(this.x, this.y, angle, 'Fire', this.dmg);
         }
 
         if(enemy5) {
-            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy5.x, enemy5.y);
             addBullet(this.x, this.y, angle, 'Fire', this.dmg);
         }
 
         if(enemy6) {
-            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy6.x, enemy6.y);
             addBullet(this.x, this.y, angle, 'Fire', this.dmg);
         }
 
         if(enemy7) {
-            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy7.x, enemy7.y);
             addBullet(this.x, this.y, angle, 'Fire', this.dmg);
         }
 
         if(enemy8) {
-            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy8.x, enemy8.y);
             addBullet(this.x, this.y, angle, 'Fire', this.dmg);
         }
 
         if(enemy9) {
-            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy3.x, enemy3.y);
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy9.x, enemy9.y);
             addBullet(this.x, this.y, angle, 'Fire', this.dmg);
         }
     },
@@ -2359,12 +2134,12 @@ var IceTower = new Phaser.Class ({
         var enemy = getEnemy(this.x, this.y, this.range);
         var enemy2 = getEnemy2(this.x, this.y, this.range);
         var enemy3 = getEnemy3(this.x, this.y, this.range);
-        var enemy4 = getEnemy3(this.x, this.y, this.range);
-        var enemy5 = getEnemy3(this.x, this.y, this.range);
-        var enemy6 = getEnemy3(this.x, this.y, this.range);
-        var enemy7 = getEnemy3(this.x, this.y, this.range);
-        var enemy8 = getEnemy3(this.x, this.y, this.range);
-        var enemy9 = getEnemy3(this.x, this.y, this.range);
+        var enemy4 = getEnemy4(this.x, this.y, this.range);
+        var enemy5 = getEnemy5(this.x, this.y, this.range);
+        var enemy6 = getEnemy6(this.x, this.y, this.range);
+        var enemy7 = getEnemy7(this.x, this.y, this.range);
+        var enemy8 = getEnemy8(this.x, this.y, this.range);
+        var enemy9 = getEnemy9(this.x, this.y, this.range);
 
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
