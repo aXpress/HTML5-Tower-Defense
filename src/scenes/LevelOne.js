@@ -2191,8 +2191,7 @@ var WindTower = new Phaser.Class ({
         var enemy6 = getEnemy3(this.x, this.y, this.range);
         var enemy7 = getEnemy3(this.x, this.y, this.range);
         var enemy8 = getEnemy3(this.x, this.y, this.range);
-        var enemy3 = getEnemy3(this.x, this.y, this.range);
-        var enemy3 = getEnemy3(this.x, this.y, this.range);
+        var enemy9 = getEnemy3(this.x, this.y, this.range);
 
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
@@ -2383,12 +2382,12 @@ var ElecTower = new Phaser.Class ({
         var enemy = getEnemy(this.x, this.y, this.range);
         var enemy2 = getEnemy2(this.x, this.y, this.range);
         var enemy3 = getEnemy3(this.x, this.y, this.range);
-        var enemy4 = getEnemy3(this.x, this.y, this.range);
-        var enemy5 = getEnemy3(this.x, this.y, this.range);
-        var enemy6 = getEnemy3(this.x, this.y, this.range);
-        var enemy7 = getEnemy3(this.x, this.y, this.range);
-        var enemy8 = getEnemy3(this.x, this.y, this.range);
-        var enemy9 = getEnemy3(this.x, this.y, this.range);
+        var enemy4 = getEnemy4(this.x, this.y, this.range);
+        var enemy5 = getEnemy5(this.x, this.y, this.range);
+        var enemy6 = getEnemy6(this.x, this.y, this.range);
+        var enemy7 = getEnemy7(this.x, this.y, this.range);
+        var enemy8 = getEnemy8(this.x, this.y, this.range);
+        var enemy9 = getEnemy9(this.x, this.y, this.range);
 
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
