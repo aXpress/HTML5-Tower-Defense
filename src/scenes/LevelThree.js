@@ -1010,7 +1010,7 @@ var Enemy = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 100;
+        this.hp = 25;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1116,7 +1116,7 @@ var Enemy2 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 500;
+        this.hp = 75;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1217,7 +1217,7 @@ var Enemy3 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 200;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1318,7 +1318,7 @@ var Enemy4 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 200;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
