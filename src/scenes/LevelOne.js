@@ -52,7 +52,7 @@ var LevelOne = new Phaser.Class({
         pointsX = [0, 100, 100, 400, 400, 650, 650, 900, 900, 1200, 1200, 1400, 1400, 1600];
         pointsY = [450, 450, 350, 350, 600, 600, 100, 100, 650, 650, 250, 250, 450, 450];
         gameGold = 10;
-        lives = 1000;
+        lives = 20;
         curWave = 1;
         wave1 = 20;
         wave2 = 30;
@@ -327,6 +327,7 @@ var LevelOne = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - fireTower.upgradeCost >= 0) {
+                            gameGold -= fireTower.upgradeCost;
                             fireTower.upgrade()
                             towerName.setText("TYPE: " + fireTower.element);
                             towerLevel.setText("LEVEL: " + fireTower.level);
@@ -363,6 +364,7 @@ var LevelOne = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - waterTower.upgradeCost >= 0) {
+                            gameGold -= waterTower.upgradeCost;
                             waterTower.upgrade()
                             towerName.setText("TYPE: " + waterTower.element);
                             towerLevel.setText("LEVEL: " + waterTower.level);
@@ -399,6 +401,7 @@ var LevelOne = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - windTower.upgradeCost >= 0) {
+                            gameGold -= windTower.upgradeCost;
                             windTower.upgrade()
                             towerName.setText("TYPE: " + windTower.element);
                             towerLevel.setText("LEVEL: " + windTower.level);
@@ -435,6 +438,7 @@ var LevelOne = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - iceTower.upgradeCost >= 0) {
+                            gameGold -= iceTower.upgradeCost;
                             iceTower.upgrade()
                             towerName.setText("TYPE: " + iceTower.element);
                             towerLevel.setText("LEVEL: " + iceTower.level);
@@ -471,6 +475,7 @@ var LevelOne = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - elecTower.upgradeCost >= 0) {
+                            gameGold -= elecTower.upgradeCost;
                             elecTower.upgrade()
                             towerName.setText("TYPE: " + elecTower.element);
                             towerLevel.setText("LEVEL: " + elecTower.level);
@@ -882,7 +887,7 @@ var Enemy = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 100;
+        this.hp = 50;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -987,7 +992,7 @@ var Enemy2 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 500;
+        this.hp = 100;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1088,7 +1093,7 @@ var Enemy3 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 150;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
