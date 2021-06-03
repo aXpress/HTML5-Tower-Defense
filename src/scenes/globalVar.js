@@ -39,8 +39,9 @@ var ICETINT = '0x00FFE8';
 var ELECTINT = '0xFFF450';
 
 var path;
-var path2;
-var path3;
+
+var pointsX = [];
+var pointsY = [];
 
 var curWave = 1;
 

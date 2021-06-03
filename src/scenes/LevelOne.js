@@ -1,6 +1,3 @@
-var pointsX = [0, 100, 100, 400, 400, 650, 650, 900, 900, 1200, 1200, 1400, 1400, 1600];
-var pointsY = [450, 450, 350, 350, 600, 600, 100, 100, 650, 650, 250, 250, 450, 450];
-
 var LevelOne = new Phaser.Class({
     Extends: Phaser.Scene,
     initialize:
@@ -52,6 +49,8 @@ var LevelOne = new Phaser.Class({
 
     create: function() {
         //this.add.text(20, 20, "Level Two");
+        pointsX = [0, 100, 100, 400, 400, 650, 650, 900, 900, 1200, 1200, 1400, 1400, 1600];
+        pointsY = [450, 450, 350, 350, 600, 600, 100, 100, 650, 650, 250, 250, 450, 450];
         gameGold = 10;
         lives = 1;
         curWave = 1;
@@ -65,6 +64,14 @@ var LevelOne = new Phaser.Class({
         wave8 = 40;
         wave9 = 45;
         wave10 = 50;
+        rocks = null;
+        rocks2 = null;
+        rocks3 = null;
+        rocks4 = null;
+        rocks5 = null;
+        trees = null;
+        trees2 = null;
+        trees3 = null;
         curBut ='None';
 
         this.add.text(20, 35, "curBut: ");
