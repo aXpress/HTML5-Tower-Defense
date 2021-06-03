@@ -552,6 +552,9 @@ var LevelTwo = new Phaser.Class({
     },
 
     update: function(time, delta) {
+        if(lives == 0) {
+            this.scene.start('GameOver');
+        }
         goldText.setText("GOLD: " + gameGold);
         if(isNaN(gameGold)) {
             gameGold = 0;
