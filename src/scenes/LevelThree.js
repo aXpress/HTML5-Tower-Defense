@@ -585,7 +585,7 @@ var LevelThree = new Phaser.Class({
 
         
 
-        if (time > this.nextEnemy && wave2 > 0 && wave1 == -1)
+        if (time > this.nextEnemy && wave2 > 0 && wave1 <= -1)
         {
             var enemy = enemies2.get();
             if (enemy)
@@ -616,7 +616,7 @@ var LevelThree = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave3 > 0 && wave2 == -1)
+        if (time > this.nextEnemy && wave3 > 0 && wave2 <= -1)
         {
             var enemy = enemies3.get();
             if (enemy)
@@ -648,7 +648,7 @@ var LevelThree = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave4 > 0 && wave3 == -1)
+        if (time > this.nextEnemy && wave4 > 0 && wave3 <= -1)
         {
             var enemy = enemies4.get();
             if (enemy)
@@ -679,7 +679,7 @@ var LevelThree = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave5 > 0 && wave4 == -1)
+        if (time > this.nextEnemy && wave5 > 0 && wave4 <= -1)
         {
             var enemy = enemies5.get();
             if (enemy)
@@ -710,7 +710,7 @@ var LevelThree = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave6 > 0 && wave5 == -1)
+        if (time > this.nextEnemy && wave6 > 0 && wave5 <= -1)
         {
             var enemy = enemies6.get();
             if (enemy)
@@ -741,7 +741,7 @@ var LevelThree = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave7 > 0 && wave6 == -1)
+        if (time > this.nextEnemy && wave7 > 0 && wave6 <= -1)
         {
             var enemy = enemies7.get();
             if (enemy)
@@ -772,7 +772,7 @@ var LevelThree = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave8 > 0 && wave7 == -1)
+        if (time > this.nextEnemy && wave8 > 0 && wave7 <= -1)
         {
             var enemy = enemies8.get();
             if (enemy)
@@ -803,7 +803,7 @@ var LevelThree = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave9 > 0 && wave8 == -1)
+        if (time > this.nextEnemy && wave9 > 0 && wave8 <= -1)
         {
             var enemy = enemies8.get();
             if (enemy)
@@ -834,7 +834,7 @@ var LevelThree = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave10 > 0 && wave9 == -1)
+        if (time > this.nextEnemy && wave10 > 0 && wave9 <= -1)
         {
             var enemy = enemies7.get();
             var enemy2 = enemies8.get();

@@ -585,7 +585,7 @@ var LevelOne = new Phaser.Class({
 
         
 
-        if (time > this.nextEnemy && wave2 > 0 && wave1 == -1)
+        if (time > this.nextEnemy && wave2 > 0 && wave1 <= -1)
         {
             var enemy = enemies2.get();
             if (enemy)
@@ -616,7 +616,7 @@ var LevelOne = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave3 > 0 && wave2 == -1)
+        if (time > this.nextEnemy && wave3 > 0 && wave2 <= -1)
         {
             var enemy = enemies3.get();
             if (enemy)
@@ -648,7 +648,7 @@ var LevelOne = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave4 > 0 && wave3 == -1)
+        if (time > this.nextEnemy && wave4 > 0 && wave3 <= -1)
         {
             var enemy = enemies4.get();
             if (enemy)
@@ -679,7 +679,7 @@ var LevelOne = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave5 > 0 && wave4 == -1)
+        if (time > this.nextEnemy && wave5 > 0 && wave4 <= -1)
         {
             var enemy = enemies5.get();
             if (enemy)
@@ -710,7 +710,7 @@ var LevelOne = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave6 > 0 && wave5 == -1)
+        if (time > this.nextEnemy && wave6 > 0 && wave5 <= -1)
         {
             var enemy = enemies6.get();
             if (enemy)
@@ -741,7 +741,7 @@ var LevelOne = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave7 > 0 && wave6 == -1)
+        if (time > this.nextEnemy && wave7 > 0 && wave6 <= -1)
         {
             var enemy = enemies7.get();
             if (enemy)
@@ -772,7 +772,7 @@ var LevelOne = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave8 > 0 && wave7 == -1)
+        if (time > this.nextEnemy && wave8 > 0 && wave7 <= -1)
         {
             var enemy = enemies8.get();
             if (enemy)
@@ -803,7 +803,7 @@ var LevelOne = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave9 > 0 && wave8 == -1)
+        if (time > this.nextEnemy && wave9 > 0 && wave8 <= -1)
         {
             var enemy = enemies8.get();
             if (enemy)
@@ -831,6 +831,43 @@ var LevelOne = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave8--;
+            }
+        }
+
+        if (time > this.nextEnemy && wave10 > 0 && wave9 <= -1)
+        {
+            var enemy = enemies7.get();
+            var enemy2 = enemies8.get();
+            var enemy3 = enemies9.get();
+
+            if (enemy)
+            {
+                enemy.setActive(true);
+                enemy.setVisible(true);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 5000;
+                wave10--;
+                if(wave9 == -1) {
+                    curWave++;
+                    wave9--;
+                }
+            }
+
+            if (enemy2)
+            {
+                enemy2.setActive(true);
+                enemy2.setVisible(true);
+                enemy2.startOnPath();
+                this.nextEnemy = time + 3000;
+            }
+
+            if (enemy3)
+            {
+                enemy3.setActive(true);
+                enemy3.setVisible(true);
+                enemy3.startOnPath();
+                this.nextEnemy = time + 4000;
             }
         }
 
