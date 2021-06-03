@@ -591,7 +591,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 1500;
+                this.nextEnemy = time + 3000;
                 wave5--;
                 if(wave4 == -1) {
                     curWave++;
@@ -622,7 +622,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 1500;
+                this.nextEnemy = time + 2500;
                 wave6--;
                 if(wave5 == -1) {
                     curWave++;
@@ -653,7 +653,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 1500;
+                this.nextEnemy = time + 2500;
                 wave7--;
                 if(wave6 == -1) {
                     curWave++;
@@ -684,7 +684,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 1500;
+                this.nextEnemy = time + 2000;
                 wave8--;
                 if(wave7 == -1) {
                     curWave++;
@@ -715,7 +715,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 1000;
+                this.nextEnemy = time + 2000;
                 wave9--;
                 if(wave8 == -1) {
                     curWave++;
@@ -1411,7 +1411,7 @@ var Enemy5 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 50;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1512,7 +1512,7 @@ var Enemy6 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 75;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1613,7 +1613,7 @@ var Enemy7 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 75;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1714,7 +1714,7 @@ var Enemy8 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 100;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1815,7 +1815,7 @@ var Enemy9 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 100;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
