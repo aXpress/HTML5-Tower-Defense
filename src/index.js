@@ -4,8 +4,12 @@ window.onload = function() {
         height: 900,
         // width: window.innerWidth,
         // height: window.innerHeight,
+        physics: {
+            default: 'arcade',
+            arcade: { debug: true }
+        },
         backgroundcolor: 0x000000,
-        scene: [SplashScreen, MainMenu, LevelOne, LevelTwo, LevelThree, MapCreation],
+        scene: [SplashScreen, MainMenu, LevelOne, LevelTwo, LevelThree, MapCreation, GameOver],
     }
 
     // Disable right click

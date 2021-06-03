@@ -26,6 +26,7 @@ var MapCreation = new Phaser.Class({
 
     preload: function ()
     {
+        this.load.image('imgGrass', 'src/assets/backgrounds/imgGrass.jpg');
         this.load.image('imgMainMenuButton', 'src/assets/imgMainMenuButton.png');
         this.load.image('pathTextureA', 'src/assets/Map/path_base.png');
         this.load.image('pathTextureB', 'src/assets/Map/path_top.png');
@@ -37,7 +38,9 @@ var MapCreation = new Phaser.Class({
         this.load.image('tree1', 'src/assets/Map/tree_1.png');
         this.load.image('tree2', 'src/assets/Map/tree_2.png');
         this.load.image('tree3', 'src/assets/Map/tree_3.png');
-
+        this.load.image('imgBottomUI', 'src/assets/imgBottomUI.png');
+        this.load.image('imgTowerStatsBG', 'src/assets/imgTowerStatsBG.png');
+        this.load.image('imgGameStatsBG', 'src/assets/imgGameStatsBG.png');
     },
 
     create: function ()
@@ -70,9 +73,24 @@ var MapCreation = new Phaser.Class({
         this.groupUI = this.add.group();
         var groupUI = this.groupUI;
 
-        var message = this.add.text(20, 20, "");
-        var message2 = this.add.text(20, 50, "");
-        var message3 = this.add.text(20, 80, "");
+        var message = this.add.text(375, 785, "", {font: '14pt pixel', fill: '#000'});
+        var message2 = this.add.text(375, 815, "", {font: '14pt pixel', fill: '#000'});
+        var message3 = this.add.text(375, 845, "", {font: '14pt pixel', fill: '#000'});
+
+        this.background = this.add.sprite(0, 0, "imgGrass");
+        this.background.setOrigin(0, 0);
+        this.background.depth = -3;
+
+        /*---------------------------------------------------------------------
+        ** UI elements to replicate game look
+        ---------------------------------------------------------------------*/
+        var bottomUI = this.add.sprite(950, 825, 'imgBottomUI').setInteractive();
+        bottomUI.depth = -1;
+        var towerStatsBG = this.add.sprite(150, 825, 'imgTowerStatsBG').setInteractive();
+        towerStatsBG.depth = -1;
+        var gameStatsBG = this.add.sprite(150, 75, 'imgGameStatsBG').setInteractive();
+        gameStatsBG.depth = -1;
+
 
         /*---------------------------------------------------------------------
         ** Message function. This takes a string arg and changes the message
@@ -101,10 +119,11 @@ var MapCreation = new Phaser.Class({
         ---------------------------------------------------------------------*/
 
         // main menu button.
-        var mainMenuButton = this.add.sprite(1500, 50, 'imgMainMenuButton');
-        mainMenuButton.setInteractive().on('pointerover', function(event) {this.setTint(0xC0C0C0);});
-        mainMenuButton.setInteractive().on('pointerout', function(event) {this.clearTint();});
-        mainMenuButton.setInteractive().on('pointerdown', function() {this.scene.start('MainMenu')}, this);
+        var mainMenuButton = this.add.sprite(1510, 35, 'imgMainMenuButton').setInteractive()
+        .on('pointerover', () => mainMenuButton.setTint(0xC0C0C0))
+        .on('pointerout', () => mainMenuButton.clearTint())
+        .on('pointerdown', () => this.scene.start('MainMenu'), this);
+        var mainMenuTxt = this.add.text(1465, 20, "MAIN MENU", {font: '14pt pixel', fill: '0xffffff'});
 
         // Menu container for the build buttons.
         var butContainer = this.add.container(1500,105);
@@ -820,6 +839,7 @@ var MapCreation = new Phaser.Class({
                 }
             }
         };
+
 
         /*---------------------------------------------------------------------
         ** This handles the dragging mechanic. This allows the user to drag
