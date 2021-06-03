@@ -31,7 +31,7 @@ var SplashScreen = new Phaser.Class({
         var startText = this.add.text(758, 435, "START", {font: "24px pixel", fill: '000000'});
         startButton.setInteractive().on('pointerover', function(event) {this.setTint(0xC0C0C0);});
         startButton.setInteractive().on('pointerout', function(event) {this.clearTint();});
-        startButton.setInteractive().on('pointerdown', function() {this.scene.start('LevelThree')}, this);
+        startButton.setInteractive().on('pointerdown', function() {this.scene.start('MainMenu')}, this);
 
     },
 
