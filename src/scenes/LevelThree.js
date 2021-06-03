@@ -352,6 +352,7 @@ var LevelThree = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - fireTower.upgradeCost >= 0) {
+                            gameGold -= fireTower.upgradeCost;
                             fireTower.upgrade()
                             towerName.setText("TYPE: " + fireTower.element);
                             towerLevel.setText("LEVEL: " + fireTower.level);
@@ -388,6 +389,7 @@ var LevelThree = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - waterTower.upgradeCost >= 0) {
+                            gameGold -= waterTower.upgradeCost;
                             waterTower.upgrade()
                             towerName.setText("TYPE: " + waterTower.element);
                             towerLevel.setText("LEVEL: " + waterTower.level);
@@ -424,6 +426,7 @@ var LevelThree = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - windTower.upgradeCost >= 0) {
+                            gameGold -= windTower.upgradeCost;
                             windTower.upgrade()
                             towerName.setText("TYPE: " + windTower.element);
                             towerLevel.setText("LEVEL: " + windTower.level);
@@ -460,6 +463,7 @@ var LevelThree = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - iceTower.upgradeCost >= 0) {
+                            gameGold -= iceTower.upgradeCost;
                             iceTower.upgrade()
                             towerName.setText("TYPE: " + iceTower.element);
                             towerLevel.setText("LEVEL: " + iceTower.level);
@@ -496,6 +500,7 @@ var LevelThree = new Phaser.Class({
 
                     upgradeButton.on('pointerdown', function() {
                         if(gameGold - elecTower.upgradeCost >= 0) {
+                            gameGold -= elecTower.upgradeCost;
                             elecTower.upgrade()
                             towerName.setText("TYPE: " + elecTower.element);
                             towerLevel.setText("LEVEL: " + elecTower.level);
