@@ -670,6 +670,22 @@ var LevelOne = new Phaser.Class({
             }
         }
 
+        if (wave4 == 0) {
+            var enemy = enemies3.get();
+            if (enemy)
+            {
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 5000;
+                wave4--;
+                if (wave4 < 0) {
+                    //put victory here
+                }
+            }
+        }
+
         waveText.setText("WAVE: " + curWave);
         livesText.setText("LIVES: " + lives);
     }
@@ -2112,12 +2128,12 @@ var IceTower = new Phaser.Class ({
         var enemy = getEnemy(this.x, this.y, this.range);
         var enemy2 = getEnemy2(this.x, this.y, this.range);
         var enemy3 = getEnemy3(this.x, this.y, this.range);
-        var enemy4 = getEnemy3(this.x, this.y, this.range);
-        var enemy5 = getEnemy3(this.x, this.y, this.range);
-        var enemy6 = getEnemy3(this.x, this.y, this.range);
-        var enemy7 = getEnemy3(this.x, this.y, this.range);
-        var enemy8 = getEnemy3(this.x, this.y, this.range);
-        var enemy9 = getEnemy3(this.x, this.y, this.range);
+        var enemy4 = getEnemy4(this.x, this.y, this.range);
+        var enemy5 = getEnemy5(this.x, this.y, this.range);
+        var enemy6 = getEnemy6(this.x, this.y, this.range);
+        var enemy7 = getEnemy7(this.x, this.y, this.range);
+        var enemy8 = getEnemy8(this.x, this.y, this.range);
+        var enemy9 = getEnemy9(this.x, this.y, this.range);
 
         if(enemy) {
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
