@@ -8,7 +8,7 @@ var LevelThree = new Phaser.Class({
     },
     
     preload: function() {
-        this.load.image('imgGrass', 'src/assets/backgrounds/imgGrass.jpg');
+        this.load.image('imgGrass3', 'src/assets/backgrounds/imgGrass3.jpg');
         this.load.image('imgMainMenuButton', 'src/assets/imgMainMenuButton.png');
         this.load.image('imgFireTower', 'src/assets/towers/fireTower.png');
         this.load.image('imgWaterTower', 'src/assets/towers/waterTower.png');
@@ -83,7 +83,7 @@ var LevelThree = new Phaser.Class({
         .on('pointerdown', () => this.scene.start('MainMenu'), this);
         var mainMenuTxt = this.add.text(1465, 20, "MAIN MENU", {font: '14pt pixel', fill: '0xffffff'});
 
-        this.background = this.add.sprite(0, 0, "imgGrass");
+        this.background = this.add.sprite(0, 0, "imgGrass3");
         this.background.setOrigin(0, 0);
         this.background.depth = -3;
 
@@ -139,7 +139,7 @@ var LevelThree = new Phaser.Class({
         }
         
         
-        graphics.lineStyle(10, 0xffffff, 1);
+        graphics.lineStyle(0, 0xffffff, 1);
         // visualize the path
         path.draw(graphics);
 
