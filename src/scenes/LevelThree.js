@@ -58,12 +58,12 @@ var LevelThree = new Phaser.Class({
         wave2 = 10;
         wave3 = 15;
         wave4 = 20;
-        wave5 = 25;
+        wave5 = 35;
         wave6 = 30;
         wave7 = 35;
         wave8 = 40;
-        wave9 = 45;
-        wave10 = 50;
+        wave9 = 50;
+        wave10 = 100;
         rocks = null;
         rocks2 = null;
         rocks3 = null;
@@ -582,130 +582,7 @@ var LevelThree = new Phaser.Class({
             gameGold = 0;
         }
         
-        if (time > this.nextEnemy && wave1 > 0)
-        {
-            var enemy = enemies.get();
-
-            if (enemy)
-            {
-                enemy.setActive(true);
-                enemy.setVisible(true);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 5000;
-                wave1--;
-            }
-        }
-        if (wave1 == 0) {
-            var enemy = enemies.get();
-            if (enemy)
-            {
-                enemy.setActive(false);
-                enemy.setVisible(false);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 30000;
-                wave1--;
-            }
-        }
-
-        
-
-        if (time > this.nextEnemy && wave2 > 0 && wave1 <= -1)
-        {
-            var enemy = enemies2.get();
-            if (enemy)
-            {
-                enemy.setActive(true);
-                enemy.setVisible(true);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 4000;
-                wave2--;
-                if(wave1 == -1) {
-                    curWave++;
-                    wave1--;
-                }
-            }
-        }
-
-        if (wave2 == 0) {
-            var enemy = enemies2.get();
-            if (enemy)
-            {
-                enemy.setActive(false);
-                enemy.setVisible(false);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 30000;
-                wave2--;
-            }
-        }
-
-        if (time > this.nextEnemy && wave3 > 0 && wave2 <= -1)
-        {
-            var enemy = enemies3.get();
-            if (enemy)
-            {
-                enemy.setActive(true);
-                enemy.setVisible(true);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 3000;
-                wave3--;
-                if(wave2 == -1) {
-                    curWave++;
-                    wave2--;
-                }
-            }
-        }
-
-        if (wave3 == 0) {
-            var enemy = enemies3.get();
-            if (enemy)
-            {
-                enemy.setActive(false);
-                enemy.setVisible(false);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 30000;
-                wave3--;
-                curWave++;
-            }
-        }
-
-        if (time > this.nextEnemy && wave4 > 0 && wave3 <= -1)
-        {
-            var enemy = enemies4.get();
-            if (enemy)
-            {
-                enemy.setActive(true);
-                enemy.setVisible(true);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 3000;
-                wave4--;
-                if(wave3 == -1) {
-                    curWave++;
-                    wave3--;
-                }
-            }
-        }
-
-        if (wave4 == 0) {
-            var enemy = enemies4.get();
-            if (enemy)
-            {
-                enemy.setActive(false);
-                enemy.setVisible(false);
-                enemy.startOnPath();
-
-                this.nextEnemy = time + 30000;
-                wave4--;
-            }
-        }
-
-        if (time > this.nextEnemy && wave5 > 0 && wave4 <= -1)
+        if (time > this.nextEnemy && wave5 > 0)
         {
             var enemy = enemies5.get();
             if (enemy)
@@ -731,7 +608,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 30000;
+                this.nextEnemy = time + 10000;
                 wave5--;
             }
         }
@@ -745,7 +622,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 3000;
+                this.nextEnemy = time + 2500;
                 wave6--;
                 if(wave5 == -1) {
                     curWave++;
@@ -762,7 +639,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 30000;
+                this.nextEnemy = time + 10000;
                 wave6--;
             }
         }
@@ -776,7 +653,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 3000;
+                this.nextEnemy = time + 2500;
                 wave7--;
                 if(wave6 == -1) {
                     curWave++;
@@ -793,7 +670,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 30000;
+                this.nextEnemy = time + 10000;
                 wave7--;
             }
         }
@@ -807,7 +684,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 3000;
+                this.nextEnemy = time + 2000;
                 wave8--;
                 if(wave7 == -1) {
                     curWave++;
@@ -824,7 +701,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 30000;
+                this.nextEnemy = time + 10000;
                 wave8--;
             }
         }
@@ -838,7 +715,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 3000;
+                this.nextEnemy = time + 2000;
                 wave9--;
                 if(wave8 == -1) {
                     curWave++;
@@ -855,7 +732,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(false);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 30000;
+                this.nextEnemy = time + 10000;
                 wave8--;
             }
         }
@@ -872,7 +749,7 @@ var LevelThree = new Phaser.Class({
                 enemy.setVisible(true);
                 enemy.startOnPath();
 
-                this.nextEnemy = time + 5000;
+                this.nextEnemy = time + 1000;
                 wave10--;
                 if(wave9 == -1) {
                     curWave++;
@@ -885,7 +762,7 @@ var LevelThree = new Phaser.Class({
                 enemy2.setActive(true);
                 enemy2.setVisible(true);
                 enemy2.startOnPath();
-                this.nextEnemy = time + 3000;
+                this.nextEnemy = time + 1250;
             }
 
             if (enemy3)
@@ -893,7 +770,23 @@ var LevelThree = new Phaser.Class({
                 enemy3.setActive(true);
                 enemy3.setVisible(true);
                 enemy3.startOnPath();
-                this.nextEnemy = time + 4000;
+                this.nextEnemy = time + 1500;
+            }
+        }
+
+        if (wave10 == 10) {
+            var enemy = enemies9.get();
+            if (enemy)
+            {
+                enemy.setActive(false);
+                enemy.setVisible(false);
+                enemy.startOnPath();
+
+                this.nextEnemy = time + 10000;
+                wave10--;
+                if (wave10 < 0) {
+                    //put victory here
+                }
             }
         }
 
@@ -1518,7 +1411,7 @@ var Enemy5 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 50;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1619,7 +1512,7 @@ var Enemy6 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 75;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1720,7 +1613,7 @@ var Enemy7 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 75;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1821,7 +1714,7 @@ var Enemy8 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 100;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
@@ -1922,7 +1815,7 @@ var Enemy9 = new Phaser.Class({
     {
         // set the t parameter at the start of the path
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 100;
         
         // get x and y of the given t point            
         path.getPoint(this.follower.t, this.follower.vec);
