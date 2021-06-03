@@ -6,7 +6,7 @@ window.onload = function() {
         // height: window.innerHeight,
         physics: {
             default: 'arcade',
-            arcade: { debug: true }
+            arcade: { debug: false }
         },
         backgroundcolor: 0x000000,
         scene: [SplashScreen, MainMenu, LevelOne, LevelTwo, LevelThree, MapCreation, GameOver, Victory],
