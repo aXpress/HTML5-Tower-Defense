@@ -1,49 +1,3 @@
-var fireTowers;
-var waterTowers;
-var windTowers;
-var iceTowers;
-var elecTowers;
-var enemies;
-var enemies2;
-var enemies3;
-var bullets;
-var curBut ='None';
-
-var goldText;
-var gameGold = 10;
-var livesText;
-var lives = 10;
-var waveText;
-
-var FIRECOST = 3; //3
-var WATERCOST = 4; // 4
-var WINDCOST = 12; // 15
-var ICECOST = 10; // 9
-var ELECCOST = 6; // 6
-
-var FIRETINT = '0xFF5050';
-var WATERTINT = '0x508DFF';
-var ICETINT = '0x00FFE8';
-var ELECTINT = '0xFFF450';
-
-var path;
-
-var curWave = 1;
-
-var wave1 = 5;
-var wave2 = 10;
-var wave3 = 15;
-var wave4 = 20;
-var wave5 = 25;
-var wave6 = 30;
-var wave7 = 35;
-var wave8 = 40;
-var wave9 = 45;
-var wave10 = 50;
-
-var pointsX = [200, 300, 456, 640, 900, 1200, 1600];
-var pointsY = [300, 350, 456, 480, 300, 500, 450];
-
 var LevelTwo = new Phaser.Class({
     Extends: Phaser.Scene,
     initialize:
@@ -54,7 +8,7 @@ var LevelTwo = new Phaser.Class({
     },
     
     preload: function() {
-        this.load.image('imgGrass', 'src/assets/backgrounds/imgGrass.jpg');
+        this.load.image('imgGrass2', 'src/assets/backgrounds/imgGrass2.jpg');
         this.load.image('imgMainMenuButton', 'src/assets/imgMainMenuButton.png');
         this.load.image('imgFireTower', 'src/assets/towers/fireTower.png');
         this.load.image('imgWaterTower', 'src/assets/towers/waterTower.png');
@@ -81,12 +35,44 @@ var LevelTwo = new Phaser.Class({
         this.load.image('minotaurEnemyEasy', 'src/assets/enemies/minotaurEasy.png');
         this.load.image('minotaurEnemyMedium', 'src/assets/enemies/minotaurMedium.png');
         this.load.image('minotaurEnemyHard', 'src/assets/enemies/minotaurHard.png');
+        this.load.image('pathTextureA', 'src/assets/Map/path_base.png');
+        this.load.image('pathTextureB', 'src/assets/Map/path_top.png');
+        this.load.image('rock1', 'src/assets/Map/rock_1.png');
+        this.load.image('rock2', 'src/assets/Map/rock_2.png');
+        this.load.image('rock3', 'src/assets/Map/rock_3.png');
+        this.load.image('rock4', 'src/assets/Map/rock_4.png');
+        this.load.image('rock5', 'src/assets/Map/rock_5.png');
+        this.load.image('tree1', 'src/assets/Map/tree_1.png');
+        this.load.image('tree2', 'src/assets/Map/tree_2.png');
+        this.load.image('tree3', 'src/assets/Map/tree_3.png');
     },
 
     create: function() {
         //this.add.text(20, 20, "Level Two");
+        pointsX = [200, 300, 456, 640, 900, 1200, 1600];
+        pointsY = [300, 350, 600, 300, 300, 500, 450];
         gameGold = 10;
         lives = 10;
+        curWave = 1;
+        wave1 = 5;
+        wave2 = 10;
+        wave3 = 15;
+        wave4 = 20;
+        wave5 = 25;
+        wave6 = 30;
+        wave7 = 35;
+        wave8 = 40;
+        wave9 = 45;
+        wave10 = 50;
+        rocks = null;
+        rocks2 = null;
+        rocks3 = null;
+        rocks4 = null;
+        rocks5 = null;
+        trees = null;
+        trees2 = null;
+        trees3 = null;
+        curBut ='None';
         this.add.text(20, 35, "curBut: ");
         var currentBtn = this.add.text(100, 35, "None");
 
@@ -96,7 +82,7 @@ var LevelTwo = new Phaser.Class({
         .on('pointerdown', () => this.scene.start('MainMenu'), this);
         var mainMenuTxt = this.add.text(1465, 20, "MAIN MENU", {font: '14pt pixel', fill: '0xffffff'});
 
-        this.background = this.add.sprite(0, 0, "imgGrass");
+        this.background = this.add.sprite(0, 0, "imgGrass2");
         this.background.setOrigin(0, 0);
         this.background.depth = -3;
 
@@ -153,7 +139,7 @@ var LevelTwo = new Phaser.Class({
         }
         
         
-        graphics.lineStyle(10, 0xffffff, 1);
+        graphics.lineStyle(0, 0xffffff, 1);
         // visualize the path
         path.draw(graphics);
 
@@ -252,6 +238,15 @@ var LevelTwo = new Phaser.Class({
         enemies7 = this.physics.add.group({classType: Enemy7, runChildUpdate: true});
         enemies8 = this.physics.add.group({classType: Enemy8, runChildUpdate: true});
         enemies9 = this.physics.add.group({classType: Enemy9, runChildUpdate: true});
+        rocks = this.add.group({classType: Rock, runChildUpdate: true});
+        rocks2 = this.add.group({classType: Rock2, runChildUpdate: true});
+        rocks3 = this.add.group({classType: Rock3, runChildUpdate: true});
+        rocks4 = this.add.group({classType: Rock4, runChildUpdate: true});
+        rocks5 = this.add.group({classType: Rock5, runChildUpdate: true});
+        trees = this.add.group({classType: Tree, runChildUpdate: true});
+        trees2 = this.add.group({classType: Tree2, runChildUpdate: true});
+        trees3 = this.add.group({classType: Tree3, runChildUpdate: true});
+
         var fireCursor = this.add.image(0, 0, 'imgFireTower').setVisible(false);
         var waterCursor = this.add.image(0, 0, 'imgWaterTower').setVisible(false);
         var windCursor = this.add.image(0, 0, 'imgWindTower').setVisible(false);
@@ -259,6 +254,18 @@ var LevelTwo = new Phaser.Class({
         var elecCursor = this.add.image(0, 0, 'imgElecTower').setVisible(false);
 
         this.nextEnemy = 0;
+
+        var rock1 = rocks.get();
+        rock1.place(55, 275);
+        rock1.setScale(2);
+
+        var rock2 = rocks2.get();
+        rock2.place(150, 450);
+        rock2.setScale(1);
+
+        var tree1 = trees.get();
+        tree1.place(55, 550);
+        tree1.setScale(.5);
 
         this.input.on('pointerdown', function (pointer, gameObjects) {
             if(curBut == 'None' || gameObjects.length > 0) {
@@ -533,11 +540,12 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave1--;
-                curWave++;
             }
         }
 
-        if (time > this.nextEnemy && wave2 > 0 && wave1 == -1)
+        
+
+        if (time > this.nextEnemy && wave2 > 0 && wave1 <= -1)
         {
             var enemy = enemies2.get();
             if (enemy)
@@ -548,6 +556,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 4000;
                 wave2--;
+                if(wave1 == -1) {
+                    curWave++;
+                    wave1--;
+                }
             }
         }
 
@@ -561,11 +573,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave2--;
-                curWave++;
             }
         }
 
-        if (time > this.nextEnemy && wave3 > 0 && wave2 == -1)
+        if (time > this.nextEnemy && wave3 > 0 && wave2 <= -1)
         {
             var enemy = enemies3.get();
             if (enemy)
@@ -576,6 +587,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave3--;
+                if(wave2 == -1) {
+                    curWave++;
+                    wave2--;
+                }
             }
         }
 
@@ -593,7 +608,7 @@ var LevelTwo = new Phaser.Class({
             }
         }
 
-        if (time > this.nextEnemy && wave4 > 0 && wave3 == -1)
+        if (time > this.nextEnemy && wave4 > 0 && wave3 <= -1)
         {
             var enemy = enemies4.get();
             if (enemy)
@@ -604,6 +619,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave4--;
+                if(wave3 == -1) {
+                    curWave++;
+                    wave3--;
+                }
             }
         }
 
@@ -617,11 +636,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave4--;
-                curWave++;
             }
         }
 
-        if (time > this.nextEnemy && wave5 > 0 && wave4 == -1)
+        if (time > this.nextEnemy && wave5 > 0 && wave4 <= -1)
         {
             var enemy = enemies5.get();
             if (enemy)
@@ -632,6 +650,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave5--;
+                if(wave4 == -1) {
+                    curWave++;
+                    wave4--;
+                }
             }
         }
 
@@ -645,11 +667,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave5--;
-                curWave++;
             }
         }
 
-        if (time > this.nextEnemy && wave6 > 0 && wave5 == -1)
+        if (time > this.nextEnemy && wave6 > 0 && wave5 <= -1)
         {
             var enemy = enemies6.get();
             if (enemy)
@@ -660,6 +681,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave6--;
+                if(wave5 == -1) {
+                    curWave++;
+                    wave6--;
+                }
             }
         }
 
@@ -673,11 +698,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave6--;
-                curWave++;
             }
         }
 
-        if (time > this.nextEnemy && wave7 > 0 && wave6 == -1)
+        if (time > this.nextEnemy && wave7 > 0 && wave6 <= -1)
         {
             var enemy = enemies7.get();
             if (enemy)
@@ -688,6 +712,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave7--;
+                if(wave6 == -1) {
+                    curWave++;
+                    wave6--;
+                }
             }
         }
 
@@ -701,11 +729,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave7--;
-                curWave++;
             }
         }
 
-        if (time > this.nextEnemy && wave8 > 0 && wave7 == -1)
+        if (time > this.nextEnemy && wave8 > 0 && wave7 <= -1)
         {
             var enemy = enemies8.get();
             if (enemy)
@@ -716,6 +743,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave8--;
+                if(wave7 == -1) {
+                    curWave++;
+                    wave7--;
+                }
             }
         }
 
@@ -729,11 +760,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave8--;
-                curWave++;
             }
         }
 
-        if (time > this.nextEnemy && wave9 > 0 && wave8 == -1)
+        if (time > this.nextEnemy && wave9 > 0 && wave8 <= -1)
         {
             var enemy = enemies8.get();
             if (enemy)
@@ -744,6 +774,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 3000;
                 wave9--;
+                if(wave8 == -1) {
+                    curWave++;
+                    wave8--;
+                }
             }
         }
 
@@ -757,11 +791,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 30000;
                 wave8--;
-                curWave++;
             }
         }
 
-        if (time > this.nextEnemy && wave10 > 0 && wave9 == -1)
+        if (time > this.nextEnemy && wave10 > 0 && wave9 <= -1)
         {
             var enemy = enemies7.get();
             var enemy2 = enemies8.get();
@@ -775,6 +808,10 @@ var LevelTwo = new Phaser.Class({
 
                 this.nextEnemy = time + 5000;
                 wave10--;
+                if(wave9 == -1) {
+                    curWave++;
+                    wave9--;
+                }
             }
 
             if (enemy2)
