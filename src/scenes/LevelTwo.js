@@ -51,7 +51,7 @@ var LevelTwo = new Phaser.Class({
         //this.add.text(20, 20, "Level Two");
         pointsX = [200, 300, 456, 640, 900, 1200, 1600];
         pointsY = [300, 350, 600, 300, 300, 500, 450];
-        gameGold = 10;
+        gameGold = 20;
         lives = 20;
         curWave = 1;
         wave1 = 5;
